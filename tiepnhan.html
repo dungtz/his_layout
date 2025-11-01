@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HIS - Tiếp nhận bệnh nhân (Wireframe)</title>
+  <style>
+    :root {
+      --bg: #f6f7f9;
+      --card: #fff;
+      --line: #e5e7eb;
+      --txt: #111827;
+      --muted: #6b7280;
+      --primary: #2563eb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      font: 14px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color: var(--txt);
+      background: var(--bg);
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: var(--card);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .bar {
+      max-width: 1280px;
+      margin: auto;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      padding: 10px 16px;
+    }
+
+    .bar .search {
+      flex: 1;
+      display: flex;
+      gap: 8px;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="time"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      outline: none
+    }
+
+    textarea {
+      min-height: 84px;
+      resize: vertical
+    }
+
+    .btn {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: #fff;
+      padding: 10px 14px;
+      border-radius: 10px;
+      cursor: pointer
+    }
+
+    .btn.primary {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary)
+    }
+
+    .btn:active {
+      transform: translateY(1px)
+    }
+
+    main {
+      width:100%;
+      margin: 16px auto;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px
+    }
+
+    @media (min-width: 1024px) {
+      main {
+        grid-template-columns: 1fr 1fr 1fr;
+        align-items: start
+      }
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: 0 1px 0 rgba(0, 0, 0, .02)
+    }
+
+    .card h2 {
+      margin: 0;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      font-size: 15px;
+      letter-spacing: .2px
+    }
+
+    .card .content {
+      padding: 14px
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px
+    }
+
+    .grid-auto {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px
+    }
+
+    .label {
+      font-size: 12px;
+      color: var(--muted)
+    }
+
+    .hr {
+      height: 1px;
+      background: var(--line);
+      margin: 10px 0
+    }
+
+    .inline {
+      display: flex;
+      align-items: center;
+      gap: 8px
+    }
+
+    .muted {
+      color: var(--muted)
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap
+    }
+
+    .footer-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      margin-top: 12px
+    }
+
+    /* sticky left column labels on tall forms (desktop only) */
+    @media (min-width: 1024px) {
+      .tall {
+        max-height: calc(100vh - 106px);
+        overflow: auto
+      }
+    }
+
+
+  .btn { padding:8px 12px; border:1px solid #e5e7eb; border-radius:8px; background:#fff; cursor:pointer; }
+  .btn.primary { background:#2563eb; color:#fff; border-color:#2563eb; }
+  .btn.danger { background:#ef4444; color:#fff; border-color:#ef4444; }
+  .qty-input { width:70px; text-align:center; padding:6px 4px; }
+  #billTable tbody tr:hover { background:#f9fafb; }
+
+
+   /* Áp dụng chung cho tất cả section có class "card tall" */
+  section.card.tall {
+    height: 100%;                /* cố định chiều cao chung */
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    overflow: hidden;             /* tránh tràn */
+  }
+
+  /* Phần nội dung cuộn được */
+  section.card.tall > .content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px;
+  }
+
+  /* Footer cố định ở cuối section */
+  section.card.tall > .footer-actions {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 10px 12px;
+    background: #fafafa;
+    border-top: 1px solid #e5e7eb;
+    position: sticky;
+    bottom: 0;
+  }
+
+  /* Đảm bảo bảng cuộn nội bộ (nếu có nhiều dòng) */
+  section.card.tall table tbody {
+    display: block;
+    max-height: 220px;
+    overflow-y: auto;
+  }
+
+  section.card.tall table thead,
+  section.card.tall table tfoot {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  section.card.tall table tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="bar">
+      <div class="search">
+        <input type="text" placeholder="Tìm BN / CCCD / Mã hồ sơ" aria-label="Tìm bệnh nhân" />
+        <button class="btn" title="Quét CCCD">Quét CCCD</button>
+      </div>
+      <div class="toolbar">
+        <select id="counter">
+          <option value="">-- Chọn quầy --</option>
+          <option value="1">Quầy 1 - Tiếp nhận BHYT</option>
+          <option value="2">Quầy 2 - Tiếp nhận dịch vụ</option>
+          <option value="3">Quầy 3 - Khám cấp cứu</option>
+          <option value="4">Quầy 4 - Tái khám / hẹn lịch</option>
+        </select>
+      </div>
+      <button class="btn">Gọi số</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- PHẦN 1: Thông tin cá nhân -->
+    <section class="card tall" id="sec-patient">
+      <h2>1) Thông tin khách hàng</h2>
+      <div class="content">
+        <div class="grid-2">
+          <div class="field"><label class="label">Họ và tên</label><input type="text" id="fullName"
+              placeholder="NGUYỄN VĂN A" /></div>
+          <div class="field"><label class="label">Giới tính</label>
+            <div class="inline">
+              <label><input type="radio" name="gender" value="Nam"> Nam</label>
+              <label><input type="radio" name="gender" value="Nữ"> Nữ</label>
+              <label><input type="radio" name="gender" value="Khác"> Khác</label>
+            </div>
+          </div>
+        </div>
+        <div class="grid-3">
+          <div class="field"><label class="label">Quốc tịch</label>
+            <select>
+              <option>Việt Nam</option>
+              <option>Campuchia</option>
+              <option>Lào</option>
+            </select>
+          </div>
+          <div class="field"><label class="label">Dân tộc</label>
+            <select>
+              <option>Kinh</option>
+              <option>Thái</option>
+              <option>Mường</option>
+            </select>
+          </div>
+          <div class="field"><label class="label">Nghề nghiệp</label>
+            <select>
+              <option>Nhân viên văn phòng</option>
+              <option>Nhân viên y tế</option>
+              <option>Công chức</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid-3">
+          <div class="field"><label class="label">Số điện thoại</label><input type="text" /></div>
+          <div class="field">
+            <label class="label">Ngày sinh</label>
+            <input type="date" style="flex:1" />
+          </div>
+          <div class="field">
+            <label class="label">Giờ sinh</label>
+            <input type="time" style="flex:1" value="00:00" />
+          </div>
+        </div>
+
+        <div class="hr"></div>
+        <div class="grid-1">
+          <div class="field"><label class="label">Nơi công tác</label><input type="text" /></div>
+        </div>
+        <div class="grid-3">
+          <div class="field"><label class="label">CCCD</label><input type="text" placeholder="0792xxxxxxxx" /></div>
+          <div class="field"><label class="label">Ngày cấp</label><input type="date" /></div>
+          <div class="field"><label class="label">Nơi cấp</label><input type="text"
+              placeholder="Cục quản lý hàng chính về TTTXH" /></div>
+        </div>
+          
+        <div class="grid-2">
+          <div class="field"><label class="label">Tỉnh/TP</label><input type="text" /></div>
+          <div class="field"><label class="label">Phường/Xã</label><input type="text" /></div>
+        </div>
+        <div class="field"><label class="label">Số nhà - Đường - Khu phố</label><input type="text" /></div>
+
+        <div class="hr"></div>
+        <div class="grid-3">
+          <div class="field"><label class="label">Ngưởi bảo lãnh/Liên hệ</label><input type="text" /></div>
+          <div class="field"><label class="label">Quan hệ</label>
+            <select>
+              <option>Vợ</option>
+              <option>Chồng</option>
+              <option>Con</option>
+            </select>
+          </div>
+          <div class="field"><label class="label">SĐT liên hệ</label><input type="text" /></div>
+      </div>
+
+        <div class="field"><label class="label">Địa chỉ</label><input type="text" /></div>
+        <div class="field"><label class="label">Ghi chú hành chính</label><textarea></textarea></div>
+        <div class="inline" style="gap:12px; flex-wrap:wrap">
+          <label class="inline"><input type="checkbox"> Đính kèm hồ sơ</label>
+          <button class="btn">Chọn tệp…</button>
+        </div>
+    </section>
+
+    <!-- PHẦN 2: Đăng ký khám -->
+    <section class="card tall" id="sec-visit">
+      <h2>2) Hình thức khám chữa bệnh</h2>
+      <div class="content">
+        <div class="grid-2">
+          <div class="field"><label class="label">Loại Hình KCB</label>
+            <select>
+              <option>01 Khám bệnh.</option>
+              <option>02 Điều trị ngoại trú.</option>
+              <option>03 Điều trị nội trú.</option>
+              <option>04 Điều trị nội trú ban ngày.</option>
+              <option>05 Điều trị ngoại trú các bệnh mạn tính dài ngày liên tục trong năm, áp dụng cho các bệnh theo
+                danh mục ban hành kèm theo Thông tư số 46/2016/TT-BYT ngày 30/12/2016 của Bộ trưởng Bộ Y tế về ban hành
+                danh mục bệnh cần chữa trị dài ngày, có khám bệnh và lĩnh thuốc.</option>
+            </select>
+          </div>
+          <div class="field"><label class="label">Lý do vào viện</label><input type="text"
+              placeholder="Ví dụ: Khám lâm sàng tổng quát" /></div>
+        </div>
+
+        <div class="hr"></div>
+
+        <div class="field" id="bhyt-field">
+          <span class="label">Chọn hình thức khám</span>
+          <div class="inline">
+            <label class="inline"><input type="radio" name="bhyt_opt" value="bhyt" checked onchange="toggleBHYT(true)">
+              Khám BHYT</label>
+            <label class="inline"><input type="radio" name="bhyt_opt" value="kbhty" onchange="toggleBHYT(false)"> Khám dịch vụ</label>
+          </div>
+        </div>
+        <div id="bhyt-block">
+          <div class="grid-3">
+            <div class="field"><label class="label">Mã thẻ BHYT</label><input type="text"
+                placeholder="HC4010123456789" /></div>
+            <div class="field"><label class="label">Mức hưởng</label><input type="text" /></div>
+            <div class="field"><label class="label">Nơi ĐK KCB ban đầu</label><input type="text" /></div>
+          </div>
+          <div class="grid-1">
+            <div class="field"><label class="label">Đối tượng KCB</label>
+              <select>
+                <option>1.1 Đến KCB đúng cơ sở KCB nơi đăng ký KCB BHYT ban đầu (Trừ trường hợp quy định tại mã 1.2)
+                </option>
+                <option>1.2 Đi KCB tại cơ sở KCB cấp ban đầu bao gồm trạm y tế, cơ sở KCB y học gia đình, trạm y tế quân
+                  - dân y, trung tâm y tế huyện (trung tâm y tế khu vực từ 01/7/2025) được cấp giấy phép hoạt động theo
+                  hình thức tổ chức là phòng khám, y tế cơ quan, đơn vị, tổ chức được tổ chức dưới hình thức trạm y tế
+                  hoặc phòng khám, cơ sở KCB cấp ban đầu trong quân đội, công an (Bao gồm cả trường hợp đến đúng cơ sở
+                  KCB nơi đăng ký KCB BHYT ban đầu và đi KCB không đúng nơi đăng ký KCB BHYT ban đầu)</option>
+                <option>1.3 Đến KCB có phiếu chuyển cơ sở KCB (Bao gồm Phiếu chuyển cơ sở KCB có giá trị 1 năm)</option>
+                <option>1.4 Trường hợp KCB khi thay đổi nơi lưu trú, nơi cư trú theo quy định tại Điều 4 Thông tư số
+                  01/2025/TT- BYT</option>
+                <option>1.5 Đến KCB theo phiếu hẹn khám lại theo quy định tại Điều 11 Thông tư số 01/2025/TT-BYT
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="grid-3">
+            <div class="field"><label class="label">Hạn từ</label><input type="date" /></div>
+            <div class="field"><label class="label">Hạn đến</label><input type="date" /></div>
+            <div class="field"><label class="label">Thời điểm đủ 5 năm</label><input type="date" /></div>
+          </div>
+        </div>
+
+
+        <div class="hr"></div>
+
+
+        <div class="field" id="ct-field">
+          <span class="label">Thông tin Chuyển tuyến</span>
+          <div class="inline">
+            <label class="inline"><input type="radio" name="ct_opt" value="koct" checked
+                onchange="toggleChuyenTuyen(false)"> Không chuyển tuyến</label>
+            <label class="inline"><input type="radio" name="ct_opt" value="coct" onchange="toggleChuyenTuyen(true)">
+              Chuyển tuyến</label>
+          </div>
+        </div>
+        <div id="ct-block" style="display:none">
+          <div class="grid-3">
+            <div class="field"><label class="label">Nơi chuyển tuyến</label><input type="text" /></div>
+            <div class="field"><label class="label">Chuẩn đoán</label><input type="text" /></div>
+            <div class="field"><label class="label">Số giấy CT</label><input type="text" /></div>
+          </div>
+          <div class="grid-3">
+            <div class="field"><label class="label">Điều trị từ</label><input type="date" /></div>
+            <div class="field"><label class="label">Điều trị đến</label><input type="date" /></div>
+            <div class="inlfieldine">
+              <label class="label">Đính kèm hồ sơ</label>
+              <button class="btn">Chọn tệp…</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+<!-- PHẦN 3: Đăng ký khám bệnh -->
+<section class="card tall" id="sec-extra">
+  <h2>3) Đăng ký khám chữa bệnh</h2>
+  <div class="content">
+    <div class="grid-1">
+      <!-- PHẦN CHỌN DỊCH VỤ -->
+      <div class="field">
+        <label class="label">Tên dịch vụ</label>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <select id="serviceName" style="min-width:280px; padding:6px 8px;">
+            <option value="kham-tong-quat" data-price="150000">Khám tổng quát</option>
+            <option value="kham-chuyen-khoa" data-price="200000">Khám mắt</option>
+            <option value="xet-nghiem-mau" data-price="120000">Khám tai mũi họng</option>
+            <option value="xquang" data-price="250000">Khám da liễu</option>
+            <option value="sieu-am" data-price="180000">Khám cơ xương khớp</option>
+          </select>
+          <button id="btnAddService" class="btn primary" type="button">Thêm</button>
+        </div>
+      </div>
+
+      <!-- BẢNG KÊ DỊCH VỤ -->
+      <div class="card" style="margin-top:12px;">
+        <table id="billTable" style="width:100%; border-collapse:collapse;">
+          <thead>
+            <tr>
+              <th style="text-align:left; border-bottom:1px solid #e5e7eb; padding:8px;">Dịch vụ</th>
+              <th style="text-align:right; border-bottom:1px solid #e5e7eb; padding:8px;">Đơn giá</th>
+              <th style="text-align:center; border-bottom:1px solid #e5e7eb; padding:8px; width:120px;">SL</th>
+              <th style="text-align:right; border-bottom:1px solid #e5e7eb; padding:8px;">Thành tiền</th>
+              <th style="border-bottom:1px solid #e5e7eb; padding:8px; width:60px;"></th>
+            </tr>
+          </thead>
+          <tbody id="billBody"></tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3" style="text-align:right; padding:10px 8px; font-weight:600;">Tổng cộng</td>
+              <td style="text-align:right; padding:10px 8px; font-weight:700;" id="grandTotal">0₫</td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-actions">
+    <button class="btn">Hủy</button>
+    <button class="btn primary" onclick="saveForm()">Lưu tiếp nhận</button>
+    <button class="btn" onclick="window.print()">In phiếu tiếp nhận</button>
+  </div>
+</section>
+
+    <script>
+    function addService() {
+      const group = document.getElementById('serviceGroup').value;
+      const name = document.getElementById('serviceName').value;
+      const list = document.getElementById('serviceList');
+      document.getElementById('emptyService').style.display = 'none';
+      const item = document.createElement('div');
+      item.className = 'inline';
+      item.style.justifyContent = 'space-between';
+      item.style.borderBottom = '1px solid #e5e7eb';
+      item.style.padding = '6px 0';
+      item.innerHTML = `<span>${group} - ${name}</span><button class="btn" onclick="this.parentElement.remove()">Xóa</button>`;
+      list.appendChild(item);
+    }
+    </script>
+
+  </main>
+
+  <script>
+    function toggleBHYT(on) {
+      document.getElementById('bhyt-block').style.display = on ? 'block' : 'none';
+    }
+    function saveForm() {
+      alert('✅ Đã lưu bản nháp (wireframe demo). Tích hợp lưu backend sau.');
+    }
+    function toggleChuyenTuyen(on) {
+      document.getElementById('ct-block').style.display = on ? 'block' : 'none';
+    }
+    // init
+    toggleBHYT(true);
+    toggleChuyenTuyen(false);
+  </script>
+
+  <script>
+    const selectEl = document.getElementById('serviceName');
+    const addBtn = document.getElementById('btnAddService');
+    const bodyEl = document.getElementById('billBody');
+    const grandEl = document.getElementById('grandTotal');
+
+    function formatVND(n) {
+      const num = Number(n || 0);
+      return new Intl.NumberFormat('vi-VN').format(num) + '₫';
+    }
+
+    function parseNumber(str) {
+      if (typeof str === 'number') return str;
+      if (!str) return 0;
+      return Number(String(str).replace(/[^\d.-]/g, '')) || 0;
+    }
+
+    function updateRowTotal(tr) {
+      const price = parseNumber(tr.dataset.price);
+      const qty = parseNumber(tr.querySelector('.qty-input').value);
+      const total = price * qty;
+      tr.querySelector('.cell-total').textContent = formatVND(total);
+    }
+
+    function updateGrandTotal() {
+      let sum = 0;
+      bodyEl.querySelectorAll('tr').forEach(tr => {
+        const price = parseNumber(tr.dataset.price);
+        const qty = parseNumber(tr.querySelector('.qty-input').value);
+        sum += price * qty;
+      });
+      grandEl.textContent = formatVND(sum);
+    }
+
+    function addOrIncrement(serviceId, name, price) {
+      // nếu đã có dòng, tăng SL
+      const existing = bodyEl.querySelector(`tr[data-id="${serviceId}"]`);
+      if (existing) {
+        const qtyInput = existing.querySelector('.qty-input');
+        qtyInput.value = parseNumber(qtyInput.value) + 1;
+        updateRowTotal(existing);
+        updateGrandTotal();
+        return;
+      }
+      // tạo dòng mới
+      const tr = document.createElement('tr');
+      tr.dataset.id = serviceId;
+      tr.dataset.price = String(price);
+
+      tr.innerHTML = `
+        <td style="padding:8px;">${name}</td>
+        <td style="padding:8px; text-align:right;" class="cell-price">${formatVND(price)}</td>
+        <td style="padding:8px; text-align:center;">
+          <input class="qty-input" type="number" min="1" value="1" />
+        </td>
+        <td style="padding:8px; text-align:right;" class="cell-total">${formatVND(price)}</td>
+        <td style="padding:8px; text-align:center;">
+          <button class="btn danger btn-remove" type="button">Xoá</button>
+        </td>
+      `;
+
+      // sự kiện số lượng
+      tr.querySelector('.qty-input').addEventListener('input', (e) => {
+        if (parseNumber(e.target.value) < 1) e.target.value = 1;
+        updateRowTotal(tr);
+        updateGrandTotal();
+      });
+
+      // sự kiện xoá dòng
+      tr.querySelector('.btn-remove').addEventListener('click', () => {
+        tr.remove();
+        updateGrandTotal();
+      });
+
+      bodyEl.appendChild(tr);
+      updateGrandTotal();
+    }
+
+    function addSelectedService() {
+      const opt = selectEl.selectedOptions[0];
+      if (!opt) return;
+      const id = opt.value || opt.textContent.trim();
+      const name = opt.textContent.trim();
+      const price = parseNumber(opt.getAttribute('data-price'));
+      addOrIncrement(id, name, price);
+    }
+
+    // Thêm bằng nút
+    addBtn.addEventListener('click', addSelectedService);
+
+    // Nhấn Enter trên select để thêm nhanh
+    selectEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        addSelectedService();
+      }
+    });
+
+    // Tự thêm dịch vụ đầu tiên khi tải (tuỳ chọn: bỏ nếu không muốn)
+    // addSelectedService();
+  </script>
+</body>
+
+</html>
