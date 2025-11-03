@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HIS - Quản lý Bảo hiểm y tế</title>
+    <style>
+        :root {
+            --bg: #f6f7f9;
+            --card: #fff;
+            --line: #e5e7eb;
+            --txt: #111827;
+            --muted: #6b7280;
+            --primary: #2563eb;
+            --secondary: #4b5563;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --sidebar-width: 280px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            font: 14px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+            color: var(--txt);
+            background: var(--bg);
+        }
+
+        /* Layout tổng thể */
+        .container {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar trái */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--card);
+            border-right: 1px solid var(--line);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Main content */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            background: var(--bg);
+        }
+
+        /* Header chung */
+        .header {
+            padding: 12px 16px;
+            background: var(--card);
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h2 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* Logo styles */
+        .logo-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
+            padding: 16px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            background-color: #4CAF50;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        /* Navigation menu */
+        .nav-menu {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 12px;
+            margin-bottom: 4px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .nav-item:hover {
+            background: #f3f4f6;
+        }
+
+        .nav-item.active {
+            background: #dbeafe;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .nav-item-icon {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Button styles */
+        .btn {
+            padding: 8px 12px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: #fff;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .btn:hover {
+            background: #f9fafb;
+        }
+
+        .btn.primary {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+
+        .btn.primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn.success {
+            background: var(--success);
+            color: #fff;
+            border-color: var(--success);
+        }
+
+        .btn.success:hover {
+            background: #059669;
+        }
+
+        .btn.warning {
+            background: var(--warning);
+            color: #fff;
+            border-color: var(--warning);
+        }
+
+        .btn.warning:hover {
+            background: #d97706;
+        }
+
+        .btn.danger {
+            background: var(--danger);
+            color: #fff;
+            border-color: var(--danger);
+        }
+
+        .btn.danger:hover {
+            background: #dc2626;
+        }
+
+        .btn-small {
+            font-size: 11px;
+            padding: 4px 8px;
+        }
+
+        /* Input styles */
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        input[type="time"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: #fff;
+            outline: none;
+            font-size: 14px;
+        }
+
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        /* Card styles */
+        .card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            box-shadow: 0 1px 0 rgba(0, 0, 0, .02);
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--line);
+            font-weight: 600;
+            font-size: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-body {
+            padding: 16px;
+        }
+
+        /* Table styles */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .table th {
+            text-align: left;
+            padding: 12px 16px;
+            background: #f9fafb;
+            border-bottom: 2px solid var(--line);
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--secondary);
+            white-space: nowrap;
+        }
+
+        .table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--line);
+            font-size: 13px;
+        }
+
+        .table tbody tr:hover {
+            background: #f9fafb;
+        }
+
+        .table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Status badges */
+        .badge {
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .badge.success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge.warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge.danger {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .badge.info {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        /* Grid layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        /* Field styles */
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .field label {
+            font-size: 12px;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        /* Filter section */
+        .filter-section {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding: 16px;
+            background: #f9fafb;
+            border-radius: 12px;
+        }
+
+        /* Form actions */
+        .form-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+            justify-content: flex-end;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+            margin-top: 16px;
+        }
+
+        .page-btn {
+            width: 32px;
+            height: 32px;
+            border: 1px solid var(--line);
+            background: #fff;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .page-btn:hover {
+            background: #f3f4f6;
+        }
+
+        .page-btn.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+
+        /* Scrollable content */
+        .scrollable {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .close-modal {
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--muted);
+        }
+
+        /* Detail info */
+        .detail-info {
+            background: #f9fafb;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .detail-info h3 {
+            margin: 0 0 12px 0;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 13px;
+        }
+
+        .detail-label {
+            color: var(--muted);
+        }
+
+        .detail-value {
+            font-weight: 500;
+        }
+
+        /* Section title */
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        /* Import/Export section */
+        .import-export-section {
+            background: #f9fafb;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        /* Data validation */
+        .validation-message {
+            color: var(--danger);
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .input-error {
+            border-color: var(--danger) !important;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1200px) {
+            :root {
+                --sidebar-width: 250px;
+            }
+
+            .grid-4 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                max-height: 200px;
+            }
+
+            .grid-2,
+            .grid-3,
+            .grid-4 {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-section {
+                flex-direction: column;
+            }
+
+            .table-container {
+                overflow-x: auto;
+            }
+        }
+
+        /* File upload area */
+        .file-upload-area {
+            border: 2px dashed var(--line);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 16px;
+        }
+
+        .file-upload-area:hover {
+            border-color: var(--primary);
+            background: #f0f9ff;
+        }
+
+        /* Notice box */
+        .notice-box {
+            background: #f0f9ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 16px;
+        }
+
+        .notice-box.warning {
+            background: #fef3c7;
+            border-color: #fcd34d;
+        }
+
+        .notice-box.success {
+            background: #d1fae5;
+            border-color: #34d399;
+        }
+
+        .notice-box.danger {
+            background: #fee2e2;
+            border-color: #fca5a5;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Sidebar trái: Danh sách bệnh nhân -->
+        <div class="sidebar">
+            <a href="home.html" class="logo-link">
+                <div class="logo">HIS</div>
+            </a>
+            
+            <div style="padding: 12px; border-bottom: 1px solid var(--line);">
+                <div style="font-weight: 600; margin-bottom: 8px; font-size: 14px;">Danh sách bệnh nhân</div>
+                <input type="text" placeholder="Nhập tên bệnh nhân..." id="patientSearch">
+            </div>
+            
+            <div class="nav-menu" id="patientList">
+                <!-- Danh sách bệnh nhân -->
+                <div class="nav-item patient-item active" data-patient-id="BN001">
+                    <div style="font-weight: 500;">Nguyễn Văn A</div>
+                    <div style="font-size: 12px; color: var(--muted);">Số BHYT: 0123456789</div>
+                    <div style="font-size: 12px; color: var(--muted);">Ngày sinh: 1988-01-01</div>
+                </div>
+                <div class="nav-item patient-item" data-patient-id="BN002">
+                    <div style="font-weight: 500;">Trần Thị B</div>
+                    <div style="font-size: 12px; color: var(--muted);">Số BHYT: 0123456790</div>
+                    <div style="font-size: 12px; color: var(--muted);">Ngày sinh: 1975-05-15</div>
+                </div>
+                <div class="nav-item patient-item" data-patient-id="BN003">
+                    <div style="font-weight: 500;">Trần Văn C</div>
+                    <div style="font-size: 12px; color: var(--muted);">Số BHYT: 0123456791</div>
+                    <div style="font-size: 12px; color: var(--muted);">Ngày sinh: 1990-08-20</div>
+                </div>
+                <div class="nav-item patient-item" data-patient-id="BN004">
+                    <div style="font-weight: 500;">Phạm Thị D</div>
+                    <div style="font-size: 12px; color: var(--muted);">Số BHYT: 0123456792</div>
+                    <div style="font-size: 12px; color: var(--muted);">Ngày sinh: 1965-12-10</div>
+                </div>
+                <div class="nav-item patient-item" data-patient-id="BN005">
+                    <div style="font-weight: 500;">Lê Văn E</div>
+                    <div style="font-size: 12px; color: var(--muted);">Số BHYT: 0123456793</div>
+                    <div style="font-size: 12px; color: var(--muted);">Ngày sinh: 1995-03-25</div>
+                </div>
+                <div class="nav-item patient-item" data-patient-id="BN006">
+                    <div style="font-weight: 500;">Hoàng Thị F</div>
+                    <div style="font-size: 12px; color: var(--muted);">Số BHYT: 0123456794</div>
+                    <div style="font-size: 12px; color: var(--muted);">Ngày sinh: 1982-09-12</div>
+                </div>
+                <div class="nav-item patient-item" data-patient-id="BN007">
+                    <div style="font-weight: 500;">Đặng Văn G</div>
+                    <div style="font-size: 12px; color: var(--muted);">Số BHYT: 0123456795</div>
+                    <div style="font-size: 12px; color: var(--muted);">Ngày sinh: 1979-07-08</div>
+                </div>
+                <div class="nav-item patient-item" data-patient-id="BN008">
+                    <div style="font-weight: 500;">Ngô Thị H</div>
+                    <div style="font-size: 12px; color: var(--muted);">Số BHYT: 0123456796</div>
+                    <div style="font-size: 12px; color: var(--muted);">Ngày sinh: 1985-11-28</div>
+                </div>
+                <div class="nav-item patient-item" data-patient-id="BN009">
+                    <div style="font-weight: 500;">Vũ Văn I</div>
+                    <div style="font-size: 12px; color: var(--muted);">Số BHYT: 0123456797</div>
+                    <div style="font-size: 12px; color: var(--muted);">Ngày sinh: 1992-04-15</div>
+                </div>
+                <div class="nav-item patient-item" data-patient-id="BN010">
+                    <div style="font-weight: 500;">Mai Thị K</div>
+                    <div style="font-size: 12px; color: var(--muted);">Số BHYT: 0123456798</div>
+                    <div style="font-size: 12px; color: var(--muted);">Ngày sinh: 1970-02-03</div>
+                </div>
+            </div>
+            
+            <!-- Thông tin nổi bật bệnh nhân -->
+            <div style="padding: 12px; border-top: 1px solid var(--line);">
+                <div style="font-size: 12px; margin-bottom: 8px;">
+                    <strong>Tổng hồ sơ:</strong> 10
+                </div>
+                <button class="btn primary" style="width: 100%;" onclick="addNewPatient()">➕ Thêm bệnh nhân</button>
+            </div>
+        </div>
+
+        <!-- Main content: Thông tin BHYT bệnh nhân -->
+        <div class="main-content">
+            <!-- Header hiển thị thông tin bệnh nhân đang chọn -->
+            <div class="header">
+                <div>
+                    <h2 id="currentPatientName">Quản lý Bảo hiểm y tế - Nguyễn Văn A</h2>
+                    <div style="color: var(--muted); font-size: 12px;" id="currentPatientInfo">
+                        Mã BN: BN001 | Số BHYT: 0123456789 | Ngày sinh: 1988-01-01
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="btn" onclick="printInsuranceRecord()">🖨️ In hồ sơ</button>
+                    <button class="btn" onclick="exportPatientData()">📥 Xuất dữ liệu</button>
+                    <button class="btn primary" onclick="showAddRecordModal()">➕ Thêm hồ sơ BHYT</button>
+                </div>
+            </div>
+
+            <!-- Thông báo quan trọng -->
+            <div class="notice-box warning">
+                <strong>Lưu ý quan trọng:</strong> Theo Quyết định 1015/QĐ-BYT, hồ sơ BHYT phải được gửi lên cổng quốc gia trong vòng 48 giờ từ ngày khám chữa bệnh. Thời hạn chậm nhất để gửi hồ sơ tháng này là ngày 28/04/2023.
+            </div>
+
+            <!-- Thông tin chi tiết bệnh nhân -->
+            <div class="card">
+                <div class="card-header">
+                    <span>Thông tin chi tiết bệnh nhân</span>
+                    <button class="btn btn-small" onclick="editPatientInfo()">✏️ Sửa thông tin</button>
+                </div>
+                <div class="card-body">
+                    <div class="grid-2">
+                        <div class="detail-info">
+                            <h3>Thông tin cá nhân</h3>
+                            <div class="detail-row">
+                                <div class="detail-label">Họ tên đầy đủ:</div>
+                                <div class="detail-value">Nguyễn Văn A</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Giới tính:</div>
+                                <div class="detail-value">Nam</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Ngày sinh:</div>
+                                <div class="detail-value">1988-01-01 (35 tuổi)</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Số CMND/CCCD:</div>
+                                <div class="detail-value">0123456789</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Địa chỉ thường trú:</div>
+                                <div class="detail-value">123 Đường ABC, Quận 1, TP. HCM</div>
+                            </div>
+                        </div>
+                        <div class="detail-info">
+                            <h3>Thông tin bảo hiểm</h3>
+                            <div class="detail-row">
+                                <div class="detail-label">Số thẻ BHYT:</div>
+                                <div class="detail-value">0123456789</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Hiệu lực từ:</div>
+                                <div class="detail-value">2022-01-01</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Hiệu lực đến:</div>
+                                <div class="detail-value">2023-12-31</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Phạm vi bảo hiểm:</div>
+                                <div class="detail-value">Cao cấp</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Trạng thái thẻ:</div>
+                                <div class="detail-value"><span class="badge success">Hiệu lực</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nội dung chính: XML Master và 15 XML theo quy định -->
+            <div class="card" style="margin-top: 16px;">
+                <div class="card-header">
+                    <span>XML Master - Thông tin cơ sở dữ liệu chính</span>
+                    <div>
+                        <button class="btn btn-small" onclick="viewXmlMaster()">👁️ Xem XML</button>
+                        <button class="btn btn-small" onclick="editXmlMaster()">✏️ Chỉnh sửa</button>
+                        <button class="btn btn-small primary" onclick="saveXmlMaster()">💾 Lưu</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div style="background: #f8fafc; padding: 16px; border-radius: 8px; font-family: monospace; font-size: 12px; max-height: 300px; overflow-y: auto;">
+                        <!-- XML Master mẫu -->
+                        &lt;?xml version="1.0" encoding="UTF-8"?&gt;<br>
+                        &lt;HOSO_BHYT&gt;<br>
+                        &nbsp;&nbsp;&lt;MAU_HOSO version="1.0"&gt;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;MA_BN&gt;BN001&lt;/MA_BN&gt;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;HO_TEN&gt;Nguyễn Văn A&lt;/HO_TEN&gt;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;NAM_SINH&gt;1988&lt;/NAM_SINH&gt;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;GIOI_TINH&gt;1&lt;/GIOI_TINH&gt;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;SO_BHYT&gt;0123456789&lt;/SO_BHYT&gt;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;MA_BS&gt;BS001&lt;/MA_BS&gt;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;NGAY_KHAM&gt;2023-04-20&lt;/NGAY_KHAM&gt;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;MA_DV&gt;KB001&lt;/MA_DV&gt;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;TEN_DV&gt;Khám bệnh tổng quát&lt;/TEN_DV&gt;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;DON_GIA&gt;50000&lt;/DON_GIA&gt;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;THANH_TIEN&gt;50000&lt;/THANH_TIEN&gt;<br>
+                        &nbsp;&nbsp;&lt;/MAU_HOSO&gt;<br>
+                        &lt;/HOSO_BHYT&gt;
+                    </div>
+                </div>
+            </div>
+
+            <!-- 15 XML theo quy định quốc gia -->
+            <div class="card" style="margin-top: 16px;">
+                <div class="card-header">
+                    <span>15 XML theo quy định của Bộ Y tế</span>
+                    <div>
+                        <button class="btn btn-small" onclick="exportAllXml()">📥 Xuất tất cả XML</button>
+                        <button class="btn btn-small primary" onclick="validateXmlData()">✅ Validate XML</button>
+                        <button class="btn btn-small warning" onclick="sendToInsurancePortal()">📤 Gửi lên cổng</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="grid-2" style="gap: 16px;">
+                        <!-- XML 1 -->
+                        <div style="border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-weight: 600;">1. TTHOSO_NHANKHAU.xml</div>
+                                <div>
+                                    <button class="btn btn-small">👁️</button>
+                                    <button class="btn btn-small">✏️</button>
+                                </div>
+                            </div>
+                            <div style="color: var(--muted); font-size: 12px; margin-bottom: 4px;">Thông tin nhân khẩu bệnh nhân</div>
+                            <div class="badge success">Sẵn sàng</div>
+                        </div>
+
+                        <!-- XML 2 -->
+                        <div style="border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-weight: 600;">2. TTHOSO_BHYT.xml</div>
+                                <div>
+                                    <button class="btn btn-small">👁️</button>
+                                    <button class="btn btn-small">✏️</button>
+                                </div>
+                            </div>
+                            <div style="color: var(--muted); font-size: 12px; margin-bottom: 4px;">Thông tin thẻ bảo hiểm y tế</div>
+                            <div class="badge success">Sẵn sàng</div>
+                        </div>
+
+                        <!-- XML 3 -->
+                        <div style="border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-weight: 600;">3. TTHOSO_KCB.xml</div>
+                                <div>
+                                    <button class="btn btn-small">👁️</button>
+                                    <button class="btn btn-small">✏️</button>
+                                </div>
+                            </div>
+                            <div style="color: var(--muted); font-size: 12px; margin-bottom: 4px;">Thông tin khám chữa bệnh</div>
+                            <div class="badge success">Sẵn sàng</div>
+                        </div>
+
+                        <!-- XML 4 -->
+                        <div style="border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-weight: 600;">4. DS_KHAMBENH.xml</div>
+                                <div>
+                                    <button class="btn btn-small">👁️</button>
+                                    <button class="btn btn-small">✏️</button>
+                                </div>
+                            </div>
+                            <div style="color: var(--muted); font-size: 12px; margin-bottom: 4px;">Danh sách khám bệnh</div>
+                            <div class="badge success">Sẵn sàng</div>
+                        </div>
+
+                        <!-- XML 5 -->
+                        <div style="border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-weight: 600;">5. DS_DICHVU.xml</div>
+                                <div>
+                                    <button class="btn btn-small">👁️</button>
+                                    <button class="btn btn-small">✏️</button>
+                                </div>
+                            </div>
+                            <div style="color: var(--muted); font-size: 12px; margin-bottom: 4px;">Danh sách dịch vụ y tế</div>
+                            <div class="badge warning">Chưa hoàn thiện</div>
+                        </div>
+
+                        <!-- XML 6 -->
+                        <div style="border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-weight: 600;">6. DS_THUOC.xml</div>
+                                <div>
+                                    <button class="btn btn-small">👁️</button>
+                                    <button class="btn btn-small">✏️</button>
+                                </div>
+                            </div>
+                            <div style="color: var(--muted); font-size: 12px; margin-bottom: 4px;">Danh sách thuốc kê đơn</div>
+                            <div class="badge success">Sẵn sàng</div>
+                        </div>
+
+                        <!-- XML 7 -->
+                        <div style="border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-weight: 600;">7. CHUANDOAN.xml</div>
+                                <div>
+                                    <button class="btn btn-small">👁️</button>
+                                    <button class="btn btn-small">✏️</button>
+                                </div>
+                            </div>
+                            <div style="color: var(--muted); font-size: 12px; margin-bottom: 4px;">Thông tin chẩn đoán bệnh</div>
+                            <div class="badge success">Sẵn sàng</div>
+                        </div>
+
+                        <!-- XML 8 -->
+                        <div style="border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-weight: 600;">8. XETNGHIEM.xml</div>
+                                <div>
+                                    <button class="btn btn-small">👁️</button>
+                                    <button class="btn btn-small">✏️</button>
+                                </div>
+                            </div>
+                            <div style="color: var(--muted); font-size: 12px; margin-bottom: 4px;">Thông tin xét nghiệm</div>
+                            <div class="badge success">Sẵn sàng</div>
+                        </div>
+
+                        <!-- XML 9 -->
+                        <div style="border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-weight: 600;">9. XQUANG.xml</div>
+                                <div>
+                                    <button class="btn btn-small">👁️</button>
+                                    <button class="btn btn-small">✏️</button>
+                                </div>
+                            </div>
+                            <div style="color: var(--muted); font-size: 12px; margin-bottom: 4px;">Thông tin xét nghiệm hình ảnh</div>
+                            <div class="badge warning">Chưa hoàn thiện</div>
+                        </div>
+
+                        <!-- XML 10 -->
+                        <div style="border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-weight: 600;">10. KETQUA_KCB.xml</div>
+                                <div>
+                                    <button class="btn btn-small">👁️</button>
+                                    <button class="btn btn-small">✏️</button>
+                                </div>
+                            </div>
+                            <div style="color: var(--muted); font-size: 12px; margin-bottom: 4px;">Kết quả khám chữa bệnh</div>
+                            <div class="badge success">Sẵn sàng</div>
+                        </div>
+
+                        <!-- XML 11 -->
+                        <div style="border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-weight: 600;">11. THANHTOAN.xml</div>
+                                <div>
+                                    <button class="btn btn-small">👁️</button>
+                                    <button class="btn btn-small">✏️</button>
+                                </div>
+                            </div>
+                            <div style="color: var(--muted); font-size: 12px; margin-bottom: 4px;">Thông tin thanh toán</div>
+                            <div class="badge success">Sẵn sàng</div>
+                        </div>
+
+                        <!-- XML 12 -->
+                        <div style="border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-weight: 600;">12. DMDICHVU.xml</div>
+                                <div>
+                                    <button class="btn btn-small">👁️</button>
+                                    <button class="btn btn-small">✏️</button>
+                                </div>
+                            </div>
+                            <div style="color: var(--muted); font-size: 12px; margin-bottom: 4px;">Danh mục dịch vụ</div>
+                            <div class="badge success">Sẵn sàng</div>
+                        </div>
+
+                        <!-- XML 13 -->
+                        <div style="border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-weight: 600;">13. DMTHUOC.xml</div>
+                                <div>
+                                    <button class="btn btn-small">👁️</button>
+                                    <button class="btn btn-small">✏️</button>
+                                </div>
+                            </div>
+                            <div style="color: var(--muted); font-size: 12px; margin-bottom: 4px;">Danh mục thuốc</div>
+                            <div class="badge success">Sẵn sàng</div>
+                        </div>
+
+                        <!-- XML 14 -->
+                        <div style="border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-weight: 600;">14. DMCHUANDOAN.xml</div>
+                                <div>
+                                    <button class="btn btn-small">👁️</button>
+                                    <button class="btn btn-small">✏️</button>
+                                </div>
+                            </div>
+                            <div style="color: var(--muted); font-size: 12px; margin-bottom: 4px;">Danh mục chẩn đoán ICD-10</div>
+                            <div class="badge success">Sẵn sàng</div>
+                        </div>
+
+                        <!-- XML 15 -->
+                        <div style="border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-weight: 600;">15. CHITIET_HOSO.xml</div>
+                                <div>
+                                    <button class="btn btn-small">👁️</button>
+                                    <button class="btn btn-small">✏️</button>
+                                </div>
+                            </div>
+                            <div style="color: var(--muted); font-size: 12px; margin-bottom: 4px;">Chi tiết hồ sơ BHYT</div>
+                            <div class="badge warning">Chưa hoàn thiện</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lịch sử gửi hồ sơ -->
+            <div class="card" style="margin-top: 16px;">
+                <div class="card-header">
+                    <span>Lịch sử gửi hồ sơ lên cổng BHYT</span>
+                </div>
+                <div class="table-container" style="overflow-x: auto;">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Ngày gửi</th>
+                                <th>Thời gian</th>
+                                <th>Trạng thái</th>
+                                <th>Mã phản hồi</th>
+                                <th>Nội dung phản hồi</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>2023-04-20</td>
+                                <td>10:30:45</td>
+                                <td><span class="badge success">Thành công</span></td>
+                                <td>00</td>
+                                <td>Xử lý thành công</td>
+                                <td>
+                                    <button class="btn btn-small">👁️</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>2023-04-19</td>
+                                <td>16:45:20</td>
+                                <td><span class="badge success">Thành công</span></td>
+                                <td>00</td>
+                                <td>Xử lý thành công</td>
+                                <td>
+                                    <button class="btn btn-small">👁️</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>2023-04-18</td>
+                                <td>09:15:30</td>
+                                <td><span class="badge danger">Thất bại</span></td>
+                                <td>400</td>
+                                <td>Thông tin thẻ BHYT không hợp lệ</td>
+                                <td>
+                                    <button class="btn btn-small">👁️</button>
+                                    <button class="btn btn-small primary">🔄</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal thêm hồ sơ BHYT -->
+    <div id="addRecordModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Thêm hồ sơ BHYT mới</div>
+                <div class="close-modal" onclick="closeAddRecordModal()">&times;</div>
+            </div>
+            
+            <div class="grid-2">
+                <div class="field">
+                    <label>Họ tên bệnh nhân *</label>
+                    <input type="text" id="patientName" required>
+                </div>
+                <div class="field">
+                    <label>Mã bệnh nhân</label>
+                    <input type="text" id="patientCode">
+                </div>
+                <div class="field">
+                    <label>Số thẻ BHYT *</label>
+                    <input type="text" id="insuranceNumber" required>
+                </div>
+                <div class="field">
+                    <label>Ngày sinh *</label>
+                    <input type="date" id="patientDOB" required>
+                </div>
+                <div class="field">
+                    <label>Giới tính *</label>
+                    <select id="patientGender" required>
+                        <option value="">Chọn giới tính</option>
+                        <option value="nam">Nam</option>
+                        <option value="nu">Nữ</option>
+                        <option value="khac">Khác</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Ngày khám *</label>
+                    <input type="date" id="examinationDate" required>
+                </div>
+                <div class="field">
+                    <label>Khoa khám *</label>
+                    <select id="department" required>
+                        <option value="">Chọn khoa</option>
+                        <option value="noi">Khoa Nội</option>
+                        <option value="ngoai">Khoa Ngoại</option>
+                        <option value="san">Khoa Sản</option>
+                        <option value="nha">Khoa Nha Khoa</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Bác sĩ phụ trách</label>
+                    <select id="doctor">
+                        <option value="">Chọn bác sĩ</option>
+                        <option value="bs001">BS. Nguyễn Văn Hùng</option>
+                        <option value="bs002">BS. Trần Thị Hoa</option>
+                        <option value="bs003">BS. Lý Văn Minh</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Mã dịch vụ *</label>
+                    <input type="text" id="serviceCode" required>
+                </div>
+                <div class="field">
+                    <label>Tên dịch vụ *</label>
+                    <input type="text" id="serviceName" required>
+                </div>
+                <div class="field">
+                    <label>Số lượng *</label>
+                    <input type="number" id="quantity" value="1" min="1" required>
+                </div>
+                <div class="field">
+                    <label>Đơn giá (VNĐ) *</label>
+                    <input type="number" id="unitPrice" required>
+                </div>
+                <div class="field">
+                    <label>Loại chi phí *</label>
+                    <select id="expenseType" required>
+                        <option value="">Chọn loại chi phí</option>
+                        <option value="kham">Khám chữa bệnh</option>
+                        <option value="xet_nghiem">Xét nghiệm</option>
+                        <option value="nhap_vien">Nhập viện</option>
+                        <option value="phau_thuat">Phẫu thuật</option>
+                        <option value="kham_thai">Khám thai</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Người nhập dữ liệu</label>
+                    <input type="text" id="dataEntryPerson" value="NV001" readonly>
+                </div>
+            </div>
+            
+            <div class="field">
+                <label>Ghi chú</label>
+                <textarea id="notes" placeholder="Nhập ghi chú (nếu có)"></textarea>
+            </div>
+            
+            <div class="notice-box">
+                <strong>Lưu ý:</strong> Thông tin nhập vào phải chính xác theo mẫu quy định tại Quyết định 1015/QĐ-BYT để đảm bảo việc gửi lên cổng quốc gia thành công.
+            </div>
+            
+            <div class="form-actions">
+                <button class="btn" onclick="closeAddRecordModal()">Hủy</button>
+                <button class="btn primary" onclick="saveNewRecord()">Lưu hồ sơ</button>
+                <button class="btn success" onclick="saveAndSendRecord()">Lưu và gửi lên cổng</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal nhập hàng loạt -->
+    <div id="batchUploadModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Nhập hàng loạt hồ sơ BHYT</div>
+                <div class="close-modal" onclick="closeBatchUploadModal()">&times;</div>
+            </div>
+            
+            <div class="notice-box warning">
+                <strong>Hướng dẫn nhập:</strong>
+                <ol style="margin-top: 8px; margin-bottom: 8px; padding-left: 20px;">
+                    <li>Tải mẫu Excel mẫu dưới đây</li>
+                    <li>Điền đầy đủ thông tin theo mẫu</li>
+                    <li>Upload file Excel đã điền</li>
+                    <li>Kiểm tra dữ liệu và xác nhận nhập</li>
+                </ol>
+            </div>
+            
+            <div class="file-upload-area" onclick="document.getElementById('batchFileInput').click()">
+                <input type="file" id="batchFileInput" accept=".xlsx,.xls" style="display: none;">
+                <div style="margin-bottom: 8px;">📁</div>
+                <div style="font-weight: 500; margin-bottom: 4px;">Kéo và thả file Excel vào đây</div>
+                <div style="font-size: 12px; color: var(--muted);">hoặc click để chọn file</div>
+                <div style="font-size: 11px; color: var(--muted); margin-top: 4px;">XLSX, XLS (tối đa 5MB)</div>
+            </div>
+            
+            <div style="display: flex; gap: 8px;">
+                <button class="btn" onclick="downloadTemplate()">📥 Tải mẫu Excel</button>
+                <button class="btn" onclick="viewImportGuide()">📚 Hướng dẫn nhập</button>
+            </div>
+            
+            <div style="margin-top: 16px;">
+                <h3 style="font-size: 16px; margin-bottom: 8px;">Lịch sử nhập hàng loạt</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên file</th>
+                            <th>Thời gian</th>
+                            <th>Số bản ghi</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Nhap_bhyt_thang4_2023.xlsx</td>
+                            <td>2023-04-15 09:30</td>
+                            <td>50</td>
+                            <td><span class="badge success">Thành công</span></td>
+                            <td>
+                                <button class="btn btn-small">👁️</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Nhap_bhyt_10_04.xlsx</td>
+                            <td>2023-04-10 14:45</td>
+                            <td>30</td>
+                            <td><span class="badge warning">Có lỗi</span></td>
+                            <td>
+                                <button class="btn btn-small">👁️</button>
+                                <button class="btn btn-small">📥</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="form-actions">
+                <button class="btn" onclick="closeBatchUploadModal()">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal cấu hình kết nối cổng BHYT -->
+    <div id="configModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Cấu hình kết nối cổng BHYT</div>
+                <div class="close-modal" onclick="closeConfigModal()">&times;</div>
+            </div>
+            
+            <div class="grid-2">
+                <div class="field">
+                    <label>URL cổng BHYT *</label>
+                    <input type="text" id="portalUrl" value="https://api.bhyt.gov.vn/v1" required>
+                </div>
+                <div class="field">
+                    <label>Phiên bản API</label>
+                    <input type="text" id="apiVersion" value="1.0" readonly>
+                </div>
+                <div class="field">
+                    <label>Mã đơn vị *</label>
+                    <input type="text" id="unitCode" value="DV123456" required>
+                </div>
+                <div class="field">
+                    <label>Token truy cập *</label>
+                    <input type="password" id="accessToken" required>
+                </div>
+                <div class="field">
+                    <label>Thời gian timeout (giây)</label>
+                    <input type="number" id="timeout" value="30" min="5" max="300">
+                </div>
+                <div class="field">
+                    <label>Trạng thái kết nối</label>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span class="badge success">Kết nối tốt</span>
+                        <button class="btn btn-small" onclick="testConnection()">Kiểm tra kết nối</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="notice-box">
+                <strong>Lưu ý bảo mật:</strong> Token truy cập phải được bảo mật cẩn thận và thay đổi định kỳ theo quy định của cơ quan BHYT.
+            </div>
+            
+            <div class="form-actions">
+                <button class="btn" onclick="closeConfigModal()">Hủy</button>
+                <button class="btn primary" onclick="saveConfig()">Lưu cấu hình</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Khởi tạo ngày hôm nay cho trường ngày khám
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            const dateString = today.toISOString().split('T')[0];
+            document.getElementById('examinationDate').value = dateString;
+            
+            // Thêm sự kiện cho danh sách bệnh nhân
+            document.querySelectorAll('.patient-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    // Xóa class active khỏi tất cả bệnh nhân
+                    document.querySelectorAll('.patient-item').forEach(patient => {
+                        patient.classList.remove('active');
+                    });
+                    // Thêm class active cho bệnh nhân được chọn
+                    this.classList.add('active');
+                    
+                    // Lấy thông tin bệnh nhân
+                    const patientId = this.getAttribute('data-patient-id');
+                    const patientName = this.querySelector('div:first-child').textContent;
+                    const patientInfo = this.querySelector('div:nth-child(2)').textContent;
+                    const patientDob = this.querySelector('div:nth-child(3)').textContent;
+                    
+                    // Cập nhật thông tin trên header
+                    document.getElementById('currentPatientName').textContent = 'Quản lý Bảo hiểm y tế - ' + patientName;
+                    document.getElementById('currentPatientInfo').textContent = 
+                        'Mã BN: ' + patientId + ' | ' + patientInfo + ' | ' + patientDob;
+                    
+                    // Gọi hàm tải dữ liệu bệnh nhân
+                    loadPatientData(patientId, patientName);
+                });
+            });
+            
+            // Thêm chức năng tìm kiếm bệnh nhân
+            document.getElementById('patientSearch').addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                document.querySelectorAll('.patient-item').forEach(patient => {
+                    const patientName = patient.querySelector('div:first-child').textContent.toLowerCase();
+                    if (patientName.includes(searchTerm)) {
+                        patient.style.display = 'block';
+                    } else {
+                        patient.style.display = 'none';
+                    }
+                });
+            });
+        });
+        
+        // Tải dữ liệu bệnh nhân khi chọn
+        function loadPatientData(patientId, patientName) {
+            console.log('Loading data for patient:', patientId, patientName);
+            
+            // Ở đây sẽ gọi API để tải dữ liệu XML cho bệnh nhân
+            // Hiện tại chỉ hiển thị thông báo
+            alert(`📥 Đang tải dữ liệu BHYT cho bệnh nhân: ${patientName} (${patientId})`);
+            
+            // Sau khi tải xong, cập nhật trạng thái các XML
+            // updateXmlStatus(patientId);
+        }
+        
+        // Cập nhật trạng thái các file XML
+        function updateXmlStatus(patientId) {
+            console.log('Updating XML status for patient:', patientId);
+            // Ở đây sẽ cập nhật trạng thái của 15 file XML dựa trên dữ liệu bệnh nhân
+        }
+        
+        // Xem XML Master
+        function viewXmlMaster() {
+            alert('👁️ Xem XML Master');
+        }
+        
+        // Chỉnh sửa XML Master
+        function editXmlMaster() {
+            alert('✏️ Chỉnh sửa XML Master');
+        }
+        
+        // Lưu XML Master
+        function saveXmlMaster() {
+            alert('💾 XML Master đã được lưu thành công!');
+        }
+        
+        // Xuất tất cả XML
+        function exportAllXml() {
+            alert('📥 Đang xuất tất cả file XML...');
+        }
+        
+        // Validate XML
+        function validateXmlData() {
+            alert('✅ Validate XML thành công! Tất cả file XML đều hợp lệ.');
+        }
+        
+        // In hồ sơ
+        function printInsuranceRecord() {
+            alert('🖨️ Đang in hồ sơ BHYT...');
+        }
+        
+        // Xuất dữ liệu bệnh nhân
+        function exportPatientData() {
+            alert('📥 Đang xuất dữ liệu bệnh nhân...');
+        }
+        
+        // Sửa thông tin bệnh nhân
+        function editPatientInfo() {
+            alert('✏️ Sửa thông tin bệnh nhân');
+        }
+        
+        // Thêm bệnh nhân mới
+        function addNewPatient() {
+            alert('➕ Thêm bệnh nhân mới');
+        }
+        
+        // Hiển thị modal thêm hồ sơ
+        function showAddRecordModal() {
+            document.getElementById('addRecordModal').style.display = 'flex';
+        }
+        
+        // Đóng modal thêm hồ sơ
+        function closeAddRecordModal() {
+            document.getElementById('addRecordModal').style.display = 'none';
+        }
+        
+        // Lưu hồ sơ mới
+        function saveNewRecord() {
+            // Validate form
+            if (!validateForm()) {
+                return;
+            }
+            
+            // Lấy dữ liệu từ form
+            const formData = {
+                patientName: document.getElementById('patientName').value,
+                patientCode: document.getElementById('patientCode').value,
+                insuranceNumber: document.getElementById('insuranceNumber').value,
+                patientDOB: document.getElementById('patientDOB').value,
+                patientGender: document.getElementById('patientGender').value,
+                examinationDate: document.getElementById('examinationDate').value,
+                department: document.getElementById('department').value,
+                doctor: document.getElementById('doctor').value,
+                serviceCode: document.getElementById('serviceCode').value,
+                serviceName: document.getElementById('serviceName').value,
+                quantity: document.getElementById('quantity').value,
+                unitPrice: document.getElementById('unitPrice').value,
+                expenseType: document.getElementById('expenseType').value,
+                dataEntryPerson: document.getElementById('dataEntryPerson').value,
+                notes: document.getElementById('notes').value
+            };
+            
+            console.log('Saving new medical insurance record:', formData);
+            alert('✅ Hồ sơ BHYT đã được lưu thành công!');
+            closeAddRecordModal();
+        }
+        
+        // Lưu và gửi lên cổng
+        function saveAndSendRecord() {
+            saveNewRecord();
+            alert('✅ Hồ sơ BHYT đã được lưu và gửi lên cổng quốc gia!');
+        }
+        
+        // Validate form
+        function validateForm() {
+            const requiredFields = document.querySelectorAll('#addRecordModal [required]');
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.classList.add('input-error');
+                    isValid = false;
+                } else {
+                    field.classList.remove('input-error');
+                }
+            });
+            
+            if (!isValid) {
+                alert('❌ Vui lòng điền đầy đủ tất cả các trường bắt buộc!');
+            }
+            
+            return isValid;
+        }
+        
+        // Hiển thị modal nhập hàng loạt
+        function showBatchUploadModal() {
+            document.getElementById('batchUploadModal').style.display = 'flex';
+        }
+        
+        // Đóng modal nhập hàng loạt
+        function closeBatchUploadModal() {
+            document.getElementById('batchUploadModal').style.display = 'none';
+        }
+        
+        // Tải mẫu Excel
+        function downloadTemplate() {
+            console.log('Downloading Excel template');
+            alert('📥 Đang tải mẫu Excel...');
+        }
+        
+        // Hiển thị hướng dẫn nhập
+        function viewImportGuide() {
+            console.log('Viewing import guide');
+            alert('📚 Hướng dẫn nhập sẽ được mở trong cửa sổ mới');
+        }
+        
+        // Hiển thị modal cấu hình
+        function showConfigModal() {
+            document.getElementById('configModal').style.display = 'flex';
+        }
+        
+        // Đóng modal cấu hình
+        function closeConfigModal() {
+            document.getElementById('configModal').style.display = 'none';
+        }
+        
+        // Lưu cấu hình
+        function saveConfig() {
+            const configData = {
+                portalUrl: document.getElementById('portalUrl').value,
+                apiVersion: document.getElementById('apiVersion').value,
+                unitCode: document.getElementById('unitCode').value,
+                accessToken: document.getElementById('accessToken').value,
+                timeout: document.getElementById('timeout').value
+            };
+            
+            console.log('Saving configuration:', configData);
+            alert('✅ Cấu hình đã được lưu thành công!');
+            closeConfigModal();
+        }
+        
+        // Kiểm tra kết nối
+        function testConnection() {
+            console.log('Testing connection to insurance portal');
+            alert('🔄 Đang kiểm tra kết nối đến cổng BHYT...\n✅ Kết nối thành công!');
+        }
+        
+        // Sửa bản ghi
+        function editRecord(id) {
+            console.log('Editing record:', id);
+            alert(`Sửa bản ghi số ${id}`);
+        }
+        
+        // Xem bản ghi
+        function viewRecord(id) {
+            console.log('Viewing record:', id);
+            alert(`Xem chi tiết bản ghi số ${id}`);
+        }
+        
+        // Xóa bản ghi
+        function deleteRecord(id) {
+            if (confirm(`Bạn có chắc chắn muốn xóa bản ghi số ${id}?`)) {
+                console.log('Deleting record:', id);
+                alert(`✅ Bản ghi số ${id} đã được xóa!`);
+            }
+        }
+        
+        // Gửi lại bản ghi
+        function resendRecord(id) {
+            console.log('Resending record:', id);
+            alert(`🔄 Đang gửi lại bản ghi số ${id} lên cổng...`);
+        }
+        
+        // Xuất Excel
+        function exportToExcel() {
+            console.log('Exporting data to Excel');
+            alert('📊 Đang xuất dữ liệu ra file Excel...');
+        }
+        
+        // Lưu tất cả dữ liệu
+        function saveAllData() {
+            console.log('Saving all data');
+            alert('💾 Tất cả dữ liệu đã được lưu thành công!');
+        }
+        
+        // Gửi lên cổng BHYT
+        function sendToInsurancePortal() {
+            if (confirm('Bạn muốn gửi tất cả hồ sơ chưa gửi lên cổng BHYT?')) {
+                console.log('Sending data to insurance portal');
+                alert('📤 Đang gửi dữ liệu lên cổng BHYT quốc gia...');
+            }
+        }
+        
+        // Xử lý upload file hàng loạt
+        document.getElementById('batchFileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                console.log('Uploading batch file:', file.name);
+                alert(`📁 Đang xử lý file: ${file.name}`);
+            }
+        });
+        
+        // Phân trang
+        document.querySelectorAll('.page-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                // Ở đây sẽ tải dữ liệu cho trang được chọn
+                console.log('Loading page:', this.textContent);
+            });
+        });
+    </script>
+</body>
+
+</html>

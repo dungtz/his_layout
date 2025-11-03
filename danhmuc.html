@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Danh mục - HIS</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+            --muted: #6b7280;
+            --line: #e5e7eb;
+            --background: #f9fafb;
+            --sidebar-width: 280px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #1f2937;
+            background-color: var(--background);
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: white;
+            border-right: 1px solid var(--line);
+            overflow-y: auto;
+        }
+
+        .logo-link {
+            display: block;
+            text-decoration: none;
+            padding: 16px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .nav-section {
+            padding: 12px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .nav-section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .nav-item:hover {
+            background-color: var(--background);
+        }
+
+        .nav-item.active {
+            background-color: #eff6ff;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .nav-item-icon {
+            margin-right: 12px;
+            font-size: 16px;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #1f2937;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            background-color: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #f9fafb;
+        }
+
+        .btn.primary {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .btn.primary:hover {
+            background-color: #1d4ed8;
+        }
+
+        .btn.success {
+            background-color: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+
+        .btn.warning {
+            background-color: var(--warning);
+            color: white;
+            border-color: var(--warning);
+        }
+
+        .btn.danger {
+            background-color: var(--danger);
+            color: white;
+            border-color: var(--danger);
+        }
+
+        .btn.btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .card-body {
+            padding: 16px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--line);
+        }
+
+        th {
+            background-color: #f9fafb;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .filter-section {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .filter-section input,
+        .filter-section select {
+            padding: 8px 12px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .badge.success {
+            background-color: #dcfce7;
+            color: var(--success);
+        }
+
+        .badge.warning {
+            background-color: #fef3c7;
+            color: var(--warning);
+        }
+
+        .badge.danger {
+            background-color: #fee2e2;
+            color: var(--danger);
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .page-btn {
+            padding: 6px 12px;
+            border: 1px solid var(--line);
+            background-color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .page-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--muted);
+        }
+
+        .modal-body {
+            padding: 16px;
+        }
+
+        .modal-footer {
+            padding: 16px;
+            border-top: 1px solid var(--line);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--muted);
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar: Danh sách các danh mục -->
+        <div class="sidebar">
+            <a href="home.html" class="logo-link">
+                <div class="logo">HIS</div>
+            </a>
+            
+            <div class="nav-section">
+                <div class="nav-section-title">Danh mục chính</div>
+                <div class="nav-item active" data-category="department">
+                    <span class="nav-item-icon">🏥</span>
+                    <span>Khoa/Phòng</span>
+                </div>
+                <div class="nav-item" data-category="doctor">
+                    <span class="nav-item-icon">👨‍⚕️</span>
+                    <span>Bác sĩ</span>
+                </div>
+                <div class="nav-item" data-category="diagnosis">
+                    <span class="nav-item-icon">📋</span>
+                    <span>Chẩn đoán ICD-10</span>
+                </div>
+                <div class="nav-item" data-category="medicine">
+                    <span class="nav-item-icon">💊</span>
+                    <span>Thuốc</span>
+                </div>
+                <div class="nav-item" data-category="service">
+                    <span class="nav-item-icon">⚙️</span>
+                    <span>Dịch vụ y tế</span>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-section-title">Danh mục phụ</div>
+                <div class="nav-item" data-category="patient-type">
+                    <span class="nav-item-icon">👥</span>
+                    <span>Loại bệnh nhân</span>
+                </div>
+                <div class="nav-item" data-category="insurance-type">
+                    <span class="nav-item-icon">📄</span>
+                    <span>Loại bảo hiểm</span>
+                </div>
+                <div class="nav-item" data-category="room">
+                    <span class="nav-item-icon">🚪</span>
+                    <span>Phòng khám</span>
+                </div>
+                <div class="nav-item" data-category="equipment">
+                    <span class="nav-item-icon">🔬</span>
+                    <span>Thiết bị</span>
+                </div>
+                <div class="nav-item" data-category="supplier">
+                    <span class="nav-item-icon">📦</span>
+                    <span>Nhà cung cấp</span>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-section-title">Cài đặt hệ thống</div>
+                <div class="nav-item" data-category="unit">
+                    <span class="nav-item-icon">📏</span>
+                    <span>Đơn vị tính</span>
+                </div>
+                <div class="nav-item" data-category="user">
+                    <span class="nav-item-icon">👤</span>
+                    <span>Người dùng hệ thống</span>
+                </div>
+                <div class="nav-item" data-category="role">
+                    <span class="nav-item-icon">👑</span>
+                    <span>Vai trò quyền hạn</span>
+                </div>
+                <div class="nav-item" data-category="config">
+                    <span class="nav-item-icon">⚙️</span>
+                    <span>Cấu hình hệ thống</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main content: Nội dung danh mục được chọn -->
+        <div class="main-content">
+            <div class="header">
+                <h1 id="category-title">Quản lý Khoa/Phòng</h1>
+                <div class="header-actions">
+                    <button class="btn" onclick="refreshCategory()">🔄 Tải lại</button>
+                    <button class="btn primary" onclick="showAddModal()">➕ Thêm mới</button>
+                </div>
+            </div>
+
+            <!-- Bộ lọc và tìm kiếm -->
+            <div class="filter-section">
+                <input type="text" placeholder="Nhập tên khoa/phòng..." id="search-input" class="search-input">
+                <select id="status-filter">
+                    <option value="">Tất cả trạng thái</option>
+                    <option value="active">Đang hoạt động</option>
+                    <option value="inactive">Ngừng hoạt động</option>
+                </select>
+                <button class="btn primary" onclick="filterCategory()">🔍 Tìm kiếm</button>
+            </div>
+
+            <!-- Nội dung danh mục -->
+            <div class="card">
+                <div class="card-header">
+                    <span>Danh sách Khoa/Phòng</span>
+                    <div>
+                        <button class="btn btn-small" onclick="exportToExcel()">📊 Xuất Excel</button>
+                        <button class="btn btn-small" onclick="importFromExcel()">📥 Nhập Excel</button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table id="category-table">
+                        <thead>
+                            <tr>
+                                <th>Mã khoa/phòng</th>
+                                <th>Tên khoa/phòng</th>
+                                <th>Loại khoa/phòng</th>
+                                <th>Trưởng khoa</th>
+                                <th>Số phòng</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dữ liệu khoa/phòng -->
+                            <tr>
+                                <td>K001</td>
+                                <td>Khoa Nội</td>
+                                <td>Chính</td>
+                                <td>PGS.TS Nguyễn Văn A</td>
+                                <td>10</td>
+                                <td><span class="badge success">Hoạt động</span></td>
+                                <td>
+                                    <button class="btn btn-small" onclick="editItem('K001')">✏️</button>
+                                    <button class="btn btn-small danger" onclick="deleteItem('K001')">🗑️</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>K002</td>
+                                <td>Khoa Ngoại</td>
+                                <td>Chính</td>
+                                <td>PGS.TS Trần Thị B</td>
+                                <td>8</td>
+                                <td><span class="badge success">Hoạt động</span></td>
+                                <td>
+                                    <button class="btn btn-small" onclick="editItem('K002')">✏️</button>
+                                    <button class="btn btn-small danger" onclick="deleteItem('K002')">🗑️</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>K003</td>
+                                <td>Khoa Sản</td>
+                                <td>Chính</td>
+                                <td>PGS.TS Phạm Văn C</td>
+                                <td>6</td>
+                                <td><span class="badge success">Hoạt động</span></td>
+                                <td>
+                                    <button class="btn btn-small" onclick="editItem('K003')">✏️</button>
+                                    <button class="btn btn-small danger" onclick="deleteItem('K003')">🗑️</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>K004</td>
+                                <td>Khoa Nha Khoa</td>
+                                <td>Chính</td>
+                                <td>PGS.TS Lê Thị D</td>
+                                <td>4</td>
+                                <td><span class="badge success">Hoạt động</span></td>
+                                <td>
+                                    <button class="btn btn-small" onclick="editItem('K004')">✏️</button>
+                                    <button class="btn btn-small danger" onclick="deleteItem('K004')">🗑️</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>K005</td>
+                                <td>Khoa Nhi</td>
+                                <td>Chính</td>
+                                <td>PGS.TS Hoàng Văn E</td>
+                                <td>5</td>
+                                <td><span class="badge warning">Sắp khai trương</span></td>
+                                <td>
+                                    <button class="btn btn-small" onclick="editItem('K005')">✏️</button>
+                                    <button class="btn btn-small danger" onclick="deleteItem('K005')">🗑️</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div style="padding: 16px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--line);">
+                    <div>
+                        <strong>Tổng số bản ghi:</strong> 5
+                    </div>
+                    <div class="pagination">
+                        <button class="page-btn">‹</button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">›</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal thêm/sửa danh mục -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Thêm Khoa/Phòng mới</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="category-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="category-code">Mã khoa/phòng</label>
+                            <input type="text" id="category-code" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="category-name">Tên khoa/phòng</label>
+                            <input type="text" id="category-name" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="category-type">Loại khoa/phòng</label>
+                            <select id="category-type">
+                                <option value="chinh">Chính</option>
+                                <option value="phu">Phụ</option>
+                                <option value="chung">Chung</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="department-head">Trưởng khoa</label>
+                            <select id="department-head">
+                                <option value="">Chọn trưởng khoa</option>
+                                <option value="PGS.TS Nguyễn Văn A">PGS.TS Nguyễn Văn A</option>
+                                <option value="PGS.TS Trần Thị B">PGS.TS Trần Thị B</option>
+                                <option value="PGS.TS Phạm Văn C">PGS.TS Phạm Văn C</option>
+                                <option value="PGS.TS Lê Thị D">PGS.TS Lê Thị D</option>
+                                <option value="PGS.TS Hoàng Văn E">PGS.TS Hoàng Văn E</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="room-count">Số phòng</label>
+                            <input type="number" id="room-count" min="0" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="category-status">Trạng thái</label>
+                            <select id="category-status">
+                                <option value="active">Hoạt động</option>
+                                <option value="inactive">Ngừng hoạt động</option>
+                                <option value="upcoming">Sắp khai trương</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="category-description">Mô tả</label>
+                        <textarea id="category-description"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeModal()">Hủy</button>
+                <button class="btn primary" onclick="saveCategory()">Lưu</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Cài đặt dữ liệu cho từng danh mục
+        const categoryData = {
+            department: {
+                title: "Quản lý Khoa/Phòng",
+                columns: ["Mã khoa/phòng", "Tên khoa/phòng", "Loại khoa/phòng", "Trưởng khoa", "Số phòng", "Trạng thái", "Thao tác"]
+            },
+            doctor: {
+                title: "Quản lý Bác sĩ",
+                columns: ["Mã bác sĩ", "Họ tên", "Chức vụ", "Khoa phụ trách", "Chuyên khoa", "Trạng thái", "Thao tác"]
+            },
+            diagnosis: {
+                title: "Quản lý Chẩn đoán ICD-10",
+                columns: ["Mã ICD-10", "Tên chẩn đoán", "Phân loại", "Mô tả", "Trạng thái", "Thao tác"]
+            },
+            medicine: {
+                title: "Quản lý Thuốc",
+                columns: ["Mã thuốc", "Tên thuốc", "Dạng thuốc", "Nhà sản xuất", "Giá bán", "Trạng thái", "Thao tác"]
+            },
+            service: {
+                title: "Quản lý Dịch vụ y tế",
+                columns: ["Mã dịch vụ", "Tên dịch vụ", "Khoa thực hiện", "Đơn giá", "Thời gian thực hiện", "Trạng thái", "Thao tác"]
+            },
+            "patient-type": {
+                title: "Quản lý Loại bệnh nhân",
+                columns: ["Mã loại", "Tên loại bệnh nhân", "Mô tả", "Trạng thái", "Thao tác"]
+            },
+            "insurance-type": {
+                title: "Quản lý Loại bảo hiểm",
+                columns: ["Mã bảo hiểm", "Tên bảo hiểm", "Phạm vi bảo trì", "Trạng thái", "Thao tác"]
+            },
+            room: {
+                title: "Quản lý Phòng khám",
+                columns: ["Mã phòng", "Tên phòng", "Khoa", "Loại phòng", "Trạng thái", "Thao tác"]
+            },
+            equipment: {
+                title: "Quản lý Thiết bị",
+                columns: ["Mã thiết bị", "Tên thiết bị", "Khoa sử dụng", "Ngày nhập", "Tình trạng", "Thao tác"]
+            },
+            supplier: {
+                title: "Quản lý Nhà cung cấp",
+                columns: ["Mã NCC", "Tên nhà cung cấp", "Địa chỉ", "SĐT", "Email", "Trạng thái", "Thao tác"]
+            },
+            unit: {
+                title: "Quản lý Đơn vị tính",
+                columns: ["Mã đơn vị", "Tên đơn vị", "Mô tả", "Trạng thái", "Thao tác"]
+            },
+            user: {
+                title: "Quản lý Người dùng hệ thống",
+                columns: ["Mã nhân viên", "Họ tên", "Vai trò", "Phòng ban", "Trạng thái", "Thao tác"]
+            },
+            role: {
+                title: "Quản lý Vai trò quyền hạn",
+                columns: ["Mã vai trò", "Tên vai trò", "Mô tả", "Trạng thái", "Thao tác"]
+            },
+            config: {
+                title: "Cấu hình hệ thống",
+                columns: ["Tên cấu hình", "Giá trị", "Mô tả", "Nhóm", "Thao tác"]
+            }
+        };
+
+        // Biến toàn cục để lưu trạng thái hiện tại
+        let currentCategory = 'department';
+        let currentItemId = null;
+
+        // Khởi tạo trang
+        document.addEventListener('DOMContentLoaded', function() {
+            // Thêm sự kiện cho menu danh mục
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const category = this.getAttribute('data-category');
+                    if (category) {
+                        switchCategory(category);
+                    }
+                });
+            });
+
+            // Thêm sự kiện tìm kiếm với Enter
+            document.getElementById('search-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    filterCategory();
+                }
+            });
+
+            // Cài đặt bảng phân trang
+            document.querySelectorAll('.page-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (!this.classList.contains('active')) {
+                        document.querySelectorAll('.page-btn').forEach(p => p.classList.remove('active'));
+                        this.classList.add('active');
+                        loadPage(this.textContent);
+                    }
+                });
+            });
+        });
+
+        // Chuyển đổi giữa các danh mục
+        function switchCategory(category) {
+            // Cập nhật class active cho menu
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('data-category') === category) {
+                    item.classList.add('active');
+                }
+            });
+
+            // Cập nhật tiêu đề
+            if (categoryData[category]) {
+                document.getElementById('category-title').textContent = categoryData[category].title;
+                document.getElementById('modal-title').textContent = `Thêm ${getCategoryName(category)} mới`;
+            }
+
+            // Lưu danh mục hiện tại
+            currentCategory = category;
+
+            // Tải dữ liệu danh mục
+            loadCategoryData(category);
+        }
+
+        // Lấy tên hiển thị cho danh mục
+        function getCategoryName(category) {
+            const categoryMap = {
+                department: "Khoa/Phòng",
+                doctor: "Bác sĩ",
+                diagnosis: "Chẩn đoán ICD-10",
+                medicine: "Thuốc",
+                service: "Dịch vụ y tế",
+                "patient-type": "Loại bệnh nhân",
+                "insurance-type": "Loại bảo hiểm",
+                room: "Phòng khám",
+                equipment: "Thiết bị",
+                supplier: "Nhà cung cấp",
+                unit: "Đơn vị tính",
+                user: "Người dùng hệ thống",
+                role: "Vai trò quyền hạn",
+                config: "Cấu hình hệ thống"
+            };
+            return categoryMap[category] || category;
+        }
+
+        // Tải dữ liệu danh mục
+        function loadCategoryData(category) {
+            // Ở đây sẽ gọi API để tải dữ liệu tương ứng
+            console.log('Loading data for category:', category);
+            
+            // Giả lập tải dữ liệu mẫu
+            if (category !== 'department') {
+                // Sử dụng dữ liệu mẫu cho các danh mục khác
+                const table = document.getElementById('category-table');
+                const tbody = table.querySelector('tbody');
+                
+                // Xóa dữ liệu cũ
+                tbody.innerHTML = '';
+                
+                // Thêm dữ liệu mẫu
+                for (let i = 1; i <= 5; i++) {
+                    const row = document.createElement('tr');
+                    const statusClass = i % 5 === 0 ? 'warning' : 'success';
+                    const statusText = i % 5 === 0 ? 'Sắp kích hoạt' : 'Hoạt động';
+                    
+                    // Tạo cột dựa trên danh mục
+                    let cells = '';
+                    switch(category) {
+                        case 'doctor':
+                            cells = `
+                                <td>BS${String(i).padStart(3, '0')}</td>
+                                <td>Bác sĩ ${String.fromCharCode(64 + i)}</td>
+                                <td>ThS</td>
+                                <td>Khoa Nội</td>
+                                <td>Nội tổng quát</td>
+                                <td><span class="badge ${statusClass}">${statusText}</span></td>
+                                <td>
+                                    <button class="btn btn-small" onclick="editItem('BS${String(i).padStart(3, '0')}')">✏️</button>
+                                    <button class="btn btn-small danger" onclick="deleteItem('BS${String(i).padStart(3, '0')}')">🗑️</button>
+                                </td>
+                            `;
+                            break;
+                        case 'diagnosis':
+                            cells = `
+                                <td>A${String(i).padStart(4, '0')}</td>
+                                <td>Chẩn đoán ${i}</td>
+                                <td>Nhiễm trùng</td>
+                                <td>Mô tả chi tiết chẩn đoán</td>
+                                <td><span class="badge ${statusClass}">${statusText}</span></td>
+                                <td>
+                                    <button class="btn btn-small" onclick="editItem('A${String(i).padStart(4, '0')}')">✏️</button>
+                                    <button class="btn btn-small danger" onclick="deleteItem('A${String(i).padStart(4, '0')}')">🗑️</button>
+                                </td>
+                            `;
+                            break;
+                        default:
+                            cells = `
+                                <td>${category.toUpperCase().slice(0, 2)}${String(i).padStart(3, '0')}</td>
+                                <td>${getCategoryName(category)} ${i}</td>
+                                <td>Mô tả ${i}</td>
+                                <td><span class="badge ${statusClass}">${statusText}</span></td>
+                                <td>
+                                    <button class="btn btn-small" onclick="editItem('${category.toUpperCase().slice(0, 2)}${String(i).padStart(3, '0')}')">✏️</button>
+                                    <button class="btn btn-small danger" onclick="deleteItem('${category.toUpperCase().slice(0, 2)}${String(i).padStart(3, '0')}')">🗑️</button>
+                                </td>
+                            `;
+                    }
+                    
+                    row.innerHTML = cells;
+                    tbody.appendChild(row);
+                }
+            }
+        }
+
+        // Hiển thị modal thêm mới
+        function showAddModal() {
+            currentItemId = null;
+            document.getElementById('modal-title').textContent = `Thêm ${getCategoryName(currentCategory)} mới`;
+            
+            // Reset form
+            document.getElementById('category-form').reset();
+            
+            // Hiển thị modal
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        // Hiển thị modal chỉnh sửa
+        function editItem(id) {
+            currentItemId = id;
+            document.getElementById('modal-title').textContent = `Chỉnh sửa ${getCategoryName(currentCategory)}`;
+            
+            // Giả lập tải dữ liệu cho chỉnh sửa
+            document.getElementById('category-code').value = id;
+            document.getElementById('category-name').value = `${getCategoryName(currentCategory)} ${id.slice(-3)}`;
+            
+            // Hiển thị modal
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        // Xóa mục
+        function deleteItem(id) {
+            if (confirm(`Bạn chắc chắn muốn xóa ${getCategoryName(currentCategory)} có mã ${id} không?`)) {
+                // Ở đây sẽ gọi API để xóa dữ liệu
+                console.log('Deleting item:', id, 'from category:', currentCategory);
+                alert('Xóa thành công!');
+                refreshCategory();
+            }
+        }
+
+        // Lưu danh mục
+        function saveCategory() {
+            // Lấy dữ liệu từ form
+            const code = document.getElementById('category-code').value;
+            const name = document.getElementById('category-name').value;
+            
+            if (!code || !name) {
+                alert('Vui lòng nhập đầy đủ thông tin bắt buộc!');
+                return;
+            }
+            
+            // Ở đây sẽ gọi API để lưu dữ liệu
+            console.log(currentItemId ? 'Updating item:' : 'Adding new item:', { code, name });
+            
+            // Hiển thị thông báo
+            alert(currentItemId ? 'Cập nhật thành công!' : 'Thêm mới thành công!');
+            
+            // Đóng modal và làm mới danh sách
+            closeModal();
+            refreshCategory();
+        }
+
+        // Đóng modal
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        // Làm mới danh mục
+        function refreshCategory() {
+            loadCategoryData(currentCategory);
+        }
+
+        // Lọc danh mục
+        function filterCategory() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const statusFilter = document.getElementById('status-filter').value;
+            
+            console.log('Filtering with:', searchTerm, statusFilter);
+            
+            // Ở đây sẽ thực hiện lọc dữ liệu
+            alert('Lọc dữ liệu thành công!');
+        }
+
+        // Xuất Excel
+        function exportToExcel() {
+            console.log('Exporting to Excel:', currentCategory);
+            alert('Xuất Excel thành công!');
+        }
+
+        // Nhập Excel
+        function importFromExcel() {
+            console.log('Importing from Excel:', currentCategory);
+            alert('Vui lòng chọn file Excel để nhập dữ liệu!');
+        }
+
+        // Tải trang phân trang
+        function loadPage(page) {
+            console.log('Loading page:', page, 'for category:', currentCategory);
+            // Ở đây sẽ tải dữ liệu cho trang tương ứng
+        }
+    </script>
+</body>
+</html>
