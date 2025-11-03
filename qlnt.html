@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HIS - Quản lý nội trú</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        /* Biến CSS */
+        :root {
+            --primary: #1565C0; /* Màu chủ đạo - xanh dương */
+            --primary-light: #64B5F6;
+            --primary-dark: #0D47A1;
+            --secondary: #00897B;
+            --warning: #F57C00;
+            --danger: #D32F2F;
+            --success: #388E3C;
+            --light: #F5F5F5;
+            --line: #E0E0E0;
+            --text-primary: #333333;
+            --text-secondary: #757575;
+        }
+
+        /* Căn chỉnh chung */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light);
+            color: var(--text-primary);
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar trái: Danh sách bệnh nhân nội trú */
+        .sidebar-left {
+            width: 320px;
+            background-color: white;
+            border-right: 1px solid var(--line);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--line);
+            position: sticky;
+            top: 0;
+            background-color: white;
+            z-index: 10;
+        }
+
+        .header h2 {
+            margin: 0;
+            font-size: 18px;
+            color: var(--primary-dark);
+        }
+
+        .search-bar {
+            padding: 12px;
+            border-bottom: 1px solid var(--line);
+            position: sticky;
+            top: 60px;
+            background-color: white;
+            z-index: 5;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .department-filter {
+            padding: 12px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .department-filter select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .patient-list {
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .patient-item {
+            padding: 12px;
+            border-bottom: 1px solid var(--line);
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .patient-item:hover {
+            background-color: #F3F7FC;
+        }
+
+        .patient-item.active {
+            background-color: #E3F2FD;
+            border-left: 3px solid var(--primary);
+        }
+
+        .patient-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .patient-status {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-admitted {
+            background-color: #E3F2FD;
+            color: #1976D2;
+        }
+
+        .status-pending {
+            background-color: #FFF8E1;
+            color: #FF8F00;
+        }
+
+        .status-discharged {
+            background-color: #E8F5E9;
+            color: var(--success);
+        }
+
+        /* Main content: Thông tin chi tiết bệnh nhân nội trú */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            background-color: #FAFAFA;
+        }
+
+        .section {
+            background-color: white;
+            margin: 12px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 16px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 0;
+            margin-bottom: 16px;
+            color: var(--primary-dark);
+            border-bottom: 1px solid var(--line);
+            padding-bottom: 8px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .card {
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            margin-bottom: 16px;
+            background-color: white;
+        }
+
+        .card-header {
+            padding: 12px;
+            background-color: #E3F2FD;
+            border-bottom: 1px solid var(--line);
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        .card-body {
+            padding: 12px;
+        }
+
+        .field {
+            margin-bottom: 12px;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .field input,
+        .field textarea,
+        .field select {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .field textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .detail-info {
+            background-color: white;
+            padding: 16px;
+            border-radius: 8px;
+        }
+
+        .detail-row {
+            margin-bottom: 8px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 2px;
+        }
+
+        .detail-value {
+            font-weight: 500;
+        }
+
+        /* Bảng theo dõi */
+        .timeline-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+        }
+
+        .timeline-table th,
+        .timeline-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .timeline-table th {
+            background-color: #F5F5F5;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .timeline-table tr:hover {
+            background-color: #FAFAFA;
+        }
+
+        /* Lịch trình */
+        .schedule-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .schedule-time {
+            font-weight: 600;
+            color: var(--primary-dark);
+            min-width: 80px;
+        }
+
+        .schedule-content {
+            flex: 1;
+        }
+
+        .schedule-title {
+            font-weight: 500;
+        }
+
+        .schedule-description {
+            color: var(--text-secondary);
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        /* Sidebar phải: Quản lý bệnh án */
+        .sidebar-right {
+            width: 320px;
+            background-color: white;
+            border-left: 1px solid var(--line);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .sidebar-section {
+            border-bottom: 1px solid var(--line);
+        }
+
+        .sidebar-section-header {
+            padding: 12px 16px;
+            background-color: #E3F2FD;
+            font-weight: 600;
+            color: var(--primary-dark);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-section-content {
+            padding: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        /* Phần cuối */
+        .footer-actions {
+            padding: 12px;
+            border-top: 1px solid var(--line);
+            display: flex;
+            gap: 10px;
+            background-color: white;
+        }
+
+        /* Button styles */
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn.primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn.secondary {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .btn.warning {
+            background-color: var(--warning);
+            color: white;
+        }
+
+        .btn.danger {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .modal-body {
+            padding: 16px;
+        }
+
+        .modal-footer {
+            padding: 16px;
+            border-top: 1px solid var(--line);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        /* Thẻ yêu cầu */
+        .request-card {
+            background-color: #f5f7fa;
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .request-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .request-title {
+            font-weight: 600;
+        }
+
+        .request-status {
+            font-size: 11px;
+            padding: 3px 6px;
+            border-radius: 10px;
+        }
+
+        .request-pending {
+            background-color: #FFF8E1;
+            color: #FF8F00;
+        }
+
+        .request-completed {
+            background-color: #E8F5E9;
+            color: var(--success);
+        }
+
+        .request-details {
+            margin-top: 8px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Sidebar trái: Danh sách bệnh nhân nội trú -->
+        <div class="sidebar-left">
+            <div class="header">
+                <a href="home.html" style="display: flex; align-items: center;">
+                    <div style="width: 40px; height: 40px; background-color: var(--primary); border-radius: 4px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px;">
+                        HIS
+                    </div>
+                </a>
+                <button class="btn primary" style="font-size: 12px; padding: 6px 12px;">Nhập viện mới</button>
+            </div>
+            
+            <div class="search-bar">
+                <input type="text" placeholder="Tìm kiếm bệnh nhân...">
+            </div>
+
+            <div class="department-filter">
+                <select>
+                    <option value="">Tất cả khoa/phòng</option>
+                    <option value="internal">Khoa Nội</option>
+                    <option value="surgery">Khoa Ngoại</option>
+                    <option value="pediatrics">Khoa Nhi</option>
+                    <option value="obstetrics">Khoa Sản</option>
+                    <option value="neurology">Khoa Thần kinh</option>
+                    <option value="emergency">Khoa Cấp cứu</option>
+                </select>
+            </div>
+
+            <div class="patient-list">
+                <!-- Bệnh nhân đang nội trú -->
+                <div class="patient-item active">
+                    <div class="patient-info">
+                        <div>
+                            <h3>Nguyễn Văn A</h3>
+                            <p>Mã BN: 00123456 | 35 tuổi | Nam</p>
+                            <p>Ngày nhập viện: 15/11/2023</p>
+                            <p>Phòng: 101B | Giường: 03</p>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px; align-items: flex-end;">
+                            <span class="patient-status status-admitted">Nội trú</span>
+                            <button class="btn danger" style="font-size: 11px; padding: 4px 8px;">Xuất viện</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Bệnh nhân đang nội trú -->
+                <div class="patient-item">
+                    <div class="patient-info">
+                        <div>
+                            <h3>Trần Thị B</h3>
+                            <p>Mã BN: 00123457 | 42 tuổi | Nữ</p>
+                            <p>Ngày nhập viện: 16/11/2023</p>
+                            <p>Phòng: 102A | Giường: 01</p>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px; align-items: flex-end;">
+                            <span class="patient-status status-admitted">Nội trú</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Bệnh nhân đang nội trú -->
+                <div class="patient-item">
+                    <div class="patient-info">
+                        <div>
+                            <h3>Phạm Văn C</h3>
+                            <p>Mã BN: 00123458 | 50 tuổi | Nam</p>
+                            <p>Ngày nhập viện: 17/11/2023</p>
+                            <p>Phòng: 201A | Giường: 02</p>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px; align-items: flex-end;">
+                            <span class="patient-status status-admitted">Nội trú</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Bệnh nhân chờ nhập viện -->
+                <div class="patient-item">
+                    <div class="patient-info">
+                        <div>
+                            <h3>Lê Thị D</h3>
+                            <p>Mã BN: 00123459 | 28 tuổi | Nữ</p>
+                            <p>Ngày nhập viện dự kiến: 20/11/2023</p>
+                            <p>Chờ phòng trống</p>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px; align-items: flex-end;">
+                            <span class="patient-status status-pending">Chờ nhập viện</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main content: Thông tin chi tiết bệnh nhân nội trú -->
+        <div class="main-content">
+            <!-- Thông tin bệnh nhân -->
+            <div class="section">
+                <h2 class="section-title">Thông tin bệnh nhân</h2>
+                <div class="grid-4">
+                    <div class="detail-row">
+                        <span class="detail-label">Họ và tên:</span>
+                        <span class="detail-value">Nguyễn Văn A</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Giới tính / Tuổi:</span>
+                        <span class="detail-value">Nam / 35 tuổi</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Ngày sinh:</span>
+                        <span class="detail-value">15/03/1988</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Mã bệnh nhân:</span>
+                        <span class="detail-value">00123456</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">CCCD:</span>
+                        <span class="detail-value">079212345678</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Điện thoại:</span>
+                        <span class="detail-value">0987654321</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Loại bảo hiểm:</span>
+                        <span class="detail-value">BHYT</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Số BHYT:</span>
+                        <span class="detail-value">123456789</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Ngày nhập viện:</span>
+                        <span class="detail-value">15/11/2023</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Dự kiến xuất viện:</span>
+                        <span class="detail-value">25/11/2023</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Khoa điều trị:</span>
+                        <span class="detail-value">Khoa Nội</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Phòng / Giường:</span>
+                        <span class="detail-value">101B / 03</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phần khám bệnh -->
+            <div class="section">
+                <h2 class="section-title">Thông tin bệnh án</h2>
+                <div class="grid-2">
+                    <div class="card">
+                        <div class="card-header">Lý do nhập viện</div>
+                        <div class="card-body">
+                            <div class="field">
+                                <textarea placeholder="Nhập lý do nhập viện...">Sốt cao, đau thắt ngực, khó thở sau 3 ngày cơn cảm mạo</textarea>
+                            </div>
+                            <div class="field">
+                                <label>Chẩn đoán vào viện:</label>
+                                <input type="text" placeholder="Nhập chẩn đoán vào viện..." value="Viêm phổi cấp">
+                            </div>
+                            <div class="field">
+                                <label>Bác sĩ điều trị:</label>
+                                <select>
+                                    <option value="">Chọn bác sĩ...</option>
+                                    <option value="bs1" selected>BS. Nguyễn Văn Minh</option>
+                                    <option value="bs2">BS. Trần Thị Thu</option>
+                                    <option value="bs3">BS. Phạm Văn Hùng</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">Trạng thái bệnh nhân</div>
+                        <div class="card-body">
+                            <div class="field">
+                                <label>Nhiệt độ:</label>
+                                <input type="text" placeholder="Nhiệt độ..." value="38.5°C">
+                            </div>
+                            <div class="field">
+                                <label>Huyết áp:</label>
+                                <input type="text" placeholder="Huyết áp..." value="120/80 mmHg">
+                            </div>
+                            <div class="field">
+                                <label>Nhịp tim:</label>
+                                <input type="text" placeholder="Nhịp tim..." value="85 lần/phút">
+                            </div>
+                            <div class="field">
+                                <label>Nhịp thở:</label>
+                                <input type="text" placeholder="Nhịp thở..." value="20 lần/phút">
+                            </div>
+                            <div class="field">
+                                <label>Trạng thái hiện tại:</label>
+                                <select>
+                                    <option value="" selected>Nhẹ</option>
+                                    <option value="medium">Trung bình</option>
+                                    <option value="serious">Nặng</option>
+                                    <option value="critical">Nguy kịch</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tình hình điều trị -->
+            <div class="section">
+                <h2 class="section-title">Theo dõi điều trị</h2>
+                <table class="timeline-table">
+                    <thead>
+                        <tr>
+                            <th>Ngày giờ</th>
+                            <th>Hoạt động</th>
+                            <th>Thực hiện bởi</th>
+                            <th>Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>15/11/2023 10:30</td>
+                            <td>Nhập viện, khám đầu tiên</td>
+                            <td>BS. Nguyễn Văn Minh</td>
+                            <td>Hoàn thành</td>
+                        </tr>
+                        <tr>
+                            <td>15/11/2023 11:00</td>
+                            <td>Xét nghiệm máu</td>
+                            <td>YS. Trần Thị Hoa</td>
+                            <td>Hoàn thành</td>
+                        </tr>
+                        <tr>
+                            <td>15/11/2023 14:00</td>
+                            <td>Xquang ngực</td>
+                            <td>YS. Phạm Văn Sơn</td>
+                            <td>Hoàn thành</td>
+                        </tr>
+                        <tr>
+                            <td>15/11/2023 18:00</td>
+                            <td>Điều trị kháng sinh</td>
+                            <td>YT. Lê Thị Ngọc</td>
+                            <td>Hoàn thành</td>
+                        </tr>
+                        <tr>
+                            <td>16/11/2023 08:00</td>
+                            <td>Nhập hồ sơ sức khỏe</td>
+                            <td>YT. Nguyễn Thị Mai</td>
+                            <td>Hoàn thành</td>
+                        </tr>
+                        <tr>
+                            <td>16/11/2023 10:00</td>
+                            <td>Khám lại</td>
+                            <td>BS. Nguyễn Văn Minh</td>
+                            <td>Hoàn thành</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="footer-actions" style="margin: 12px;">
+                <button class="btn secondary" onclick="printRecord()">In hồ sơ</button>
+                <button class="btn warning" onclick="addNote()">Thêm ghi chú</button>
+                <button class="btn primary" onclick="updateTreatment()">Cập nhật điều trị</button>
+                <button class="btn danger" onclick="dischargePatient()">Xuất viện</button>
+            </div>
+        </div>
+
+        <!-- Sidebar phải: Quản lý bệnh án -->
+        <div class="sidebar-right">
+            <!-- Lịch trình ngày hôm nay -->
+            <div class="sidebar-section">
+                <div class="sidebar-section-header">
+                    <span>Lịch trình hôm nay</span>
+                    <button class="btn primary" style="font-size: 11px; padding: 4px 8px;" onclick="openSchedulePopup()">Thêm</button>
+                </div>
+                <div class="sidebar-section-content">
+                    <div class="schedule-item">
+                        <div class="schedule-time">08:00</div>
+                        <div class="schedule-content">
+                            <div class="schedule-title">Nhập hồ sơ sức khỏe</div>
+                            <div class="schedule-description">Nhập nhiệt độ, huyết áp, nhịp tim, nhịp thở</div>
+                        </div>
+                    </div>
+                    <div class="schedule-item">
+                        <div class="schedule-time">10:00</div>
+                        <div class="schedule-content">
+                            <div class="schedule-title">Khám lại</div>
+                            <div class="schedule-description">Bác sĩ Nguyễn Văn Minh</div>
+                        </div>
+                    </div>
+                    <div class="schedule-item">
+                        <div class="schedule-time">14:00</div>
+                        <div class="schedule-content">
+                            <div class="schedule-title">Thử nghiệm máu</div>
+                            <div class="schedule-description">Xác định nồng độ thuốc kháng sinh</div>
+                        </div>
+                    </div>
+                    <div class="schedule-item">
+                        <div class="schedule-time">18:00</div>
+                        <div class="schedule-content">
+                            <div class="schedule-title">Điều trị kháng sinh</div>
+                            <div class="schedule-description">YT. Lê Thị Ngọc</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Yêu cầu kiểm tra, xét nghiệm -->
+            <div class="sidebar-section">
+                <div class="sidebar-section-header">
+                    <span>Yêu cầu</span>
+                    <button class="btn primary" style="font-size: 11px; padding: 4px 8px;" onclick="openRequestPopup()">Thêm</button>
+                </div>
+                <div class="sidebar-section-content">
+                    <div class="request-card">
+                        <div class="request-header">
+                            <div class="request-title">Xét nghiệm máu</div>
+                            <span class="request-status request-completed">Hoàn thành</span>
+                        </div>
+                        <div class="request-details">
+                            <p>Ngày tạo: 15/11/2023 11:00</p>
+                            <p>Yêu cầu bởi: BS. Nguyễn Văn Minh</p>
+                        </div>
+                    </div>
+                    <div class="request-card">
+                        <div class="request-header">
+                            <div class="request-title">Xquang ngực</div>
+                            <span class="request-status request-completed">Hoàn thành</span>
+                        </div>
+                        <div class="request-details">
+                            <p>Ngày tạo: 15/11/2023 14:00</p>
+                            <p>Yêu cầu bởi: BS. Nguyễn Văn Minh</p>
+                        </div>
+                    </div>
+                    <div class="request-card">
+                        <div class="request-header">
+                            <div class="request-title">Xét nghiệm phân tích máu</div>
+                            <span class="request-status request-pending">Chờ thực hiện</span>
+                        </div>
+                        <div class="request-details">
+                            <p>Ngày tạo: 16/11/2023 10:00</p>
+                            <p>Yêu cầu bởi: BS. Nguyễn Văn Minh</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hồ sơ bệnh án số hóa -->
+            <div class="sidebar-section">
+                <div class="sidebar-section-header">
+                    <span>Hồ sơ bệnh án số hóa</span>
+                    <button class="btn primary" style="font-size: 11px; padding: 4px 8px;" onclick="openFileUploadPopup()">Tải lên</button>
+                </div>
+                <div class="sidebar-section-content">
+                    <div class="file-list">
+                        <!-- File mẫu 1 -->
+                        <div class="file-item">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <div>
+                                    <div style="display: flex; align-items: center; gap: 6px;">
+                                        <div style="font-weight: 500; font-size: 13px;">Phiếu nhập viện.pdf</div>
+                                        <span class="badge" style="background-color: #4CAF50; color: white; padding: 2px 6px; font-size: 10px; border-radius: 10px; display: inline-block;">Đã ký</span>
+                                    </div>
+                                    <div style="font-size: 11px; color: var(--text-secondary);">15/11/2023 - 2.5MB</div>
+                                </div>
+                            </div>
+                            <button class="btn primary" style="font-size: 11px; padding: 4px 8px; margin-top: 8px; width: 100%;">Xem</button>
+                        </div>
+
+                        <!-- File mẫu 2 -->
+                        <div class="file-item">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <div>
+                                    <div style="display: flex; align-items: center; gap: 6px;">
+                                        <div style="font-weight: 500; font-size: 13px;">Kết quả xquang.jpg</div>
+                                        <span class="badge" style="background-color: #4CAF50; color: white; padding: 2px 6px; font-size: 10px; border-radius: 10px; display: inline-block;">Đã ký</span>
+                                    </div>
+                                    <div style="font-size: 11px; color: var(--text-secondary);">15/11/2023 - 5.8MB</div>
+                                </div>
+                            </div>
+                            <button class="btn primary" style="font-size: 11px; padding: 4px 8px; margin-top: 8px; width: 100%;">Xem</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-actions">
+                <button class="btn secondary" style="flex: 1;">BHYT</button>
+                <button class="btn secondary" style="flex: 1;">Bệnh án điện tử</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal thêm lịch trình -->
+    <div id="scheduleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Thêm lịch trình</h3>
+                <button class="modal-close" onclick="closeModal('scheduleModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label for="schedule-date">Ngày</label>
+                        <input type="date" id="schedule-date">
+                    </div>
+                    <div class="form-group">
+                        <label for="schedule-time">Thời gian</label>
+                        <input type="time" id="schedule-time">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="schedule-title">Tiêu đề</label>
+                    <input type="text" id="schedule-title" placeholder="Nhập tiêu đề...">
+                </div>
+                <div class="form-group">
+                    <label for="schedule-description">Mô tả</label>
+                    <textarea id="schedule-description" placeholder="Nhập mô tả..." rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="schedule-assignee">Người thực hiện</label>
+                    <select id="schedule-assignee">
+                        <option value="">Chọn người thực hiện...</option>
+                        <option value="bs1">BS. Nguyễn Văn Minh</option>
+                        <option value="bs2">BS. Trần Thị Thu</option>
+                        <option value="yt1">YT. Lê Thị Ngọc</option>
+                        <option value="yt2">YT. Nguyễn Thị Mai</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn secondary" onclick="closeModal('scheduleModal')">Hủy</button>
+                <button class="btn primary" onclick="saveSchedule()">Lưu lịch trình</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal thêm yêu cầu -->
+    <div id="requestModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Thêm yêu cầu</h3>
+                <button class="modal-close" onclick="closeModal('requestModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="request-type">Loại yêu cầu</label>
+                    <select id="request-type">
+                        <option value="">Chọn loại yêu cầu...</option>
+                        <option value="blood">Xét nghiệm máu</option>
+                        <option value="urine">Xét nghiệm nước tiểu</option>
+                        <option value="xray">Xquang</option>
+                        <option value="ct">CT Scan</option>
+                        <option value="mri">MRI</option>
+                        <option value="consult">Nhận tư vấn chuyên khoa</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="request-details">Chi tiết yêu cầu</label>
+                    <textarea id="request-details" placeholder="Nhập chi tiết yêu cầu..." rows="4"></textarea>
+                </div>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label for="request-urgency">Cấp độ khẩn</label>
+                        <select id="request-urgency">
+                            <option value="" selected>Bình thường</option>
+                            <option value="urgent">Khẩn cấp</option>
+                            <option value="asap">Rất khẩn</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="request-deadline">Hạn thực hiện</label>
+                        <input type="date" id="request-deadline">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn secondary" onclick="closeModal('requestModal')">Hủy</button>
+                <button class="btn primary" onclick="saveRequest()">Lưu yêu cầu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal tải file -->
+    <div id="fileUploadModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Tải lên file hồ sơ</h3>
+                <button class="modal-close" onclick="closeModal('fileUploadModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="file-type">Loại file</label>
+                    <select id="file-type">
+                        <option value="">Chọn loại file...</option>
+                        <option value="record">Hồ sơ y tế</option>
+                        <option value="test">Kết quả xét nghiệm</option>
+                        <option value="image">Hình ảnh y tế</option>
+                        <option value="prescription">Đơn thuốc</option>
+                        <option value="other">Khác</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="file-title">Tiêu đề file</label>
+                    <input type="text" id="file-title" placeholder="Nhập tiêu đề file...">
+                </div>
+                <div class="form-group">
+                    <label for="file-upload">Chọn file</label>
+                    <input type="file" id="file-upload" accept=".pdf,.jpg,.jpeg,.png,.docx">
+                </div>
+                <div class="form-group">
+                    <label for="file-description">Mô tả</label>
+                    <textarea id="file-description" placeholder="Nhập mô tả file..." rows="2"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn secondary" onclick="closeModal('fileUploadModal')">Hủy</button>
+                <button class="btn primary" onclick="uploadFile()">Tải lên</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Chức năng chọn bệnh nhân
+        document.querySelectorAll('.patient-item').forEach(item => {
+            item.addEventListener('click', function() {
+                // Xóa lớp active từ tất cả items
+                document.querySelectorAll('.patient-item').forEach(p => p.classList.remove('active'));
+                // Thêm lớp active cho item được chọn
+                this.classList.add('active');
+                // Tải thông tin bệnh nhân
+                const patientName = this.querySelector('h3').textContent;
+                loadPatientInfo(patientName);
+            });
+        });
+
+        // Tải thông tin bệnh nhân
+        function loadPatientInfo(patientName) {
+            console.log('Loading information for patient:', patientName);
+            // Cập nhật tên bệnh nhân
+            const nameElements = document.querySelectorAll('.detail-value')[0];
+            if (nameElements) {
+                nameElements.textContent = patientName;
+            }
+            // Hiển thị thông báo
+            alert('Đã tải thông tin cho bệnh nhân: ' + patientName);
+        }
+
+        // Mở modal
+        function openSchedulePopup() {
+            document.getElementById('scheduleModal').style.display = 'flex';
+        }
+
+        function openRequestPopup() {
+            document.getElementById('requestModal').style.display = 'flex';
+        }
+
+        function openFileUploadPopup() {
+            document.getElementById('fileUploadModal').style.display = 'flex';
+        }
+
+        // Đóng modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Lưu lịch trình
+        function saveSchedule() {
+            const date = document.getElementById('schedule-date').value;
+            const time = document.getElementById('schedule-time').value;
+            const title = document.getElementById('schedule-title').value;
+            
+            if (!date || !time || !title) {
+                alert('Vui lòng nhập đầy đủ thông tin bắt buộc!');
+                return;
+            }
+            
+            alert('✅ Lịch trình đã được lưu thành công!');
+            closeModal('scheduleModal');
+        }
+
+        // Lưu yêu cầu
+        function saveRequest() {
+            const type = document.getElementById('request-type').value;
+            const details = document.getElementById('request-details').value;
+            
+            if (!type || !details) {
+                alert('Vui lòng nhập đầy đủ thông tin bắt buộc!');
+                return;
+            }
+            
+            alert('✅ Yêu cầu đã được gửi thành công!');
+            closeModal('requestModal');
+        }
+
+        // Tải file
+        function uploadFile() {
+            const type = document.getElementById('file-type').value;
+            const title = document.getElementById('file-title').value;
+            const file = document.getElementById('file-upload').files[0];
+            
+            if (!type || !title || !file) {
+                alert('Vui lòng nhập đầy đủ thông tin bắt buộc và chọn file!');
+                return;
+            }
+            
+            alert('✅ File đã được tải lên thành công!');
+            closeModal('fileUploadModal');
+        }
+
+        // Cập nhật điều trị
+        function updateTreatment() {
+            alert('✅ Thông tin điều trị đã được cập nhật thành công!');
+        }
+
+        // Xuất viện
+        function dischargePatient() {
+            if (confirm('Bạn có chắc chắn muốn xuất viện cho bệnh nhân này?')) {
+                alert('✅ Bệnh nhân đã được xuất viện!');
+                // Chuyển trạng thái bệnh nhân
+                const activePatient = document.querySelector('.patient-item.active');
+                if (activePatient) {
+                    activePatient.classList.remove('active');
+                    activePatient.querySelector('.patient-status').className = 'patient-status status-discharged';
+                    activePatient.querySelector('.patient-status').textContent = 'Đã xuất viện';
+                }
+                
+                // Mở modal nhập liệu xuất viện
+                alert('Vui lòng nhập thông tin phiếu xuất viện.');
+            }
+        }
+
+        // In hồ sơ
+        function printRecord() {
+            alert('Xuất file báo cáo bệnh án.');
+            // Thực hiện chức năng in hồ sơ
+            console.log('Printing patient record...');
+        }
+
+        // Thêm ghi chú
+        function addNote() {
+            const note = prompt('Nhập ghi chú:');
+            if (note) {
+                alert('✅ Ghi chú đã được lưu thành công!');
+                console.log('Note added:', note);
+            }
+        }
+    </script>
+</body>
+
+</html>
