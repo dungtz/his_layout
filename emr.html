@@ -168,7 +168,7 @@
         select,
         textarea {
             width: 100%;
-            padding: 10px 12px;
+            padding: 5px 5px;
             border: 1px solid var(--line);
             border-radius: 8px;
             background: #fff;
@@ -717,320 +717,407 @@
                         <span>Thông tin cá nhân</span>
                         <button class="btn btn-small" onclick="editPatientInfo()">Sửa</button>
                     </div>
-                    <div class="card-body">
-                        <div class="grid-4">
-                            <div class="detail-row">
-                                <span class="detail-label">Họ và tên:</span>
-                                <span class="detail-value">Nguyễn Văn A</span>
+                    <div class="card-body" style="padding: 0;">
+                        <!-- Biểu mẫu bệnh án điện tử -->
+                        <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #000;">
+                            <!-- Tiêu đề -->
+                            <div style="text-align: center; margin-bottom: 20px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                    <span>Sở Y tế TP HCM</span>
+                                    <span>MS: 01/BV-01</span>
+                                </div>
+                                <h2 style="margin: 10px 0;">BỆNH ÁN NỘI KHOA</h2>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span>Bệnh viện: HYST</span>
+                                    <span>Số lưu trữ: 124</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span>Khoa: <input type="text" style="width: 150px; border: 1px solid #ccc;" /> Giường: <input type="text" style="width: 100px; border: 1px solid #ccc;" /></span>
+                                    <span>Mã YT: <input type="text" style="width: 200px; border: 1px solid #ccc;" /></span>
+                                </div>
                             </div>
-                            <div class="detail-row">
-                                <span class="detail-label">Giới tính:</span>
-                                <span class="detail-value">Nam</span>
+
+                            <!-- I. HÀNH CHÍNH -->
+                            <div style="margin-bottom: 20px;">
+                                <h3 style="text-align: center; margin-bottom: 10px;">I. HÀNH CHÍNH:</h3>
+                                <table style="width: 100%; border-collapse: collapse;">
+                                    <tr>
+                                        <td>1. Họ và tên (In hoa): <input type="text" style="width: 300px; border: 1px solid #ccc;" value="NGUYỄN VĂN A" /></td>
+                                        <td>2. Sinh ngày: <input type="text" style="width: 120px; border: 1px solid #ccc;" value="01/01/1988" /></td>
+                                        <td>Tuổi: <input type="text" style="width: 40px; border: 1px solid #ccc; text-align: center;" value="35" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            3. Giới: 1. Nam <input type="radio" name="gender" checked /> 2. Nữ <input type="radio" name="gender" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>4. Nghề nghiệp: <input type="text" style="width: 200px; border: 1px solid #ccc;" value="Công an" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>5. Dân tộc: <input type="text" style="width: 200px; border: 1px solid #ccc;" value="Kinh" /></td>
+                                        <td>6. Ngoại kiều: <input type="text" style="width: 200px; border: 1px solid #ccc;" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            7. Địa chỉ: Số nhà <input type="text" style="width: 80px; border: 1px solid #ccc;" value="123" /> Thôn, phường <input type="text" style="width: 120px; border: 1px solid #ccc;" value="ABC" />
+                                            Xã, phường <input type="text" style="width: 120px; border: 1px solid #ccc;" value="1" />
+                                            Huyện (Q, Tx) <input type="text" style="width: 150px; border: 1px solid #ccc;" value="Quận 1" />
+                                            Tỉnh, thành phố <input type="text" style="width: 150px; border: 1px solid #ccc;" value="TP.HCM" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>8. Nơi làm việc: <input type="text" style="width: 200px; border: 1px solid #ccc;" value="Công an TP.HCM" /></td>
+                                        <td>9. Đối tượng: 1.BHYT <input type="radio" name="object" checked /> 2.Thu phí <input type="radio" name="object" /> 3.Miễn <input type="radio" name="object" /> 4.Khác <input type="radio" name="object" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>10. BHYT giá trị đến ngày: <input type="text" style="width: 50px; border: 1px solid #ccc;" value="31" /> tháng <input type="text" style="width: 50px; border: 1px solid #ccc;" value="12" /> năm <input type="text" style="width: 80px; border: 1px solid #ccc;" value="2023" /></td>
+                                        <td>Số thẻ BHYT: <input type="text" style="width: 200px; border: 1px solid #ccc;" value="123456789" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            11. Họ tên, địa chỉ người nhà khi cần báo tin: <input type="text" style="width: 100%; border: 1px solid #ccc;" value="Nguyễn Văn B, 123 Đường ABC, Quận 1, TP.HCM" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            Điện thoại số: <input type="text" style="width: 200px; border: 1px solid #ccc;" value="0123456789" />
+                                        </td>
+                                    </tr>
+                                </table>
                             </div>
-                            <div class="detail-row">
-                                <span class="detail-label">Ngày sinh:</span>
-                                <span class="detail-value">01/01/1988</span>
+
+                            <!-- II. QUẢN LÝ NGƯỜI BỆNH -->
+                            <div style="margin-bottom: 20px;">
+                                <h3 style="text-align: center; margin-bottom: 10px;">II. QUẢN LÝ NGƯỜI BỆNH</h3>
+                                <table style="width: 100%; border-collapse: collapse; border: 1px solid #000;">
+                                    <tr>
+                                        <td style="border: 1px solid #000; padding: 5px;">
+                                            12. Vào viện: <input type="text" style="width: 60px; border: 1px solid #ccc;" /> giờ <input type="text" style="width: 60px; border: 1px solid #ccc;" /> phút ngày <input type="text" style="width: 60px; border: 1px solid #ccc;" value="01/04/2023" />
+                                        </td>
+                                        <td style="border: 1px solid #000; padding: 5px;">
+                                            14. Nơi giới thiệu: 1.Cơ quan y tế <input type="radio" name="refer" checked /> 2.Tự đến <input type="radio" name="refer" /> 3.Khác <input type="radio" name="refer" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 1px solid #000; padding: 5px;">
+                                            13. Trực tiếp vào: 1.Cấp cứu <input type="radio" name="direct-admission" /> 2.KKB <input type="radio" name="direct-admission" checked /> 3.Khoa điều trị <input type="radio" name="direct-admission" />
+                                        </td>
+                                        <td style="border: 1px solid #000; padding: 5px;">
+                                            - Vào viện do bệnh này lần thứ <input type="text" style="width: 40px; border: 1px solid #ccc;" value="1" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 1px solid #000; padding: 5px;">
+                                            <table style="width: 100%;">
+                                                <tr>
+                                                    <td>Khoa</td>
+                                                    <td><input type="text" style="width: 100%; border: 1px solid #ccc;" value="Nội Khoa" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>15. Vào khoa</td>
+                                                    <td>Giờ <input type="text" style="width: 40px; border: 1px solid #ccc;" /> phút ngày <input type="text" style="width: 80px; border: 1px solid #ccc;" /> Số ngày ĐTr <input type="text" style="width: 40px; border: 1px solid #ccc;" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>16. Chuyển</td>
+                                                    <td>
+                                                        <table style="width: 100%;">
+                                                            <tr>
+                                                                <td>Khoa</td>
+                                                                <td><input type="text" style="width: 100%; border: 1px solid #ccc;" /></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td></td>
+                                                                <td>Giờ <input type="text" style="width: 40px; border: 1px solid #ccc;" /> phút ngày <input type="text" style="width: 80px; border: 1px solid #ccc;" /> Số ngày ĐTr <input type="text" style="width: 40px; border: 1px solid #ccc;" /></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td></td>
+                                                                <td>Giờ <input type="text" style="width: 40px; border: 1px solid #ccc;" /> phút ngày <input type="text" style="width: 80px; border: 1px solid #ccc;" /> Số ngày ĐTr <input type="text" style="width: 40px; border: 1px solid #ccc;" /></td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td style="border: 1px solid #000; padding: 5px;">
+                                            <table style="width: 100%;">
+                                                <tr>
+                                                    <td>17. Chuyển viện: 1.Tuyển lên <input type="radio" name="transfer" /> 2.Tuyển xuống <input type="radio" name="transfer" /> 3.CK <input type="radio" name="transfer" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>- Chuyển đến: <input type="text" style="width: 100%; border: 1px solid #ccc;" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>- Lý do: <input type="text" style="width: 100%; border: 1px solid #ccc;" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>18. Ra viện: <input type="text" style="width: 60px; border: 1px solid #ccc;" /> giờ <input type="text" style="width: 60px; border: 1px solid #ccc;" /> phút ngày <input type="text" style="width: 60px; border: 1px solid #ccc;" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1. Ra viện <input type="radio" name="discharge" checked /> 2. Xin về <input type="radio" name="discharge" /> 3. Bỏ về <input type="radio" name="discharge" /> 4. Đưa về <input type="radio" name="discharge" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>19. Tổng số ngày điều trị: <input type="text" style="width: 80px; border: 1px solid #ccc;" value="7" /></td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
                             </div>
-                            <div class="detail-row">
-                                <span class="detail-label">Tuổi:</span>
-                                <span class="detail-value">35 tuổi</span>
+
+                            <!-- III. CHẨN ĐOÁN -->
+                            <div style="margin-bottom: 20px;">
+                                <table style="width: 100%; border-collapse: collapse; border: 1px solid #000;">
+                                    <tr>
+                                        <th style="border: 1px solid #000; padding: 5px; text-align: center;">III. CHẨN ĐOÁN</th>
+                                        <th style="border: 1px solid #000; padding: 5px; text-align: center;">MÃ</th>
+                                        <th style="border: 1px solid #000; padding: 5px; text-align: center;"></th>
+                                        <th style="border: 1px solid #000; padding: 5px; text-align: center;">MÃ</th>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 1px solid #000; padding: 5px;">
+                                            20. Nơi chuyển đến: <input type="text" style="width: 100%; border: 1px solid #ccc;" />
+                                        </td>
+                                        <td style="border: 1px solid #000; padding: 5px;">
+                                            <input type="text" style="width: 100%; border: 1px solid #ccc; text-align: center;" />
+                                        </td>
+                                        <td style="border: 1px solid #000; padding: 5px;">
+                                            23. Ra viện:
+                                        </td>
+                                        <td style="border: 1px solid #000; padding: 5px;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 1px solid #000; padding: 5px;">
+                                            21. KKB, Cấp cứu: <input type="text" style="width: 100%; border: 1px solid #ccc;" value="Viêm phổi nhẹ" />
+                                        </td>
+                                        <td style="border: 1px solid #000; padding: 5px;">
+                                            <input type="text" style="width: 100%; border: 1px solid #ccc; text-align: center;" value="J18.9" />
+                                        </td>
+                                        <td style="border: 1px solid #000; padding: 5px;">
+                                            + Bệnh chính: <input type="text" style="width: 100%; border: 1px solid #ccc;" value="Viêm phổi cấp" />
+                                        </td>
+                                        <td style="border: 1px solid #000; padding: 5px;">
+                                            <input type="text" style="width: 100%; border: 1px solid #ccc; text-align: center;" value="J18.1" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 1px solid #000; padding: 5px;">
+                                            22. Khi vào khoa điều trị: <input type="text" style="width: 100%; border: 1px solid #ccc;" value="Viêm phổi cấp" />
+                                        </td>
+                                        <td style="border: 1px solid #000; padding: 5px;">
+                                            <input type="text" style="width: 100%; border: 1px solid #ccc; text-align: center;" value="J18.1" />
+                                        </td>
+                                        <td style="border: 1px solid #000; padding: 5px;">
+                                            + Bệnh kèm theo: <input type="text" style="width: 100%; border: 1px solid #ccc;" value="Nhiễm trùng đường hô hấp" />
+                                        </td>
+                                        <td style="border: 1px solid #000; padding: 5px;">
+                                            <input type="text" style="width: 100%; border: 1px solid #ccc; text-align: center;" value="J98.9" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 1px solid #000; padding: 5px;">
+                                            + Thu thuật <input type="checkbox" style="margin-left: 10px;" /> + Phẫu thuật <input type="checkbox" style="margin-left: 10px;" />
+                                        </td>
+                                        <td style="border: 1px solid #000; padding: 5px;"></td>
+                                        <td style="border: 1px solid #000; padding: 5px;">
+                                            + Tải biến <input type="checkbox" style="margin-left: 10px;" /> + Biến chứng <input type="checkbox" style="margin-left: 10px;" />
+                                        </td>
+                                        <td style="border: 1px solid #000; padding: 5px;"></td>
+                                    </tr>
+                                </table>
                             </div>
-                            <div class="detail-row">
-                                <span class="detail-label">CCCD:</span>
-                                <span class="detail-value">079212345678</span>
+
+                            <!-- IV. TÌNH TRẠNG RA VIỆN -->
+                            <div style="margin-bottom: 20px;">
+                                <table style="width: 100%; border-collapse: collapse; border: 1px solid #000;">
+                                    <tr>
+                                        <th style="border: 1px solid #000; padding: 5px; text-align: center;" colspan="2">IV. TÌNH TRẠNG RA VIỆN</th>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 1px solid #000; padding: 5px; width: 50%;">
+                                            <table style="width: 100%;">
+                                                <tr>
+                                                    <td style="padding: 3px;">
+                                                        24. Kết quả điều trị:
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding: 3px;">
+                                                        1. Khỏi <input type="checkbox" style="margin-left: 10px;" checked /> 2. Đỡ giảm <input type="checkbox" style="margin-left: 10px;" />
+                                                        3. Không thay đổi <input type="checkbox" style="margin-left: 10px;" /> 4. Nặng hơn <input type="checkbox" style="margin-left: 10px;" />
+                                                        5. Tử vong <input type="checkbox" style="margin-left: 10px;" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding: 3px;">
+                                                        25. Giải剖 bệnh (khi có sinh thiết):
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding: 3px;">
+                                                        1. Lành tính <input type="checkbox" style="margin-left: 10px;" /> 2. Nghỉ ngờ <input type="checkbox" style="margin-left: 10px;" />
+                                                        3. Ác tính <input type="checkbox" style="margin-left: 10px;" />
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td style="border: 1px solid #000; padding: 5px; width: 50%;">
+                                            <table style="width: 100%;">
+                                                <tr>
+                                                    <td style="padding: 3px;">
+                                                        26. Tình hình tử vong: Giờ <input type="text" style="width: 40px; border: 1px solid #ccc;" /> phút ngày <input type="text" style="width: 40px; border: 1px solid #ccc;" /> tháng <input type="text" style="width: 40px; border: 1px solid #ccc;" /> năm <input type="text" style="width: 60px; border: 1px solid #ccc;" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding: 3px;">
+                                                        1. Do bệnh <input type="checkbox" style="margin-left: 10px;" /> 2.Do tai biến điều trị <input type="checkbox" style="margin-left: 10px;" />
+                                                        3. Khác <input type="checkbox" style="margin-left: 10px;" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding: 3px;">
+                                                        1. Trong 24 giờ vào viện <input type="checkbox" style="margin-left: 10px;" /> 2.Sau 24 giờ vào viện <input type="checkbox" style="margin-left: 10px;" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding: 3px;">
+                                                        27. Nguyên nhân chính tử vong: <input type="text" style="width: 100%; border: 1px solid #ccc;" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding: 3px;">
+                                                        28. Khám nghiệm tử thi: <input type="checkbox" style="margin-left: 10px;" /> 29. Chẩn đoán giải剖 tử thi: <input type="text" style="width: 100%; border: 1px solid #ccc;" />
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
                             </div>
-                            <div class="detail-row">
-                                <span class="detail-label">Số BHYT:</span>
-                                <span class="detail-value">123456789</span>
+
+                            <!-- Ký tên -->
+                            <div style="margin-top: 40px; display: flex; justify-content: space-between;">
+                                <div style="text-align: center; width: 45%;">
+                                    <div style="font-weight: bold; margin-bottom: 20px;">Giám đốc bệnh viện</div>
+                                    <div style="margin-top: 40px;">Họ và tên: <input type="text" style="width: 200px; border: 1px solid #ccc;" value="" /></div>
+                                </div>
+                                <div style="text-align: center; width: 45%;">
+                                    <div style="font-weight: bold; margin-bottom: 20px;">Trưởng khoa</div>
+                                    <div style="margin-top: 40px;">Họ và tên: <input type="text" style="width: 200px; border: 1px solid #ccc;" value="" /></div>
+                                </div>
                             </div>
-                            <div class="detail-row">
-                                <span class="detail-label">Ngày hết hạn BHYT:</span>
-                                <span class="detail-value">31/12/2023</span>
-                            </div>
-                            <div class="detail-row">
-                                <span class="detail-label">Nghề nghiệp:</span>
-                                <span class="detail-value">Công an</span>
-                            </div>
-                            <div class="detail-row">
-                                <span class="detail-label">Địa chỉ:</span>
-                                <span class="detail-value">123 Đường ABC, Quận 1, TP.HCM</span>
-                            </div>
-                            <div class="detail-row">
-                                <span class="detail-label">Số điện thoại:</span>
-                                <span class="detail-value">0123456789</span>
-                            </div>
-                            <div class="detail-row">
-                                <span class="detail-label">Email:</span>
-                                <span class="detail-value">nguyenvana@example.com</span>
-                            </div>
-                            <div class="detail-row">
-                                <span class="detail-label">Nhóm máu:</span>
-                                <span class="detail-value">O</span>
+                            <div style="text-align: center; margin-top: 20px;">
+                                Ngày: <input type="text" style="width: 40px; border: 1px solid #ccc;" /> tháng: <input type="text" style="width: 40px; border: 1px solid #ccc;" /> năm: <input type="text" style="width: 60px; border: 1px solid #ccc;" />
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Lịch sử bệnh án -->
-                <div class="card">
-                    <div class="card-header">
-                        <span>Lịch sử bệnh án</span>
-                        <div style="display: flex; gap: 8px;">
-                            <select class="select-small">
-                                <option value="all">Tất cả</option>
-                                <option value="year">Trong năm</option>
-                                <option value="month">Trong tháng</option>
-                                <option value="week">Trong tuần</option>
-                            </select>
-                            <button class="btn btn-small" onclick="filterRecords()">Lọc</button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="timeline">
-                            <!-- Bản ghi bệnh án gần đây nhất -->
-                            <div class="timeline-item">
-                                <div class="timeline-date">20/04/2023 - 10:30</div>
-                                <div class="timeline-content">
-                                    <div style="font-weight: 600; margin-bottom: 4px;">Thăm khám nội khoa</div>
-                                    <div style="margin-bottom: 4px;">Bác sĩ: Nguyễn Văn Hùng</div>
-                                    <div style="margin-bottom: 4px;">Chẩn đoán: Đau bụng trên, tiêu chảy nhẹ</div>
-                                    <div style="margin-bottom: 4px;">Thuốc: Omeprazole 20mg, Loperamide 2mg</div>
-                                    <button class="btn btn-small" style="margin-top: 4px;" onclick="viewMedicalRecord('20230420-1030')">Xem chi tiết</button>
-                                </div>
-                            </div>
-                            
-                            <div class="timeline-item">
-                                <div class="timeline-date">15/04/2023 - 09:15</div>
-                                <div class="timeline-content">
-                                    <div style="font-weight: 600; margin-bottom: 4px;">Siêu âm bụng</div>
-                                    <div style="margin-bottom: 4px;">Bác sĩ: Đặng Thị Lan</div>
-                                    <div style="margin-bottom: 4px;">Kết quả: Siêu âm bụng đầy đủ,未见明显异常</div>
-                                    <button class="btn btn-small" style="margin-top: 4px;" onclick="viewMedicalRecord('20230415-0915')">Xem chi tiết</button>
-                                </div>
-                            </div>
-                            
-                            <div class="timeline-item">
-                                <div class="timeline-date">10/04/2023 - 14:45</div>
-                                <div class="timeline-content">
-                                    <div style="font-weight: 600; margin-bottom: 4px;">Xét nghiệm máu</div>
-                                    <div style="margin-bottom: 4px;">Bác sĩ: Trần Văn Minh</div>
-                                    <div style="margin-bottom: 4px;">Kết quả: CBC, GLU, ALT, AST - Normal</div>
-                                    <button class="btn btn-small" style="margin-top: 4px;" onclick="viewMedicalRecord('20230410-1445')">Xem chi tiết</button>
-                                </div>
-                            </div>
-                            
-                            <div class="timeline-item">
-                                <div class="timeline-date">22/03/2023 - 08:30</div>
-                                <div class="timeline-content">
-                                    <div style="font-weight: 600; margin-bottom: 4px;">Khám tổng quát</div>
-                                    <div style="margin-bottom: 4px;">Bác sĩ: Nguyễn Thị Hương</div>
-                                    <div style="margin-bottom: 4px;">Chẩn đoán: Viêm phổi nhẹ do virus</div>
-                                    <div style="margin-bottom: 4px;">Thuốc: Paracetamol 500mg, Amoxicillin 500mg</div>
-                                    <button class="btn btn-small" style="margin-top: 4px;" onclick="viewMedicalRecord('20230322-0830')">Xem chi tiết</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Hồ sơ chi tiết -->
-                <div class="card">
-                    <div class="card-header">
-                        <span>Chi tiết hồ sơ bệnh án - 20/04/2023</span>
-                        <div class="version-selector">
-                            <div class="version-item active">Phiên bản hiện tại</div>
-                            <div class="version-item">Phiên bản 1</div>
-                            <div class="version-item">Phiên bản 2</div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="grid-2">
-                            <div class="field">
-                                <label>Ngày khám</label>
-                                <input type="date" value="2023-04-20">
-                            </div>
-                            <div class="field">
-                                <label>Thời gian khám</label>
-                                <input type="time" value="10:30">
-                            </div>
-                            <div class="field">
-                                <label>Khoa khám</label>
-                                <select>
-                                    <option value="noi">Khoa Nội</option>
-                                    <option value="ngoai">Khoa Ngoại</option>
-                                    <option value="san">Khoa Sản</option>
-                                </select>
-                            </div>
-                            <div class="field">
-                                <label>Bác sĩ khám</label>
-                                <select>
-                                    <option value="nguyenvanhung">Nguyễn Văn Hùng</option>
-                                    <option value="nguyenthihoa">Nguyễn Thị Hoa</option>
-                                    <option value="tranthiminh">Trần Thị Minh</option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                        <div class="field" style="margin-top: 16px;">
-                            <label>Chief complaint (Chủ诉)</label>
-                            <textarea>Đau bụng trên, tiêu chảy nhẹ từ hôm qua. Sốt nhẹ. Mệt mỏi.</textarea>
-                        </div>
-                        
-                        <div class="field">
-                            <label>Học truyện bệnh (Hiện病史)</label>
-                            <textarea>Người bệnh báo cáo đau bụng trên từ hôm qua, kèm theo tiêu chảy 2-3 lần/ngày, consistency lỏng. Có sốt nhẹ khoảng 37.5°C. Không ho, không khó thở. Không nôn mửa. Ăn uống kém. Đi tiểu bình thường.</textarea>
-                        </div>
-                        
-                        <div class="field">
-                            <label>Tiền sử bệnh (Tiền病史)</label>
-                            <textarea>Không tiểu đường, không huyết áp cao. Không bệnh tim mạch. Không dị ứng thuốc. Có sử dụng thuốc giảm đau thường xuyên.</textarea>
-                        </div>
-                        
-                        <div class="field">
-                            <label>Khám bệnh (Chẩn đoán)</label>
-                            <textarea>BT: 37.2°C, Huyết áp: 120/80 mmHg, Nhịp tim: 72/ phút, Nhịp thở: 16/ phút. TSKH: Da nhiệt, khô. Miệng khô. bụng mềm, đau nhẹ vùng epigastric khi chạm vào. Không sưng gan, thận. Không có triệu chứng xấu khác.</textarea>
-                        </div>
-                        
-                        <div class="field">
-                            <label>Chẩn đoán sơ bộ (Provisional Diagnosis)</label>
-                            <textarea>Viêm dạ dày cấp (Acute Gastritis) kèm theo tiêu chảy nhẹ</textarea>
-                        </div>
-                        
-                        <div class="field">
-                            <label>Kế hoạch điều trị (Treatment Plan)</label>
-                            <textarea>1. Thực phẩm nhẹ, tránh ăn gây kích thích
-2. Thuốc:
-   - Omeprazole 20mg: 1 viên mỗi sáng trước bữa ăn
-   - Loperamide 2mg: 1 viên mỗi 6 giờ khi có tiêu chảy
-   - Paracetamol 500mg: 1 viên mỗi 4-6 giờ khi đau bụng hay sốt
-3. Theo dõi tại nhà, lên lịch tái khám sau 3 ngày nếu症狀 không giảm</textarea>
-                        </div>
-                        
-                        <div class="form-actions">
-                            <button class="btn" onclick="discardChanges()">Hủy thay đổi</button>
-                            <button class="btn primary" onclick="saveMedicalRecord()">Lưu hồ sơ</button>
-                            <button class="btn success" onclick="signMedicalRecord()">Ký số và lưu</button>
-                        </div>
-                    </div>
-                </div>
+
+
             </div>
         </div>
 
-        <!-- Sidebar phải: File đính kèm, Ký số -->
-        <div class="sidebar-right">
-            <!-- Phần 1: File đính kèm -->
-            <div class="card" style="flex: 1; min-height: 0; display: flex; flex-direction: column; margin-top: 1px;">
-                <div class="card-header">
-                    <span>File đính kèm (5)</span>
-                </div>
-                <div class="card-body" style="flex: 1; overflow-y: auto;">
-                    <!-- Khu vực upload file -->
-                    <div class="file-upload-area" onclick="document.getElementById('fileInput').click()">
-                        <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" multiple style="display: none;">
-                        <div style="margin-bottom: 8px;">📁</div>
-                        <div style="font-weight: 500; margin-bottom: 4px;">Kéo và thả file vào đây</div>
-                        <div style="font-size: 12px; color: var(--muted);">hoặc click để chọn file</div>
-                        <div style="font-size: 11px; color: var(--muted); margin-top: 4px;">PDF, JPG, PNG, DOC (tối đa 10MB)</div>
-                    </div>
-                    
-                    <!-- Danh sách file đã upload -->
-                    <div class="file-list">
-                        <div class="file-item">
-                            <div class="file-icon">PDF</div>
-                            <div class="file-info">
-                                <div class="file-name">Kết quả siêu âm bụng 15-04-2023.pdf</div>
-                                <div class="file-meta">1.2 MB • 15-04-2023</div>
-                            </div>
-                            <div class="file-actions">
-                                <button class="btn btn-small" onclick="viewFile('ultrasound.pdf')">👁️</button>
-                                <button class="btn btn-small" onclick="downloadFile('ultrasound.pdf')">⬇️</button>
-                                <button class="btn btn-small danger" onclick="deleteFile('ultrasound.pdf')">🗑️</button>
-                            </div>
-                        </div>
-                        
-                        <div class="file-item">
-                            <div class="file-icon">PDF</div>
-                            <div class="file-info">
-                                <div class="file-name">Kết quả xét nghiệm máu 10-04-2023.pdf</div>
-                                <div class="file-meta">850 KB • 10-04-2023</div>
-                            </div>
-                            <div class="file-actions">
-                                <button class="btn btn-small" onclick="viewFile('blood_test.pdf')">👁️</button>
-                                <button class="btn btn-small" onclick="downloadFile('blood_test.pdf')">⬇️</button>
-                                <button class="btn btn-small danger" onclick="deleteFile('blood_test.pdf')">🗑️</button>
-                            </div>
-                        </div>
-                        
-                        <div class="file-item">
-                            <div class="file-icon">JPG</div>
-                            <div class="file-info">
-                                <div class="file-name">Ảnh siêu âm 1.jpg</div>
-                                <div class="file-meta">2.4 MB • 15-04-2023</div>
-                            </div>
-                            <div class="file-actions">
-                                <button class="btn btn-small" onclick="viewFile('ultrasound1.jpg')">👁️</button>
-                                <button class="btn btn-small" onclick="downloadFile('ultrasound1.jpg')">⬇️</button>
-                                <button class="btn btn-small danger" onclick="deleteFile('ultrasound1.jpg')">🗑️</button>
-                            </div>
-                        </div>
-                        
-                        <div class="file-item">
-                            <div class="file-icon">DOC</div>
-                            <div class="file-info">
-                                <div class="file-name">Hồ sơ nhập viện 22-03-2023.docx</div>
-                                <div class="file-meta">980 KB • 22-03-2023</div>
-                            </div>
-                            <div class="file-actions">
-                                <button class="btn btn-small" onclick="viewFile('hospital_record.docx')">👁️</button>
-                                <button class="btn btn-small" onclick="downloadFile('hospital_record.docx')">⬇️</button>
-                                <button class="btn btn-small danger" onclick="deleteFile('hospital_record.docx')">🗑️</button>
-                            </div>
-                        </div>
-                        
-                        <div class="file-item">
-                            <div class="file-icon">PDF</div>
-                            <div class="file-info">
-                                <div class="file-name">Toa thuốc 20-04-2023.pdf</div>
-                                <div class="file-meta">520 KB • 20-04-2023</div>
-                            </div>
-                            <div class="file-actions">
-                                <button class="btn btn-small" onclick="viewFile('prescription.pdf')">👁️</button>
-                                <button class="btn btn-small" onclick="downloadFile('prescription.pdf')">⬇️</button>
-                                <button class="btn btn-small danger" onclick="deleteFile('prescription.pdf')">🗑️</button>
-                            </div>
-                        </div>
+        <!-- Sidebar phải: Lịch sử bệnh án, Ký số -->
+        <div class="sidebar-right" style="display: flex; flex-direction: column; gap: 0px; padding: 0px;">
+            <!-- Phần 1: Lịch sử bệnh án -->
+            <div class="card" style="flex: 1; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden;">
+                <div class="card-header" style="background-color: #f8f9fa; padding: 12px 16px; border-bottom: 1px solid #e9ecef; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: 600; color: #495057;">Lịch sử bệnh án</span>
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <select class="select-small" style="border-radius: 4px; border: 1px solid #ced4da; padding: 4px 8px;">
+                            <option value="all">Tất cả</option>
+                            <option value="year">Trong năm</option>
+                            <option value="month">Trong tháng</option>
+                            <option value="week">Trong tuần</option>
+                        </select>
+                        <button class="btn btn-small" style="border-radius: 4px;" onclick="filterRecords()">Lọc</button>
                     </div>
                 </div>
-            </div>
-            
-            <!-- Phần 2: Ký số -->
-            <div class="card" style="display: flex; flex-direction: column;">
-                <div class="card-header">
-                    <span>Ký số</span>
-                </div>
-                <div class="card-body" style="flex: 1;">
-                    <!-- Khung ký tên điện tử -->
-                    <canvas id="signaturePad" class="signature-pad" width="300" height="150"></canvas>
-                    
-                    <div style="display: flex; gap: 8px; margin-top: 12px;">
-                        <button class="btn btn-small" onclick="clearSignature()">Xóa ký</button>
-                        <button class="btn btn-small primary" onclick="saveSignature()">Lưu ký</button>
-                    </div>
-                    
-                    <!-- Thông tin ký số -->
-                    <div class="signature-info">
-                        <div style="font-weight: 500; margin-bottom: 4px;">Thông tin ký số:</div>
-                        <div style="margin-bottom: 2px;">• Ký bởi: Bác sĩ Nguyễn Văn Hùng</div>
-                        <div style="margin-bottom: 2px;">• Thời gian: 20-04-2023, 11:15</div>
-                        <div style="margin-bottom: 2px;">• Ký số hợp lệ theo Quyết định 1015/QĐ-BYT</div>
-                        <div style="margin-bottom: 2px;">• Mã xác thực: <span style="font-family: monospace;">HIS2345678901</span></div>
+                <div class="card-body" style="padding: 16px; max-height: 100%; overflow-y: auto;">
+                    <div class="timeline" style="display: flex; flex-direction: column; gap: 12px;">
+                        <!-- Bản ghi bệnh án gần đây nhất -->
+                        <div class="timeline-item" style="border-radius: 8px; border: 1px solid #e9ecef; overflow: hidden; transition: all 0.2s ease; background-color: white;">
+                            <div class="timeline-date" style="background-color: #007bff; color: white; padding: 8px 16px; font-size: 12px; font-weight: 500;">20/04/2023 - 10:30</div>
+                            <div class="timeline-content" style="padding: 12px 16px;">
+                                <div style="font-weight: 600; margin-bottom: 6px; color: #495057; display: flex; align-items: center; gap: 8px;">
+                                    <span>🏥</span>
+                                    <span>Thăm khám nội khoa</span>
+                                </div>
+                                <div style="margin-bottom: 3px; font-size: 13px; color: #6c757d;">👨‍⚕️ Bác sĩ: Nguyễn Văn Hùng</div>
+                                <div style="margin-bottom: 3px; font-size: 13px; color: #6c757d;">🔍 Chẩn đoán: Đau bụng trên, tiêu chảy nhẹ</div>
+                                <div style="margin-bottom: 8px; font-size: 13px; color: #6c757d;">💊 Thuốc: Omeprazole 20mg, Loperamide 2mg</div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <button class="btn btn-small" style="border-radius: 4px;" onclick="viewMedicalRecord('20230420-1030')">Xem chi tiết</button>
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <span style="background-color: #28a745; color: white; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 500;">Đã ký số</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item" style="border-radius: 8px; border: 1px solid #e9ecef; overflow: hidden; transition: all 0.2s ease; background-color: white;">
+                            <div class="timeline-date" style="background-color: #17a2b8; color: white; padding: 8px 16px; font-size: 12px; font-weight: 500;">15/04/2023 - 09:15</div>
+                            <div class="timeline-content" style="padding: 12px 16px;">
+                                <div style="font-weight: 600; margin-bottom: 6px; color: #495057; display: flex; align-items: center; gap: 8px;">
+                                    <span>📊</span>
+                                    <span>Siêu âm bụng</span>
+                                </div>
+                                <div style="margin-bottom: 3px; font-size: 13px; color: #6c757d;">👩‍⚕️ Bác sĩ: Đặng Thị Lan</div>
+                                <div style="margin-bottom: 8px; font-size: 13px; color: #6c757d;">📋 Kết quả: Siêu âm bụng đầy đủ,未见明显异常</div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <button class="btn btn-small" style="border-radius: 4px;" onclick="viewMedicalRecord('20230415-0915')">Xem chi tiết</button>
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <span style="background-color: #dc3545; color: white; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 500;">Chưa ký số</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item" style="border-radius: 8px; border: 1px solid #e9ecef; overflow: hidden; transition: all 0.2s ease; background-color: white;">
+                            <div class="timeline-date" style="background-color: #6f42c1; color: white; padding: 8px 16px; font-size: 12px; font-weight: 500;">10/04/2023 - 14:45</div>
+                            <div class="timeline-content" style="padding: 12px 16px;">
+                                <div style="font-weight: 600; margin-bottom: 6px; color: #495057; display: flex; align-items: center; gap: 8px;">
+                                    <span>🧪</span>
+                                    <span>Xét nghiệm máu</span>
+                                </div>
+                                <div style="margin-bottom: 3px; font-size: 13px; color: #6c757d;">👨‍⚕️ Bác sĩ: Trần Văn Minh</div>
+                                <div style="margin-bottom: 8px; font-size: 13px; color: #6c757d;">📋 Kết quả: CBC, GLU, ALT, AST - Normal</div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <button class="btn btn-small" style="border-radius: 4px;" onclick="viewMedicalRecord('20230410-1445')">Xem chi tiết</button>
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <span style="background-color: #28a745; color: white; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 500;">Đã ký số</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item" style="border-radius: 8px; border: 1px solid #e9ecef; overflow: hidden; transition: all 0.2s ease; background-color: white;">
+                            <div class="timeline-date" style="background-color: #fd7e14; color: white; padding: 8px 16px; font-size: 12px; font-weight: 500;">22/03/2023 - 08:30</div>
+                            <div class="timeline-content" style="padding: 12px 16px;">
+                                <div style="font-weight: 600; margin-bottom: 6px; color: #495057; display: flex; align-items: center; gap: 8px;">
+                                    <span>🏥</span>
+                                    <span>Khám tổng quát</span>
+                                </div>
+                                <div style="margin-bottom: 3px; font-size: 13px; color: #6c757d;">👩‍⚕️ Bác sĩ: Nguyễn Thị Hương</div>
+                                <div style="margin-bottom: 3px; font-size: 13px; color: #6c757d;">🔍 Chẩn đoán: Viêm phổi nhẹ do virus</div>
+                                <div style="margin-bottom: 8px; font-size: 13px; color: #6c757d;">💊 Thuốc: Paracetamol 500mg, Amoxicillin 500mg</div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <button class="btn btn-small" style="border-radius: 4px;" onclick="viewMedicalRecord('20230322-0830')">Xem chi tiết</button>
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <span style="background-color: #28a745; color: white; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 500;">Đã ký số</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <div class="footer-actions">
-                <button class="btn primary" onclick="generateReport()">Tạo báo cáo</button>
-                <button class="btn danger" onclick="deleteMedicalRecord()">Xóa hồ sơ</button>
+            <div class="footer-actions" style="display: flex; gap: 8px;">
+                <button class="btn primary" style="flex: 1; border-radius: 4px;" onclick="generateReport()">Thêm biểu mẫu</button>
+                <button class="btn" style="flex: 1; border-radius: 4px;" onclick="exportToPDF()">Xuất PDF</button>
             </div>
         </div>
     </div>

@@ -586,12 +586,12 @@
             <a href="home.html" class="logo-link">
                 <div class="logo">HIS</div>
             </a>
-            
+
             <div style="padding: 12px; border-bottom: 1px solid var(--line);">
                 <div style="font-weight: 600; margin-bottom: 8px; font-size: 14px;">Danh sách bệnh nhân</div>
                 <input type="text" placeholder="Nhập tên bệnh nhân..." id="patientSearch">
             </div>
-            
+
             <div class="nav-menu" id="patientList">
                 <!-- Danh sách bệnh nhân -->
                 <div class="nav-item patient-item active" data-patient-id="BN001">
@@ -645,7 +645,7 @@
                     <div style="font-size: 12px; color: var(--muted);">Ngày sinh: 1970-02-03</div>
                 </div>
             </div>
-            
+
             <!-- Thông tin nổi bật bệnh nhân -->
             <div style="padding: 12px; border-top: 1px solid var(--line);">
                 <div style="font-size: 12px; margin-bottom: 8px;">
@@ -672,11 +672,6 @@
                 </div>
             </div>
 
-            <!-- Thông báo quan trọng -->
-            <div class="notice-box warning">
-                <strong>Lưu ý quan trọng:</strong> Theo Quyết định 1015/QĐ-BYT, hồ sơ BHYT phải được gửi lên cổng quốc gia trong vòng 48 giờ từ ngày khám chữa bệnh. Thời hạn chậm nhất để gửi hồ sơ tháng này là ngày 28/04/2023.
-            </div>
-
             <!-- Thông tin chi tiết bệnh nhân -->
             <div class="card">
                 <div class="card-header">
@@ -684,888 +679,2149 @@
                     <button class="btn btn-small" onclick="editPatientInfo()">✏️ Sửa thông tin</button>
                 </div>
                 <div class="card-body">
-                    <div class="grid-2">
+
+                    <!-- Thông tin cơ bản bệnh nhân -->
+                    <div style="display: none;">
+                        <label for="MA_LK">Mã liên kết:</label>
+                        <input type="text" id="MA_LK" placeholder="Nhập mã liên kết">
+                    </div>
+                    <div style="display: none;">
+                        <label for="STT">Số thứ tự:</label>
+                        <input type="text" id="STT" placeholder="Nhập số thứ tự">
+                    </div>
+
+                    <div class="grid-4">
                         <div class="detail-info">
-                            <h3>Thông tin cá nhân</h3>
                             <div class="detail-row">
-                                <div class="detail-label">Họ tên đầy đủ:</div>
-                                <div class="detail-value">Nguyễn Văn A</div>
+                                <div class="detail-label">Mã bệnh nhân:</div>
+                                <div class="detail-value" id="MA_BN">BN001</div>
                             </div>
                             <div class="detail-row">
-                                <div class="detail-label">Giới tính:</div>
-                                <div class="detail-value">Nam</div>
+                                <div class="detail-label">Họ tên đầy đủ:</div>
+                                <div class="detail-value" id="HO_TEN">Nguyễn Văn A</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Số CCCD:</div>
+                                <div class="detail-value" id="SO_CCCD">123456789</div>
                             </div>
                             <div class="detail-row">
                                 <div class="detail-label">Ngày sinh:</div>
-                                <div class="detail-value">1988-01-01 (35 tuổi)</div>
+                                <div class="detail-value" id="NGAY_SINH">1988-01-01</div>
                             </div>
                             <div class="detail-row">
-                                <div class="detail-label">Số CMND/CCCD:</div>
-                                <div class="detail-value">0123456789</div>
+                                <div class="detail-label">Giới tính:</div>
+                                <div class="detail-value" id="GIOI_TINH">Nam</div>
                             </div>
-                            <div class="detail-row">
-                                <div class="detail-label">Địa chỉ thường trú:</div>
-                                <div class="detail-value">123 Đường ABC, Quận 1, TP. HCM</div>
-                            </div>
+
                         </div>
+
                         <div class="detail-info">
-                            <h3>Thông tin bảo hiểm</h3>
                             <div class="detail-row">
-                                <div class="detail-label">Số thẻ BHYT:</div>
-                                <div class="detail-value">0123456789</div>
+                                <div class="detail-label">Mã thẻ BHYT:</div>
+                                <div class="detail-value" id="MA_THE_BHYT">0123456789</div>
                             </div>
                             <div class="detail-row">
-                                <div class="detail-label">Hiệu lực từ:</div>
-                                <div class="detail-value">2022-01-01</div>
+                                <div class="detail-label">Mã đăng ký ban đầu:</div>
+                                <div class="detail-value" id="MA_DKBD">56789</div>
                             </div>
                             <div class="detail-row">
-                                <div class="detail-label">Hiệu lực đến:</div>
-                                <div class="detail-value">2023-12-31</div>
+                                <div class="detail-label">Giá trị từ:</div>
+                                <div class="detail-value" id="GT_THE_TU">2025-01-01</div>
                             </div>
                             <div class="detail-row">
-                                <div class="detail-label">Phạm vi bảo hiểm:</div>
-                                <div class="detail-value">Cao cấp</div>
+                                <div class="detail-label">Giá trị đến:</div>
+                                <div class="detail-value" id="GT_THE_DEN">2025-01-01</div>
                             </div>
                             <div class="detail-row">
-                                <div class="detail-label">Trạng thái thẻ:</div>
-                                <div class="detail-value"><span class="badge success">Hiệu lực</span></div>
+                                <div class="detail-label">Mã đối tượng KCB:</div>
+                                <div class="detail-value" id="MA_DOITUONG_KCB">1.9</div>
                             </div>
                         </div>
+
+                        <div class="detail-info">
+                            <div class="detail-row">
+                                <div class="detail-label">Ngày vào:</div>
+                                <div class="detail-value" id="NGAY_VAO">2025-01-01</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Ngày vào nội trú:</div>
+                                <div class="detail-value" id="NGAY_VAO_NOI_TRU">2025-12-31</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Lý do vào nội trú:</div>
+                                <div class="detail-value" id="LY_DO_VNT">Điều trị</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Mã lý do vào nội trú:</div>
+                                <div class="detail-value" id="MA_LY_DO_VNT">1988</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Mã loại KCB:</div>
+                                <div class="detail-value" id="MA_LOAI_KCB">02 - Điều trị NT</div>
+                            </div>
+                        </div>
+
+                        <div class="detail-info">
+                            <div class="detail-row">
+                                <div class="detail-label">Mã CSKCB:</div>
+                                <div class="detail-value" id="MA_CSKCB">012025</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Dịch vụ:</div>
+                                <div class="detail-value" id="MA_DICH_VU">KTA | Khám tổng quát</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Thuốc:</div>
+                                <div class="detail-value" id="MA_THUOC">PARA | Paracetamol</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Vật tư:</div>
+                                <div class="detail-value" id="MA_VAT_TU">BG | Bông gạc</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Ngày y lệnh:</div>
+                                <div class="detail-value" id="NGAY_YL">2025-01-01</div>
+                            </div>
+                        </div>
+
                     </div>
+
+                    <div class="form-actions">
+                        <button class="btn btn-success" onclick="validateXmlTrangThaiKCB()">Xác thực</button>
+                        <button class="btn btn-danger" onclick="resetTrangThaiKCB()">Edit</button>
+                    </div>
+
                 </div>
             </div>
 
-            <!-- Nội dung chính: XML Master và 15 XML theo quy định -->
+            <!-- XML theo quy định quốc gia -->
             <div class="card" style="margin-top: 16px;">
                 <div class="card-header">
-                    <span>XML Master - Thông tin cơ sở dữ liệu chính</span>
+                    <span>XML chi tiết theo quy định của Bộ Y tế</span>
                     <div>
-                        <button class="btn btn-small" onclick="viewXmlMaster()">👁️ Xem XML</button>
-                        <button class="btn btn-small" onclick="editXmlMaster()">✏️ Chỉnh sửa</button>
-                        <button class="btn btn-small primary" onclick="saveXmlMaster()">💾 Lưu</button>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div style="background: #f8fafc; padding: 16px; border-radius: 8px; font-family: monospace; font-size: 12px; max-height: 300px; overflow-y: auto;">
-                        <!-- XML Master mẫu -->
-                        &lt;?xml version="1.0" encoding="UTF-8"?&gt;<br>
-                        &lt;HOSO_BHYT&gt;<br>
-                        &nbsp;&nbsp;&lt;MAU_HOSO version="1.0"&gt;<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;MA_BN&gt;BN001&lt;/MA_BN&gt;<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;HO_TEN&gt;Nguyễn Văn A&lt;/HO_TEN&gt;<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;NAM_SINH&gt;1988&lt;/NAM_SINH&gt;<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;GIOI_TINH&gt;1&lt;/GIOI_TINH&gt;<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;SO_BHYT&gt;0123456789&lt;/SO_BHYT&gt;<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;MA_BS&gt;BS001&lt;/MA_BS&gt;<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;NGAY_KHAM&gt;2023-04-20&lt;/NGAY_KHAM&gt;<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;MA_DV&gt;KB001&lt;/MA_DV&gt;<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;TEN_DV&gt;Khám bệnh tổng quát&lt;/TEN_DV&gt;<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;DON_GIA&gt;50000&lt;/DON_GIA&gt;<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;THANH_TIEN&gt;50000&lt;/THANH_TIEN&gt;<br>
-                        &nbsp;&nbsp;&lt;/MAU_HOSO&gt;<br>
-                        &lt;/HOSO_BHYT&gt;
-                    </div>
-                </div>
-            </div>
-
-            <!-- 15 XML theo quy định quốc gia -->
-            <div class="card" style="margin-top: 16px;">
-                <div class="card-header">
-                    <span>15 XML theo quy định của Bộ Y tế</span>
-                    <div>
-                        <button class="btn btn-small" onclick="exportAllXml()">📥 Xuất tất cả XML</button>
                         <button class="btn btn-small primary" onclick="validateXmlData()">✅ Validate XML</button>
                         <button class="btn btn-small warning" onclick="sendToInsurancePortal()">📤 Gửi lên cổng</button>
                     </div>
                 </div>
+
                 <div class="card-body">
-                    <div class="grid-2" style="gap: 16px;">
-                        <!-- XML 1 -->
+                    <!-- Nội dung XML1: Chỉ tiêu tổng hợp khám bệnh, chữa bệnh -->
+                    <div class="grid-1" style="gap: 16px;">
                         <div style="border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                                <div style="font-weight: 600;">1. TTHOSO_NHANKHAU.xml</div>
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-weight: 600;">XML1. Chỉ tiêu tổng hợp khám bệnh, chữa bệnh</div>
                                 <div>
-                                    <button class="btn btn-small">👁️</button>
                                     <button class="btn btn-small">✏️</button>
                                 </div>
                             </div>
-                            <div style="color: var(--muted); font-size: 12px; margin-bottom: 4px;">Thông tin nhân khẩu bệnh nhân</div>
-                            <div class="badge success">Sẵn sàng</div>
-                        </div>
+                            <div class="grid-4">
+                                <div class="detail-info">
+                                    <div class="detail-row">
+                                        <div class="detail-label">Nhóm máu:</div>
+                                        <div class="detail-value" id="NHOM_MAU">O</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Quốc tịch:</div>
+                                        <div class="detail-value" id="MA_QUOCTICH">Việt Nam</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Dân tộc:</div>
+                                        <div class="detail-value" id="MA_DANTOC">Kinh</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Nghề nghiệp:</div>
+                                        <div class="detail-value" id="MA_NGHE_NGHIEP">Nhân viên văn phòng</div>
+                                    </div>
+                                    <div class="detail-row" style="display: none;">
+                                        <div class="detail-label">Giới tính:</div>
+                                        <div class="detail-value" id="DIA_CHI">110 Ông Ích Khiêm</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Tỉnh:</div>
+                                        <div class="detail-value" id="MATINH_CU_TRU">Hồ Chí Minh</div>
+                                    </div>
 
-                        <!-- XML 2 -->
-                        <div style="border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                                <div style="font-weight: 600;">2. TTHOSO_BHYT.xml</div>
-                                <div>
-                                    <button class="btn btn-small">👁️</button>
-                                    <button class="btn btn-small">✏️</button>
-                                </div>
-                            </div>
-                            <div style="color: var(--muted); font-size: 12px; margin-bottom: 4px;">Thông tin thẻ bảo hiểm y tế</div>
-                            <div class="badge success">Sẵn sàng</div>
-                        </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Huyện:</div>
+                                        <div class="detail-value" id="MAHUYEN_CU_TRU">Quận 9</div>
+                                    </div>
 
-                        <!-- XML 3 -->
-                        <div style="border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                                <div style="font-weight: 600;">3. TTHOSO_KCB.xml</div>
-                                <div>
-                                    <button class="btn btn-small">👁️</button>
-                                    <button class="btn btn-small">✏️</button>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Xã:</div>
+                                        <div class="detail-value" id="MAXA_CU_TRU">Phường 5</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Điện thoại:</div>
+                                        <div class="detail-value" id="DIEN_THOAI">O8888</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Thẻ BHYT:</div>
+                                        <div class="detail-value" id="MA_THE_BHYT">Việt Nam</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Đăng ký ban đầu:</div>
+                                        <div class="detail-value" id="MA_DKBD">Kinh</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Giá trị từ:</div>
+                                        <div class="detail-value" id="GT_THE_TU">2025-01-01</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Giá trị đến:</div>
+                                        <div class="detail-value" id="GT_THE_DEN">2025-01-01</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Năm năm liên tục</div>
+                                        <div class="detail-value" id="NAM_NAM_LIEN_TUC">2025-01-01</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Ngày miễn CCT:</div>
+                                        <div class="detail-value" id="NGAY_MIEN_CCT"></div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div style="color: var(--muted); font-size: 12px; margin-bottom: 4px;">Thông tin khám chữa bệnh</div>
-                            <div class="badge success">Sẵn sàng</div>
-                        </div>
+                                <div class="detail-info">
 
-                        <!-- XML 4 -->
-                        <div style="border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                                <div style="font-weight: 600;">4. DS_KHAMBENH.xml</div>
-                                <div>
-                                    <button class="btn btn-small">👁️</button>
-                                    <button class="btn btn-small">✏️</button>
-                                </div>
-                            </div>
-                            <div style="color: var(--muted); font-size: 12px; margin-bottom: 4px;">Danh sách khám bệnh</div>
-                            <div class="badge success">Sẵn sàng</div>
-                        </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Lý do vào viện:</div>
+                                        <div class="detail-value" id="LY_DO_VV">Đau bụng</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Lý do vào nội trú:</div>
+                                        <div class="detail-value" id="LY_DO_VNT">Điều trị</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Mã lý do vào nội trú:</div>
+                                        <div class="detail-value" id="MA_LY_DO_VNT">1988</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Chẩn đoán vào:</div>
+                                        <div class="detail-value" id="CHAN_DOAN_VAO">Việt Nam</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Chẩn đoán ra viện:</div>
+                                        <div class="detail-value" id="CHAN_DOAN_RV">Kinh</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Mã bệnh chính:</div>
+                                        <div class="detail-value" id="MA_BENH_CHINH">2025-01-01</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Mã bệnh kèm theo:</div>
+                                        <div class="detail-value" id="MA_BENH_KT">2025-01-01</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Mã bệnh YHCT:</div>
+                                        <div class="detail-value" id="MA_BENH_YHCT"></div>
+                                    </div>
 
-                        <!-- XML 5 -->
-                        <div style="border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                                <div style="font-weight: 600;">5. DS_DICHVU.xml</div>
-                                <div>
-                                    <button class="btn btn-small">👁️</button>
-                                    <button class="btn btn-small">✏️</button>
+                                    <div class="detail-row">
+                                        <div class="detail-label">MA_PTTT_QT:</div>
+                                        <div class="detail-value" id="MA_PTTT_QT">Đau bụng</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Mã đối tượng KCB:</div>
+                                        <div class="detail-value" id="MA_DOITUONG_KCB">Điều trị</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Mã nơi đi:</div>
+                                        <div class="detail-value" id="MA_NOI_DI">1988</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Mã nơi đến:</div>
+                                        <div class="detail-value" id="MA_NOI_DEN">0234534</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Mã tai nạn:</div>
+                                        <div class="detail-value" id="MA_TAI_NAN">02</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Ngày vào nội trú:</div>
+                                        <div class="detail-value" id="NGAY_VAO_NOI_TRU">2025-01-01</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Ngày ra:</div>
+                                        <div class="detail-value" id="NGAY_RA">2025-01-01</div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div style="color: var(--muted); font-size: 12px; margin-bottom: 4px;">Danh sách dịch vụ y tế</div>
-                            <div class="badge warning">Chưa hoàn thiện</div>
-                        </div>
 
-                        <!-- XML 6 -->
-                        <div style="border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                                <div style="font-weight: 600;">6. DS_THUOC.xml</div>
-                                <div>
-                                    <button class="btn btn-small">👁️</button>
-                                    <button class="btn btn-small">✏️</button>
-                                </div>
-                            </div>
-                            <div style="color: var(--muted); font-size: 12px; margin-bottom: 4px;">Danh sách thuốc kê đơn</div>
-                            <div class="badge success">Sẵn sàng</div>
-                        </div>
+                                <div class="detail-info">
+                                    <div class="detail-row">
+                                        <div class="detail-label">PP điều trị:</div>
+                                        <div class="detail-value" id="PP_DIEU_TRI">02 - </div>
+                                    </div>
 
-                        <!-- XML 7 -->
-                        <div style="border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                                <div style="font-weight: 600;">7. CHUANDOAN.xml</div>
-                                <div>
-                                    <button class="btn btn-small">👁️</button>
-                                    <button class="btn btn-small">✏️</button>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Kết quả điều trị:</div>
+                                        <div class="detail-value" id="KET_QUA_DTRI">02 - Đỡ</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Mã loại RV:</div>
+                                        <div class="detail-value" id="MA_LOAI_RV">02 - Trốn</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Ghi chú:</div>
+                                        <div class="detail-value" id="GHI_CHU">Điều trị </div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Ngày thanh toán:</div>
+                                        <div class="detail-value" id="NGAY_TTOAN">2025-01-01</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Tiền thuốc:</div>
+                                        <div class="detail-value" id="T_THUOC">1.000.000</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Tiền VTYT:</div>
+                                        <div class="detail-value" id="T_VTYT">1.000.000</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Tống chi BV:</div>
+                                        <div class="detail-value" id="T_TONGCHI_BV">1.000.000</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Tống chi BH:</div>
+                                        <div class="detail-value" id="T_TONGCHI_BH">1.000.000</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Bệnh nhân thanh toán:</div>
+                                        <div class="detail-value" id="T_BNTT">1.000.000</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Bảo hiểm CCT:</div>
+                                        <div class="detail-value" id="T_BNCCT">1.000.000</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">T_BHTT:</div>
+                                        <div class="detail-value" id="T_BHTT">1.000.000</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Nguồn khác:</div>
+                                        <div class="detail-value" id="T_NGUONKHAC">1.000.000</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Tiền T_BHTT_GDV:</div>
+                                        <div class="detail-value" id="T_BHTT_GDV">1.000.000</div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div style="color: var(--muted); font-size: 12px; margin-bottom: 4px;">Thông tin chẩn đoán bệnh</div>
-                            <div class="badge success">Sẵn sàng</div>
-                        </div>
 
-                        <!-- XML 8 -->
-                        <div style="border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                                <div style="font-weight: 600;">8. XETNGHIEM.xml</div>
-                                <div>
-                                    <button class="btn btn-small">👁️</button>
-                                    <button class="btn btn-small">✏️</button>
-                                </div>
-                            </div>
-                            <div style="color: var(--muted); font-size: 12px; margin-bottom: 4px;">Thông tin xét nghiệm</div>
-                            <div class="badge success">Sẵn sàng</div>
-                        </div>
+                                <div class="detail-info">
+                                    <div class="detail-row">
+                                        <div class="detail-label">Giấy chuyển tuyến:</div>
+                                        <div class="detail-value" id="GIAY_CHUYEN_TUYEN">03454</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Số ngày điều trị:</div>
+                                        <div class="detail-value" id="SO_NGAY_DTRI">02</div>
+                                    </div>
 
-                        <!-- XML 9 -->
-                        <div style="border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                                <div style="font-weight: 600;">9. XQUANG.xml</div>
-                                <div>
-                                    <button class="btn btn-small">👁️</button>
-                                    <button class="btn btn-small">✏️</button>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Năm quyết toán:</div>
+                                        <div class="detail-value" id="NAM_QT">2025</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">12</div>
+                                        <div class="detail-value" id="THANG_QT">02 - Điều trị NT</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Mã loại KCB:</div>
+                                        <div class="detail-value" id="MA_LOAI_KCB">1.1</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Mã khoa:</div>
+                                        <div class="detail-value" id="MA_KHOA">02 - khám bệnh</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Mã CS KCB:</div>
+                                        <div class="detail-value" id="MA_CSKCB">02345</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Mã khu vực:</div>
+                                        <div class="detail-value" id="MA_KHUVUC">234</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Cân nặng:</div>
+                                        <div class="detail-value" id="CAN_NANG">65</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Cân nặng con:</div>
+                                        <div class="detail-value" id="CAN_NANG_CON">4</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Ngày tai khám:</div>
+                                        <div class="detail-value" id="NGAY_TAI_KHAM">2025-01-01</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Mã HSBA:</div>
+                                        <div class="detail-value" id="MA_HSBA">023425</div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Mã TTDV:</div>
+                                        <div class="detail-value" id="MA_TTDV"></div>
+                                    </div>
+                                    <div class="detail-row">
+                                        <div class="detail-label">Dự phòng:</div>
+                                        <div class="detail-value" id="DU_PHONG"></div>
+                                    </div>
                                 </div>
                             </div>
-                            <div style="color: var(--muted); font-size: 12px; margin-bottom: 4px;">Thông tin xét nghiệm hình ảnh</div>
-                            <div class="badge warning">Chưa hoàn thiện</div>
                         </div>
+                    </div>
 
-                        <!-- XML 10 -->
+
+                    <!-- Nội dung XML2: Chỉ tiêu chi tiết thuốc -->
+                    <div class="grid-1" style="gap: 16px; margin-top: 16px;">
                         <div style="border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                                <div style="font-weight: 600;">10. KETQUA_KCB.xml</div>
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-weight: 600;">XML2. Chỉ tiêu chi tiết thuốc</div>
                                 <div>
-                                    <button class="btn btn-small">👁️</button>
                                     <button class="btn btn-small">✏️</button>
                                 </div>
                             </div>
-                            <div style="color: var(--muted); font-size: 12px; margin-bottom: 4px;">Kết quả khám chữa bệnh</div>
-                            <div class="badge success">Sẵn sàng</div>
+                            <div class="grid-1">
+                                <div class="table-container" style="overflow-x: auto;">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>MA_LK</th>
+                                                <th>STT</th>
+                                                <th>MA_THUOC</th>
+                                                <th>MA_PP_CHEBIEN</th>
+                                                <th>MA_CSKCB_THUOC</th>
+                                                <th>MA_NHOM</th>
+                                                <th>TEN_THUOC</th>
+                                                <th>DON_VI_TINH</th>
+                                                <th>HAM_LUONG</th>
+                                                <th>DUONG_DUNG</th>
+                                                <th>DANG_BAO_CHE</th>
+                                                <th>LIEU_DUNG</th>
+                                                <th>CACH_DUNG</th>
+                                                <th>SO_DANG_KY</th>
+                                                <th>TT_THAU</th>
+                                                <th>PHAM_VI</th>
+                                                <th>TYLE_TT_BH</th>
+                                                <th>SO_LUONG</th>
+                                                <th>DON_GIA</th>
+                                                <th>THANH_TIEN_BV</th>
+                                                <th>THANH_TIEN_BH</th>
+                                                <th>T_NGUONKHAC_NSNN</th>
+                                                <th>T_NGUONKHAC_VTNN</th>
+                                                <th>T_NGUONKHAC_VTTN</th>
+                                                <th>T_NGUONKHAC_CL</th>
+                                                <th>T_NGUONKHAC</th>
+                                                <th>MUC_HUONG</th>
+                                                <th>T_BNTT</th>
+                                                <th>T_BNCCT</th>
+                                                <th>T_BHTT</th>
+                                                <th>MA_KHOA</th>
+                                                <th>MA_BAC_SI</th>
+                                                <th>MA_DICH_VU</th>
+                                                <th>NGAY_YL</th>
+                                                <th>NGAY_TH_YL</th>
+                                                <th>MA_PTTT</th>
+                                                <th>NGUON_CTRA</th>
+                                                <th>VET_THUONG_TP</th>
+                                                <th>DU_PHONG</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="medicinesListBody">
+                                            <tr>
+                                                <td>123ABCD</td>
+                                                <td>1</td>
+                                                <td>DV001</td>
+                                                <td>PT001</td>
+                                                <td>VT001</td>
+                                                <td>GOI001</td>
+                                                <td>Găng tay y tế kháng khuẩn</td>
+                                                <td>Khám sức khỏe tổng quát</td>
+                                                <td>XD001</td>
+                                                <td>Cái</td>
+                                                <td>1</td>
+                                                <td>50</td>
+                                                <td>1000</td>
+                                                <td>800</td>
+                                                <td>1</td>
+                                                <td>100</td>
+                                                <td>80</td>
+                                                <td>50000</td>
+                                                <td>40000</td>
+                                                <td>0</td>
+                                                <td>1</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>10000</td>
+                                                <td>10000</td>
+                                                <td>0</td>
+                                                <td>40000</td>
+                                                <td>K01</td>
+                                                <td>G001</td>
+                                                <td>B001</td>
+                                                <td>BY001</td>
+                                                <td>B001</td>
+                                                <td>BY001</td>
+                                                <td>2023-11-20</td>
+                                                <td>2023-11-20</td>
+                                                <td>2023-11-20</td>
+                                                <td>PT01</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>TM</td>
+                                                <td>M001</td>
+                                                <td>HS001</td>
+                                                <td>BT</td>
+                                                <td>0</td>
+                                            </tr>
+                                            <tr>
+                                                <td>123ABCD</td>
+                                                <td>2</td>
+                                                <td>DV002</td>
+                                                <td>PT002</td>
+                                                <td>VT002</td>
+                                                <td>GOI002</td>
+                                                <td>Ống hút máu</td>
+                                                <td>Xét nghiệm máu thường quy</td>
+                                                <td>XD002</td>
+                                                <td>Cái</td>
+                                                <td>1</td>
+                                                <td>20</td>
+                                                <td>5000</td>
+                                                <td>4500</td>
+                                                <td>1</td>
+                                                <td>100</td>
+                                                <td>90</td>
+                                                <td>100000</td>
+                                                <td>90000</td>
+                                                <td>0</td>
+                                                <td>1</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>10000</td>
+                                                <td>10000</td>
+                                                <td>0</td>
+                                                <td>90000</td>
+                                                <td>K02</td>
+                                                <td>G002</td>
+                                                <td>B002</td>
+                                                <td>BY002</td>
+                                                <td>B002</td>
+                                                <td>BY002</td>
+                                                <td>2023-11-20</td>
+                                                <td>2023-11-20</td>
+                                                <td>2023-11-21</td>
+                                                <td>PT02</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>TM</td>
+                                                <td>M002</td>
+                                                <td>HS002</td>
+                                                <td>BT</td>
+                                                <td>0</td>
+                                            </tr>
+                                            <tr>
+                                                <td>123ABCD</td>
+                                                <td>3</td>
+                                                <td>DV003</td>
+                                                <td>PT003</td>
+                                                <td>VT003</td>
+                                                <td>GOI003</td>
+                                                <td>Máy đo huyết áp điện tử</td>
+                                                <td>Kiểm tra huyết áp</td>
+                                                <td>XD003</td>
+                                                <td>Cái</td>
+                                                <td>1</td>
+                                                <td>5</td>
+                                                <td>15000</td>
+                                                <td>12000</td>
+                                                <td>1</td>
+                                                <td>100</td>
+                                                <td>80</td>
+                                                <td>75000</td>
+                                                <td>60000</td>
+                                                <td>0</td>
+                                                <td>1</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>15000</td>
+                                                <td>15000</td>
+                                                <td>0</td>
+                                                <td>60000</td>
+                                                <td>K01</td>
+                                                <td>G001</td>
+                                                <td>B001</td>
+                                                <td>BY001</td>
+                                                <td>B001</td>
+                                                <td>BY001</td>
+                                                <td>2023-11-20</td>
+                                                <td>2023-11-20</td>
+                                                <td>2023-11-20</td>
+                                                <td>PT01</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>TM</td>
+                                                <td>M003</td>
+                                                <td>HS003</td>
+                                                <td>BT</td>
+                                                <td>0</td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="17" style="text-align:right; font-weight:600;">Tổng cộng</td>
+                                                <td style="font-weight:600;">97500</td>
+                                                <td style="font-weight:600;">92000</td>
+                                                <td colspan="3">0</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>5500</td>
+                                                <td>1</td>
+                                                <td>5500</td>
+                                                <td>0</td>
+                                                <td>92000</td>
+                                                <td colspan="9"></td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
+                    </div>
 
-                        <!-- XML 11 -->
+
+                    <!-- Nội dung XML3: Chỉ tiêu chi tiết dịch vụ kỹ thuật và vật tư y tế-->
+                    <div class="grid-1" style="gap: 16px; margin-top: 16px;">
                         <div style="border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                                <div style="font-weight: 600;">11. THANHTOAN.xml</div>
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-weight: 600;">Nội dung XML3: Chỉ tiêu chi tiết dịch vụ kỹ thuật và vật tư y tế</div>
                                 <div>
-                                    <button class="btn btn-small">👁️</button>
                                     <button class="btn btn-small">✏️</button>
                                 </div>
                             </div>
-                            <div style="color: var(--muted); font-size: 12px; margin-bottom: 4px;">Thông tin thanh toán</div>
-                            <div class="badge success">Sẵn sàng</div>
+                            <div class="grid-1">
+                                <div class="table-container" style="overflow-x: auto;">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>MA_LK</th>
+                                                <th>STT</th>
+                                                <th>MA_DICH_VU</th>
+                                                <th>MA_PTTT_QT</th>
+                                                <th>MA_VAT_TU</th>
+                                                <th>GOI_VTYT</th>
+                                                <th>TEN_VAT_TU</th>
+                                                <th>TEN_DICH_VU</th>
+                                                <th>MA_XANG_DAU</th>
+                                                <th>DON_VI_TINH</th>
+                                                <th>PHAM_VI</th>
+                                                <th>SO_LUONG</th>
+                                                <th>DON_GIA_BV</th>
+                                                <th>DON_GIA_BH</th>
+                                                <th>TT_THAU</th>
+                                                <th>TYLE_TT_DV</th>
+                                                <th>TYLE_TT_BH</th>
+                                                <th>THANH_TIEN_BV</th>
+                                                <th>THANH_TIEN_BH</th>
+                                                <th>T_TRANTT</th>
+                                                <th>MUC_HUONG</th>
+                                                <th>T_NGUONKHAC_NSNN</th>
+                                                <th>T_NGUONKHAC_VTNN</th>
+                                                <th>T_NGUONKHAC_VTTN</th>
+                                                <th>T_NGUONKHAC_CL</th>
+                                                <th>T_NGUONKHAC</th>
+                                                <th>T_BNTT</th>
+                                                <th>T_BNCCT</th>
+                                                <th>T_BHTT</th>
+                                                <th>MA_KHOA</th>
+                                                <th>MA_GIUONG</th>
+                                                <th>MA_BAC_SI</th>
+                                                <th>MA_BENH_YHCT</th>
+                                                <th>MA_BENH</th>
+                                                <th>MA_BENH_YHCT</th>
+                                                <th>NGAY_YL</th>
+                                                <th>NGAY_TH_YL</th>
+                                                <th>NGAY_KQ</th>
+                                                <th>MA_PTTT</th>
+                                                <th>VET_THUONG_TP</th>
+                                                <th>PP_VO_CAM</th>
+                                                <th>VI_TRI_TH_DVKT</th>
+                                                <th>MA_MAY</th>
+                                                <th>MA_HIEU_SP</th>
+                                                <th>TAI_SU_DUNG</th>
+                                                <th>DU_PHONG</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="medicinesListBody">
+                                            <tr>
+                                                <td>123ABCD</td>
+                                                <td>1</td>
+                                                <td>T001</td>
+                                                <td>PP01</td>
+                                                <td>CS001</td>
+                                                <td>N001</td>
+                                                <td>Paracetamol 500mg</td>
+                                                <td>Viên</td>
+                                                <td>500mg</td>
+                                                <td>Nhỏ</td>
+                                                <td>Hộp</td>
+                                                <td>1 viên x 3 lần/ngày</td>
+                                                <td>Uống sau ăn</td>
+                                                <td>VSD-2020-001</td>
+                                                <td>1</td>
+                                                <td>1</td>
+                                                <td>80</td>
+                                                <td>10</td>
+                                                <td>1000</td>
+                                                <td>10000</td>
+                                                <td>8000</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>2000</td>
+                                                <td>1</td>
+                                                <td>2000</td>
+                                                <td>0</td>
+                                                <td>8000</td>
+                                                <td>K01</td>
+                                                <td>B001</td>
+                                                <td>D001</td>
+                                                <td>2023-11-20</td>
+                                                <td>2023-11-20</td>
+                                                <td>PT01</td>
+                                                <td>NCKCB</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                            </tr>
+                                            <tr>
+                                                <td>123ABCD</td>
+                                                <td>2</td>
+                                                <td>T002</td>
+                                                <td>PP02</td>
+                                                <td>CS001</td>
+                                                <td>N002</td>
+                                                <td>Amoxicillin 500mg</td>
+                                                <td>Viên</td>
+                                                <td>500mg</td>
+                                                <td>Nhỏ</td>
+                                                <td>Hộp</td>
+                                                <td>1 viên x 3 lần/ngày</td>
+                                                <td>Uống sau ăn</td>
+                                                <td>VSD-2020-002</td>
+                                                <td>1</td>
+                                                <td>1</td>
+                                                <td>100</td>
+                                                <td>21</td>
+                                                <td>2500</td>
+                                                <td>52500</td>
+                                                <td>52500</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>1</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>52500</td>
+                                                <td>K01</td>
+                                                <td>B001</td>
+                                                <td>D001</td>
+                                                <td>2023-11-20</td>
+                                                <td>2023-11-20</td>
+                                                <td>PT01</td>
+                                                <td>NCKCB</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                            </tr>
+                                            <tr>
+                                                <td>123ABCD</td>
+                                                <td>3</td>
+                                                <td>T003</td>
+                                                <td>PP03</td>
+                                                <td>CS001</td>
+                                                <td>N003</td>
+                                                <td>Omeprazole 20mg</td>
+                                                <td>Viên</td>
+                                                <td>20mg</td>
+                                                <td>Nhỏ</td>
+                                                <td>Hộp</td>
+                                                <td>1 viên x 1 lần/ngày</td>
+                                                <td>Uống trước bữa sáng</td>
+                                                <td>VSD-2020-003</td>
+                                                <td>1</td>
+                                                <td>1</td>
+                                                <td>90</td>
+                                                <td>7</td>
+                                                <td>5000</td>
+                                                <td>35000</td>
+                                                <td>31500</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>3500</td>
+                                                <td>1</td>
+                                                <td>3500</td>
+                                                <td>0</td>
+                                                <td>31500</td>
+                                                <td>K01</td>
+                                                <td>B001</td>
+                                                <td>D001</td>
+                                                <td>2023-11-20</td>
+                                                <td>2023-11-20</td>
+                                                <td>PT01</td>
+                                                <td>NCKCB</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="17" style="text-align:right; font-weight:600;">Tổng cộng</td>
+                                                <td style="font-weight:600;">97500</td>
+                                                <td style="font-weight:600;">92000</td>
+                                                <td colspan="3">0</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>5500</td>
+                                                <td>1</td>
+                                                <td>5500</td>
+                                                <td>0</td>
+                                                <td>92000</td>
+                                                <td colspan="9"></td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
+                    </div>
 
-                        <!-- XML 12 -->
+                    <!-- Nội dung XML4: Chỉ tiêu chi tiết dịch vụ cận lâm sàng-->
+                    <div class="grid-1" style="gap: 16px; margin-top: 16px;">
                         <div style="border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                                <div style="font-weight: 600;">12. DMDICHVU.xml</div>
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-weight: 600;">Nội dung XML4: Chỉ tiêu chi tiết dịch vụ cận lâm sàng</div>
                                 <div>
-                                    <button class="btn btn-small">👁️</button>
                                     <button class="btn btn-small">✏️</button>
                                 </div>
                             </div>
-                            <div style="color: var(--muted); font-size: 12px; margin-bottom: 4px;">Danh mục dịch vụ</div>
-                            <div class="badge success">Sẵn sàng</div>
+                            <div class="grid-1">
+                                <div class="table-container" style="overflow-x: auto;">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>MA_LK</th>
+                                                <th>STT</th>
+                                                <th>MA_DICH_VU</th>
+                                                <th>MA_CHI_SO</th>
+                                                <th>TEN_CHI_SO</th>
+                                                <th>GIA_TRI</th>
+                                                <th>DON_VI_DO</th>
+                                                <th>MO_TA</th>
+                                                <th>KET_LUAN</th>
+                                                <th>NGAY_KQ</th>
+                                                <th>MA_BS_DOC_KQ</th>
+                                                <th>DU_PHONG</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="clinicServicesListBody">
+                                            <tr>
+                                                <td>123ABCD</td>
+                                                <td>1</td>
+                                                <td>T001</td>
+                                                <td>PP01</td>
+                                                <td>CS001</td>
+                                                <td>N001</td>
+                                                <td>Paracetamol 500mg</td>
+                                                <td>Viên</td>
+                                                <td>500mg</td>
+                                                <td>Nhỏ</td>
+                                                <td>Hộp</td>
+                                                <td>1 viên x 3 lần/ngày</td>
+                                            </tr>
+                                            <tr>
+                                                <td>123ABCD</td>
+                                                <td>2</td>
+                                                <td>T002</td>
+                                                <td>PP02</td>
+                                                <td>CS001</td>
+                                                <td>N002</td>
+                                                <td>Amoxicillin 500mg</td>
+                                                <td>Viên</td>
+                                                <td>500mg</td>
+                                                <td>Nhỏ</td>
+                                                <td>Hộp</td>
+                                                <td>1 viên x 3 lần/ngày</td>
+                                            </tr>
+                                            <tr>
+                                                <td>123ABCD</td>
+                                                <td>3</td>
+                                                <td>T003</td>
+                                                <td>PP03</td>
+                                                <td>CS001</td>
+                                                <td>N003</td>
+                                                <td>Omeprazole 20mg</td>
+                                                <td>Viên</td>
+                                                <td>20mg</td>
+                                                <td>Nhỏ</td>
+                                                <td>Hộp</td>
+                                                <td>1 viên x 1 lần/ngày</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
+                    </div>
 
-                        <!-- XML 13 -->
+                    <!-- Nội dung XML5: Chỉ tiêu chi tiết diễn biến lâm sàng-->
+                    <div class="grid-1" style="gap: 16px; margin-top: 16px;">
                         <div style="border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                                <div style="font-weight: 600;">13. DMTHUOC.xml</div>
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-weight: 600;">Nội dung XML5: Chỉ tiêu chi tiết diễn biến lâm sàng</div>
                                 <div>
-                                    <button class="btn btn-small">👁️</button>
                                     <button class="btn btn-small">✏️</button>
                                 </div>
                             </div>
-                            <div style="color: var(--muted); font-size: 12px; margin-bottom: 4px;">Danh mục thuốc</div>
-                            <div class="badge success">Sẵn sàng</div>
+                            <div class="grid-1">
+                                <div class="table-container" style="overflow-x: auto;">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>MA_LK</th>
+                                                <th>STT</th>
+                                                <th>DIEN_BIEN_LS</th>
+                                                <th>GIAI_DOAN_BENH</th>
+                                                <th>HOI_CHAN</th>
+                                                <th>PHAU_THUAT</th>
+                                                <th>THOI_DIEM_DBLS</th>
+                                                <th>NGUOI_THUC_HIEN</th>
+                                                <th>DU_PHONG</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="clinicServicesListBody">
+                                            <tr>
+                                                <td>123ABCD</td>
+                                                <td>1</td>
+                                                <td>T001</td>
+                                                <td>PP01</td>
+                                                <td>CS001</td>
+                                                <td>N001</td>
+                                                <td>Paracetamol 500mg</td>
+                                                <td>Viên</td>
+                                                <td>500mg</td>
+                                            </tr>
+                                            <tr>
+                                                <td>123ABCD</td>
+                                                <td>2</td>
+                                                <td>T002</td>
+                                                <td>PP02</td>
+                                                <td>CS001</td>
+                                                <td>N002</td>
+                                                <td>Amoxicillin 500mg</td>
+                                                <td>Viên</td>
+                                                <td>500mg</td>
+                                            </tr>
+                                            <tr>
+                                                <td>123ABCD</td>
+                                                <td>3</td>
+                                                <td>T003</td>
+                                                <td>PP03</td>
+                                                <td>CS001</td>
+                                                <td>N003</td>
+                                                <td>Omeprazole 20mg</td>
+                                                <td>Viên</td>
+                                                <td>20mg</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
+                    </div>
 
-                        <!-- XML 14 -->
+
+                    <!-- Nội dung XML7: Chỉ tiêu dữ liệu giấy ra viện-->
+                    <div class="grid-1" style="gap: 16px; margin-top: 16px;">
                         <div style="border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                                <div style="font-weight: 600;">14. DMCHUANDOAN.xml</div>
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-weight: 600;">Nội dung XML7: Chỉ tiêu dữ liệu giấy ra viện</div>
                                 <div>
-                                    <button class="btn btn-small">👁️</button>
                                     <button class="btn btn-small">✏️</button>
                                 </div>
                             </div>
-                            <div style="color: var(--muted); font-size: 12px; margin-bottom: 4px;">Danh mục chẩn đoán ICD-10</div>
-                            <div class="badge success">Sẵn sàng</div>
+                            <div class="grid-1">
+                                <div class="table-container" style="overflow-x: auto;">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>MA_LK</th>
+                                                <th>SO_LUU_TRU</th>
+                                                <th>MA_YTE</th>
+                                                <th>MA_KHOA_RV</th>
+                                                <th>NGAY_VAO</th>
+                                                <th>NGAY_RA</th>
+                                                <th>MA_DINH_CHI_THAI</th>
+                                                <th>NGUYENNHAN_DINHCHI</th>
+                                                <th>THOIGIAN_DINHCHI</th>
+                                                <th>TUOI_THAI</th>
+                                                <th>CHAN_DOAN_RV</th>
+                                                <th>PP_DIEUTRI</th>
+                                                <th>GHI_CHU</th>
+                                                <th>MA_TTDV</th>
+                                                <th>MA_BS</th>
+                                                <th>TEN_BS</th>
+                                                <th>NGAY_CT</th>
+                                                <th>MA_CHA</th>
+                                                <th>MA_ME</th>
+                                                <th>MA_THE_TAM</th>
+                                                <th>HO_TEN_CHA</th>
+                                                <th>HO_TEN_ME</th>
+                                                <th>SO_NGAY_NGHI</th>
+                                                <th>NGOAITRU_TUNGAY</th>
+                                                <th>NGOAITRU_DENNGAY</th>
+                                                <th>DU_PHONG</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="clinicServicesListBody">
+                                            <tr>
+                                                <td>123ABCD</td>
+                                                <td>1</td>
+                                                <td>T001</td>
+                                                <td>PP01</td>
+                                                <td>CS001</td>
+                                                <td>N001</td>
+                                                <td>Paracetamol 500mg</td>
+                                                <td>Viên</td>
+                                                <td>500mg</td>
+                                            </tr>
+                                            <tr>
+                                                <td>123ABCD</td>
+                                                <td>2</td>
+                                                <td>T002</td>
+                                                <td>PP02</td>
+                                                <td>CS001</td>
+                                                <td>N002</td>
+                                                <td>Amoxicillin 500mg</td>
+                                                <td>Viên</td>
+                                                <td>500mg</td>
+                                            </tr>
+                                            <tr>
+                                                <td>123ABCD</td>
+                                                <td>3</td>
+                                                <td>T003</td>
+                                                <td>PP03</td>
+                                                <td>CS001</td>
+                                                <td>N003</td>
+                                                <td>Omeprazole 20mg</td>
+                                                <td>Viên</td>
+                                                <td>20mg</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
+                    </div>
 
-                        <!-- XML 15 -->
+                    <!-- Nội dung XML8: Chỉ tiêu dữ liệu tóm tắt hồ sơ bệnh án-->
+                    <div class="grid-1" style="gap: 16px; margin-top: 16px;">
                         <div style="border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                                <div style="font-weight: 600;">15. CHITIET_HOSO.xml</div>
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-weight: 600;">Nội dung XML8: Chỉ tiêu dữ liệu tóm tắt hồ sơ bệnh án</div>
                                 <div>
-                                    <button class="btn btn-small">👁️</button>
                                     <button class="btn btn-small">✏️</button>
                                 </div>
                             </div>
-                            <div style="color: var(--muted); font-size: 12px; margin-bottom: 4px;">Chi tiết hồ sơ BHYT</div>
-                            <div class="badge warning">Chưa hoàn thiện</div>
+                            <div class="grid-1">
+                                <div class="table-container" style="overflow-x: auto;">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>MA_LK</th>
+                                                <th>MA_LOAI_KCB</th>
+                                                <th>HO_TEN_CHA</th>
+                                                <th>HO_TEN_ME</th>
+                                                <th>NGUOI_GIAM_HO</th>
+                                                <th>DON_VI</th>
+                                                <th>NGAY_VAO</th>
+                                                <th>NGAY_RA</th>
+                                                <th>CHAN_DOAN_VAO</th>
+                                                <th>CHAN_DOAN_RV</th>
+                                                <th>QT_BENHLY</th>
+                                                <th>TOMTAT_KQ</th>
+                                                <th>PP_DIEUTRI</th>
+                                                <th>NGAY_SINHCON</th>
+                                                <th>NGAY_CONCHET</th>
+                                                <th>SO_CONCHET</th>
+                                                <th>KET_QUA_DTRI</th>
+                                                <th>GHI_CHU</th>
+                                                <th>MA_TTDV</th>
+                                                <th>NGAY_CT</th>
+                                                <th>MA_THE_TAM</th>
+                                                <th>DU_PHONG</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="clinicServicesListBody">
+                                            <tr>
+                                                <td>123ABCD</td>
+                                                <td>1</td>
+                                                <td>T001</td>
+                                                <td>PP01</td>
+                                                <td>CS001</td>
+                                                <td>N001</td>
+                                                <td>Paracetamol 500mg</td>
+                                                <td>Viên</td>
+                                                <td>500mg</td>
+                                            </tr>
+                                            <tr>
+                                                <td>123ABCD</td>
+                                                <td>2</td>
+                                                <td>T002</td>
+                                                <td>PP02</td>
+                                                <td>CS001</td>
+                                                <td>N002</td>
+                                                <td>Amoxicillin 500mg</td>
+                                                <td>Viên</td>
+                                                <td>500mg</td>
+                                            </tr>
+                                            <tr>
+                                                <td>123ABCD</td>
+                                                <td>3</td>
+                                                <td>T003</td>
+                                                <td>PP03</td>
+                                                <td>CS001</td>
+                                                <td>N003</td>
+                                                <td>Omeprazole 20mg</td>
+                                                <td>Viên</td>
+                                                <td>20mg</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nội dung XML9: Chỉ tiêu dữ liệu giấy chứng sinh-->
+                    <div class="grid-1" style="gap: 16px; margin-top: 16px;">
+                        <div style="border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-weight: 600;">Nội dung XML9: Chỉ tiêu dữ liệu giấy chứng sinh</div>
+                                <div>
+                                    <button class="btn btn-small">✏️</button>
+                                </div>
+                            </div>
+                            <div class="grid-1">
+                                <div class="table-container" style="overflow-x: auto;">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>MA_LK</th>
+                                                <th>MA_BHXH_NND</th>
+                                                <th>MA_THE_NND</th>
+                                                <th>HO_TEN_NND</th>
+                                                <th>NGAYSINH_NND</th>
+                                                <th>MA_DANTOC_NND</th>
+                                                <th>SO_CCCD_NND</th>
+                                                <th>NGAYCAP_CCCD_NND</th>
+                                                <th>NOICAP_CCCD_NND</th>
+                                                <th>NOI_CU_TRU_NND</th>
+                                                <th>MA_QUOCTICH</th>
+                                                <th>MATINH_CU_TRU</th>
+                                                <th>MAHUYEN_CU_TRU</th>
+                                                <th>MAXA_CU_TRU</th>
+                                                <th>HO_TEN_CHA</th>
+                                                <th>MA_THE_TAM</th>
+                                                <th>HO_TEN_CON</th>
+                                                <th>GIOI_TINH_CON</th>
+                                                <th>SO_CON</th>
+                                                <th>LAN_SINH</th>
+                                                <th>SO_CON_SONG</th>
+                                                <th>CAN_NANG_CON</th>
+                                                <th>NGAY_SINH_CON</th>
+                                                <th>NOI_SINH_CON</th>
+                                                <th>TINH_TRANG_CON</th>
+                                                <th>SINHCON_PHAUTHUAT</th>
+                                                <th>SINHCON_DUOI32TUAN</th>
+                                                <th>GHI_CHU</th>
+                                                <th>NGUOI_DO_DE</th>
+                                                <th>NGUOI_GHI_PHIEU</th>
+                                                <th>NGAY_CT</th>
+                                                <th>SO</th>
+                                                <th>QUYEN_SO</th>
+                                                <th>MA_TTDV</th>
+                                                <th>DU_PHONG</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="clinicServicesListBody">
+                                            <tr>
+                                                <td>123ABCD</td>
+                                                <td>1</td>
+                                                <td>T001</td>
+                                                <td>PP01</td>
+                                                <td>CS001</td>
+                                                <td>N001</td>
+                                                <td>Paracetamol 500mg</td>
+                                                <td>Viên</td>
+                                                <td>500mg</td>
+                                            </tr>
+                                            <tr>
+                                                <td>123ABCD</td>
+                                                <td>2</td>
+                                                <td>T002</td>
+                                                <td>PP02</td>
+                                                <td>CS001</td>
+                                                <td>N002</td>
+                                                <td>Amoxicillin 500mg</td>
+                                                <td>Viên</td>
+                                                <td>500mg</td>
+                                            </tr>
+                                            <tr>
+                                                <td>123ABCD</td>
+                                                <td>3</td>
+                                                <td>T003</td>
+                                                <td>PP03</td>
+                                                <td>CS001</td>
+                                                <td>N003</td>
+                                                <td>Omeprazole 20mg</td>
+                                                <td>Viên</td>
+                                                <td>20mg</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nội dung XML10: Chỉ tiêu dữ liệu giấy chứng nhận nghỉ dưỡng thai-->
+                    <div class="grid-1" style="gap: 16px; margin-top: 16px;">
+                        <div style="border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-weight: 600;">Nội dung XML10: Chỉ tiêu dữ liệu giấy chứng nhận nghỉ dưỡng thai</div>
+                                <div>
+                                    <button class="btn btn-small">✏️</button>
+                                </div>
+                            </div>
+                            <div class="grid-1">
+                                <div class="table-container" style="overflow-x: auto;">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>MA_LK</th>
+                                                <th>SO_SERI</th>
+                                                <th>SO_CT</th>
+                                                <th>SO_NGAY</th>
+                                                <th>DON_VI</th>
+                                                <th>CHAN_DOAN_RV</th>
+                                                <th>TU_NGAY</th>
+                                                <th>DEN_NGAY</th>
+                                                <th>MA_TTDV</th>
+                                                <th>TEN_BS</th>
+                                                <th>MA_BS</th>
+                                                <th>NGAY_CT</th>
+                                                <th>DU_PHONG</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="clinicServicesListBody">
+                                            <tr>
+                                                <td>123ABCD</td>
+                                                <td>1</td>
+                                                <td>T001</td>
+                                                <td>PP01</td>
+                                                <td>CS001</td>
+                                                <td>N001</td>
+                                                <td>Paracetamol 500mg</td>
+                                                <td>Viên</td>
+                                                <td>500mg</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nội dung XML11: Chỉ tiêu dữ liệu giấy chứng nhận nghỉ hưởng bảo hiểm xã hội-->
+                    <div class="grid-1" style="gap: 16px; margin-top: 16px;">
+                        <div style="border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-weight: 600;">Nội dung XML11: Chỉ tiêu dữ liệu giấy chứng nhận nghỉ hưởng bảo hiểm xã hội</div>
+                                <div>
+                                    <button class="btn btn-small">✏️</button>
+                                </div>
+                            </div>
+                            <div class="grid-1">
+                                <div class="table-container" style="overflow-x: auto;">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>MA_LK</th>
+                                                <th>SO_CT</th>
+                                                <th>SO_SERI</th>
+                                                <th>SO_KCB</th>
+                                                <th>DON_VI</th>
+                                                <th>MA_BHXH</th>
+                                                <th>MA_THE_BHYT</th>
+                                                <th>CHAN_DOAN_RV</th>
+                                                <th>PP_DIEUTRI</th>
+                                                <th>MA_DINH_CHI_THAI</th>
+                                                <th>NGUYENNHAN_DINHCHI</th>
+                                                <th>TUOI_THAI</th>
+                                                <th>SO_NGAY_NGHI</th>
+                                                <th>TU_NGAY</th>
+                                                <th>DEN_NGAY</th>
+                                                <th>HO_TEN_CHA</th>
+                                                <th>HO_TEN_ME</th>
+                                                <th>MA_TTDV</th>
+                                                <th>MA_BS</th>
+                                                <th>NGAY_CT</th>
+                                                <th>MA_THE_TAM</th>
+                                                <th>MAU_SO</th>
+                                                <th>DU_PHONG</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="clinicServicesListBody">
+                                            <tr>
+                                                <td>123ABCD</td>
+                                                <td>1</td>
+                                                <td>T001</td>
+                                                <td>PP01</td>
+                                                <td>CS001</td>
+                                                <td>N001</td>
+                                                <td>Paracetamol 500mg</td>
+                                                <td>Viên</td>
+                                                <td>500mg</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nội dung XML13: Chỉ tiêu dữ liệu giấy chuyển tuyến-->
+                    <div class="grid-1" style="gap: 16px; margin-top: 16px;">
+                        <div style="border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-weight: 600;">Nội dung XML13: Chỉ tiêu dữ liệu giấy chuyển tuyến</div>
+                                <div>
+                                    <button class="btn btn-small">✏️</button>
+                                </div>
+                            </div>
+                            <div class="grid-1">
+                                <div class="table-container" style="overflow-x: auto;">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>MA_LK</th>
+                                                <th>SO_HOSO</th>
+                                                <th>SO_CHUYENTUYEN</th>
+                                                <th>GIAY_CHUYEN_TUYEN</th>
+                                                <th>MA_CSKCB</th>
+                                                <th>MA_NOI_DI</th>
+                                                <th>MA_NOI_DEN</th>
+                                                <th>HO_TEN</th>
+                                                <th>NGAY_SINH</th>
+                                                <th>GIOI_TINH</th>
+                                                <th>MA_QUOCTICH</th>
+                                                <th>MA_DANTOC</th>
+                                                <th>MA_NGHE_NGHIEP</th>
+                                                <th>DIA_CHI</th>
+                                                <th>MA_THE_BHYT</th>
+                                                <th>GT_THE_DEN</th>
+                                                <th>NGAY_VAO</th>
+                                                <th>NGAY_VAO_NOI_TRU</th>
+                                                <th>NGAY_RA</th>
+                                                <th>DAU_HIEU_LS</th>
+                                                <th>CHAN_DOAN_RV</th>
+                                                <th>QT_BENHLY</th>
+                                                <th>TOMTAT_KQ</th>
+                                                <th>PP_DIEUTRI</th>
+                                                <th>MA_BENH_CHINH</th>
+                                                <th>MA_BENH_KT</th>
+                                                <th>MA_BENH_YHCT</th>
+                                                <th>TEN_DICH_VU</th>
+                                                <th>TEN_THUOC</th>
+                                                <th>PP_DIEU_TRI</th>
+                                                <th>MA_LOAI_RV</th>
+                                                <th>MA_LYDO_CT</th>
+                                                <th>HUONG_DIEU_TRI</th>
+                                                <th>PHUONGTIEN_VC</th>
+                                                <th>HOTEN_NGUOI_HT</th>
+                                                <th>CHUCDANH_NGUOI_HT</th>
+                                                <th>MA_BAC_SI</th>
+                                                <th>MA_TTDV</th>
+                                                <th>DU_PHONG</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="clinicServicesListBody">
+                                            <tr>
+                                                <td>123ABCD</td>
+                                                <td>1</td>
+                                                <td>T001</td>
+                                                <td>PP01</td>
+                                                <td>CS001</td>
+                                                <td>N001</td>
+                                                <td>Paracetamol 500mg</td>
+                                                <td>Viên</td>
+                                                <td>500mg</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nội dung XML14: Chỉ tiêu dữ liệu giấy hẹn khám lại-->
+                    <div class="grid-1" style="gap: 16px; margin-top: 16px;">
+                        <div style="border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-weight: 600;">Nội dung XML14: Chỉ tiêu dữ liệu giấy hẹn khám lại</div>
+                                <div>
+                                    <button class="btn btn-small">✏️</button>
+                                </div>
+                            </div>
+                            <div class="grid-1">
+                                <div class="table-container" style="overflow-x: auto;">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>MA_LK</th>
+                                                <th>SO_GIAYHEN_KL</th>
+                                                <th>MA_CSKCB</th>
+                                                <th>HO_TEN</th>
+                                                <th>NGAY_SINH</th>
+                                                <th>GIOI_TINH</th>
+                                                <th>DIA_CHI</th>
+                                                <th>MA_THE_BHYT</th>
+                                                <th>GT_THE_DEN</th>
+                                                <th>NGAY_VAO</th>
+                                                <th>NGAY_VAO_NOI_TRU</th>
+                                                <th>NGAY_RA</th>
+                                                <th>NGAY_HEN_KL</th>
+                                                <th>CHAN_DOAN_RV</th>
+                                                <th>MA_BENH_CHINH</th>
+                                                <th>MA_BENH_KT</th>
+                                                <th>MA_BENH_YHCT</th>
+                                                <th>MA_DOITUONG_KCB</th>
+                                                <th>MA_BAC_SI</th>
+                                                <th>MA_TTDV</th>
+                                                <th>NGAY_CT</th>
+                                                <th>DU_PHONG</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="clinicServicesListBody">
+                                            <tr>
+                                                <td>123ABCD</td>
+                                                <td>1</td>
+                                                <td>T001</td>
+                                                <td>PP01</td>
+                                                <td>CS001</td>
+                                                <td>N001</td>
+                                                <td>Paracetamol 500mg</td>
+                                                <td>Viên</td>
+                                                <td>500mg</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Nội dung XML15: Chỉ tiêu dữ liệu chi tiết điều trị bệnh lao-->
+                    <div class="grid-1" style="gap: 16px; margin-top: 16px;">
+                        <div style="border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-weight: 600;">Nội dung XML15: Chỉ tiêu dữ liệu chi tiết điều trị bệnh lao</div>
+                                <div>
+                                    <button class="btn btn-small">✏️</button>
+                                </div>
+                            </div>
+                            <div class="grid-1">
+                                <div class="table-container" style="overflow-x: auto;">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>MA_LK</th>
+                                                <th>STT</th>
+                                                <th>MA_BN</th>
+                                                <th>HO_TEN</th>
+                                                <th>SO_CCCD</th>
+                                                <th>PHANLOAI_LAO_VITRI</th>
+                                                <th>PHANLOAI_LAO_TS</th>
+                                                <th>PHANLOAI_LAO_HIV</th>
+                                                <th>PHANLOAI_LAO_VK</th>
+                                                <th>PHANLOAI_LAO_KT</th>
+                                                <th>LOAI_DTRI_LAO</th>
+                                                <th>NGAYBD_DTRI_LAO</th>
+                                                <th>PHACDO_DTRI_LAO</th>
+                                                <th>NGAYKT_DTRI_LAO</th>
+                                                <th>KET_QUA_DTRI_LAO</th>
+                                                <th>MA_CSKCB</th>
+                                                <th>NGAYKD_HIV</th>
+                                                <th>BDDT_ARV</th>
+                                                <th>NGAY_BAT_DAU_DT_CTX</th>
+                                                <th>DU_PHONG</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="clinicServicesListBody">
+                                            <tr>
+                                                <td>123ABCD</td>
+                                                <td>1</td>
+                                                <td>T001</td>
+                                                <td>PP01</td>
+                                                <td>CS001</td>
+                                                <td>N001</td>
+                                                <td>Paracetamol 500mg</td>
+                                                <td>Viên</td>
+                                                <td>500mg</td>
+                                            </tr>
+                                            <tr>
+                                                <td>123ABCD</td>
+                                                <td>2</td>
+                                                <td>T002</td>
+                                                <td>PP02</td>
+                                                <td>CS001</td>
+                                                <td>N002</td>
+                                                <td>Amoxicillin 500mg</td>
+                                                <td>Viên</td>
+                                                <td>500mg</td>
+                                            </tr>
+                                            <tr>
+                                                <td>123ABCD</td>
+                                                <td>3</td>
+                                                <td>T003</td>
+                                                <td>PP03</td>
+                                                <td>CS001</td>
+                                                <td>N003</td>
+                                                <td>Omeprazole 20mg</td>
+                                                <td>Viên</td>
+                                                <td>20mg</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lịch sử gửi hồ sơ -->
+                    <div class="card" style="margin-top: 16px;">
+                        <div class="card-header">
+                            <span>Lịch sử gửi hồ sơ lên cổng BHYT</span>
+                        </div>
+                        <div class="table-container" style="overflow-x: auto;">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Ngày gửi</th>
+                                        <th>Thời gian</th>
+                                        <th>Trạng thái</th>
+                                        <th>Mã phản hồi</th>
+                                        <th>Nội dung phản hồi</th>
+                                        <th>Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>2023-04-20</td>
+                                        <td>10:30:45</td>
+                                        <td><span class="badge success">Thành công</span></td>
+                                        <td>00</td>
+                                        <td>Xử lý thành công</td>
+                                        <td>
+                                            <button class="btn btn-small">👁️</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>2023-04-19</td>
+                                        <td>16:45:20</td>
+                                        <td><span class="badge success">Thành công</span></td>
+                                        <td>00</td>
+                                        <td>Xử lý thành công</td>
+                                        <td>
+                                            <button class="btn btn-small">👁️</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>2023-04-18</td>
+                                        <td>09:15:30</td>
+                                        <td><span class="badge danger">Thất bại</span></td>
+                                        <td>400</td>
+                                        <td>Thông tin thẻ BHYT không hợp lệ</td>
+                                        <td>
+                                            <button class="btn btn-small">👁️</button>
+                                            <button class="btn btn-small primary">🔄</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Lịch sử gửi hồ sơ -->
-            <div class="card" style="margin-top: 16px;">
-                <div class="card-header">
-                    <span>Lịch sử gửi hồ sơ lên cổng BHYT</span>
-                </div>
-                <div class="table-container" style="overflow-x: auto;">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>STT</th>
-                                <th>Ngày gửi</th>
-                                <th>Thời gian</th>
-                                <th>Trạng thái</th>
-                                <th>Mã phản hồi</th>
-                                <th>Nội dung phản hồi</th>
-                                <th>Thao tác</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>2023-04-20</td>
-                                <td>10:30:45</td>
-                                <td><span class="badge success">Thành công</span></td>
-                                <td>00</td>
-                                <td>Xử lý thành công</td>
-                                <td>
-                                    <button class="btn btn-small">👁️</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>2023-04-19</td>
-                                <td>16:45:20</td>
-                                <td><span class="badge success">Thành công</span></td>
-                                <td>00</td>
-                                <td>Xử lý thành công</td>
-                                <td>
-                                    <button class="btn btn-small">👁️</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>2023-04-18</td>
-                                <td>09:15:30</td>
-                                <td><span class="badge danger">Thất bại</span></td>
-                                <td>400</td>
-                                <td>Thông tin thẻ BHYT không hợp lệ</td>
-                                <td>
-                                    <button class="btn btn-small">👁️</button>
-                                    <button class="btn btn-small primary">🔄</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+            <!-- Modal thêm hồ sơ BHYT -->
+            <div id="addRecordModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="modal-title">Thêm hồ sơ BHYT mới</div>
+                        <div class="close-modal" onclick="closeAddRecordModal()">&times;</div>
+                    </div>
 
-    <!-- Modal thêm hồ sơ BHYT -->
-    <div id="addRecordModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">Thêm hồ sơ BHYT mới</div>
-                <div class="close-modal" onclick="closeAddRecordModal()">&times;</div>
-            </div>
-            
-            <div class="grid-2">
-                <div class="field">
-                    <label>Họ tên bệnh nhân *</label>
-                    <input type="text" id="patientName" required>
-                </div>
-                <div class="field">
-                    <label>Mã bệnh nhân</label>
-                    <input type="text" id="patientCode">
-                </div>
-                <div class="field">
-                    <label>Số thẻ BHYT *</label>
-                    <input type="text" id="insuranceNumber" required>
-                </div>
-                <div class="field">
-                    <label>Ngày sinh *</label>
-                    <input type="date" id="patientDOB" required>
-                </div>
-                <div class="field">
-                    <label>Giới tính *</label>
-                    <select id="patientGender" required>
-                        <option value="">Chọn giới tính</option>
-                        <option value="nam">Nam</option>
-                        <option value="nu">Nữ</option>
-                        <option value="khac">Khác</option>
-                    </select>
-                </div>
-                <div class="field">
-                    <label>Ngày khám *</label>
-                    <input type="date" id="examinationDate" required>
-                </div>
-                <div class="field">
-                    <label>Khoa khám *</label>
-                    <select id="department" required>
-                        <option value="">Chọn khoa</option>
-                        <option value="noi">Khoa Nội</option>
-                        <option value="ngoai">Khoa Ngoại</option>
-                        <option value="san">Khoa Sản</option>
-                        <option value="nha">Khoa Nha Khoa</option>
-                    </select>
-                </div>
-                <div class="field">
-                    <label>Bác sĩ phụ trách</label>
-                    <select id="doctor">
-                        <option value="">Chọn bác sĩ</option>
-                        <option value="bs001">BS. Nguyễn Văn Hùng</option>
-                        <option value="bs002">BS. Trần Thị Hoa</option>
-                        <option value="bs003">BS. Lý Văn Minh</option>
-                    </select>
-                </div>
-                <div class="field">
-                    <label>Mã dịch vụ *</label>
-                    <input type="text" id="serviceCode" required>
-                </div>
-                <div class="field">
-                    <label>Tên dịch vụ *</label>
-                    <input type="text" id="serviceName" required>
-                </div>
-                <div class="field">
-                    <label>Số lượng *</label>
-                    <input type="number" id="quantity" value="1" min="1" required>
-                </div>
-                <div class="field">
-                    <label>Đơn giá (VNĐ) *</label>
-                    <input type="number" id="unitPrice" required>
-                </div>
-                <div class="field">
-                    <label>Loại chi phí *</label>
-                    <select id="expenseType" required>
-                        <option value="">Chọn loại chi phí</option>
-                        <option value="kham">Khám chữa bệnh</option>
-                        <option value="xet_nghiem">Xét nghiệm</option>
-                        <option value="nhap_vien">Nhập viện</option>
-                        <option value="phau_thuat">Phẫu thuật</option>
-                        <option value="kham_thai">Khám thai</option>
-                    </select>
-                </div>
-                <div class="field">
-                    <label>Người nhập dữ liệu</label>
-                    <input type="text" id="dataEntryPerson" value="NV001" readonly>
-                </div>
-            </div>
-            
-            <div class="field">
-                <label>Ghi chú</label>
-                <textarea id="notes" placeholder="Nhập ghi chú (nếu có)"></textarea>
-            </div>
-            
-            <div class="notice-box">
-                <strong>Lưu ý:</strong> Thông tin nhập vào phải chính xác theo mẫu quy định tại Quyết định 1015/QĐ-BYT để đảm bảo việc gửi lên cổng quốc gia thành công.
-            </div>
-            
-            <div class="form-actions">
-                <button class="btn" onclick="closeAddRecordModal()">Hủy</button>
-                <button class="btn primary" onclick="saveNewRecord()">Lưu hồ sơ</button>
-                <button class="btn success" onclick="saveAndSendRecord()">Lưu và gửi lên cổng</button>
-            </div>
-        </div>
-    </div>
+                    <div class="grid-2">
+                        <div class="field">
+                            <label>Họ tên bệnh nhân *</label>
+                            <input type="text" id="patientName" required>
+                        </div>
+                        <div class="field">
+                            <label>Mã bệnh nhân</label>
+                            <input type="text" id="patientCode">
+                        </div>
+                        <div class="field">
+                            <label>Số thẻ BHYT *</label>
+                            <input type="text" id="insuranceNumber" required>
+                        </div>
+                        <div class="field">
+                            <label>Ngày sinh *</label>
+                            <input type="date" id="patientDOB" required>
+                        </div>
+                        <div class="field">
+                            <label>Giới tính *</label>
+                            <select id="patientGender" required>
+                                <option value="">Chọn giới tính</option>
+                                <option value="nam">Nam</option>
+                                <option value="nu">Nữ</option>
+                                <option value="khac">Khác</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>Ngày khám *</label>
+                            <input type="date" id="examinationDate" required>
+                        </div>
+                        <div class="field">
+                            <label>Khoa khám *</label>
+                            <select id="department" required>
+                                <option value="">Chọn khoa</option>
+                                <option value="noi">Khoa Nội</option>
+                                <option value="ngoai">Khoa Ngoại</option>
+                                <option value="san">Khoa Sản</option>
+                                <option value="nha">Khoa Nha Khoa</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>Bác sĩ phụ trách</label>
+                            <select id="doctor">
+                                <option value="">Chọn bác sĩ</option>
+                                <option value="bs001">BS. Nguyễn Văn Hùng</option>
+                                <option value="bs002">BS. Trần Thị Hoa</option>
+                                <option value="bs003">BS. Lý Văn Minh</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>Mã dịch vụ *</label>
+                            <input type="text" id="serviceCode" required>
+                        </div>
+                        <div class="field">
+                            <label>Tên dịch vụ *</label>
+                            <input type="text" id="serviceName" required>
+                        </div>
+                        <div class="field">
+                            <label>Số lượng *</label>
+                            <input type="number" id="quantity" value="1" min="1" required>
+                        </div>
+                        <div class="field">
+                            <label>Đơn giá (VNĐ) *</label>
+                            <input type="number" id="unitPrice" required>
+                        </div>
+                        <div class="field">
+                            <label>Loại chi phí *</label>
+                            <select id="expenseType" required>
+                                <option value="">Chọn loại chi phí</option>
+                                <option value="kham">Khám chữa bệnh</option>
+                                <option value="xet_nghiem">Xét nghiệm</option>
+                                <option value="nhap_vien">Nhập viện</option>
+                                <option value="phau_thuat">Phẫu thuật</option>
+                                <option value="kham_thai">Khám thai</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>Người nhập dữ liệu</label>
+                            <input type="text" id="dataEntryPerson" value="NV001" readonly>
+                        </div>
+                    </div>
 
-    <!-- Modal nhập hàng loạt -->
-    <div id="batchUploadModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">Nhập hàng loạt hồ sơ BHYT</div>
-                <div class="close-modal" onclick="closeBatchUploadModal()">&times;</div>
-            </div>
-            
-            <div class="notice-box warning">
-                <strong>Hướng dẫn nhập:</strong>
-                <ol style="margin-top: 8px; margin-bottom: 8px; padding-left: 20px;">
-                    <li>Tải mẫu Excel mẫu dưới đây</li>
-                    <li>Điền đầy đủ thông tin theo mẫu</li>
-                    <li>Upload file Excel đã điền</li>
-                    <li>Kiểm tra dữ liệu và xác nhận nhập</li>
-                </ol>
-            </div>
-            
-            <div class="file-upload-area" onclick="document.getElementById('batchFileInput').click()">
-                <input type="file" id="batchFileInput" accept=".xlsx,.xls" style="display: none;">
-                <div style="margin-bottom: 8px;">📁</div>
-                <div style="font-weight: 500; margin-bottom: 4px;">Kéo và thả file Excel vào đây</div>
-                <div style="font-size: 12px; color: var(--muted);">hoặc click để chọn file</div>
-                <div style="font-size: 11px; color: var(--muted); margin-top: 4px;">XLSX, XLS (tối đa 5MB)</div>
-            </div>
-            
-            <div style="display: flex; gap: 8px;">
-                <button class="btn" onclick="downloadTemplate()">📥 Tải mẫu Excel</button>
-                <button class="btn" onclick="viewImportGuide()">📚 Hướng dẫn nhập</button>
-            </div>
-            
-            <div style="margin-top: 16px;">
-                <h3 style="font-size: 16px; margin-bottom: 8px;">Lịch sử nhập hàng loạt</h3>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>STT</th>
-                            <th>Tên file</th>
-                            <th>Thời gian</th>
-                            <th>Số bản ghi</th>
-                            <th>Trạng thái</th>
-                            <th>Thao tác</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Nhap_bhyt_thang4_2023.xlsx</td>
-                            <td>2023-04-15 09:30</td>
-                            <td>50</td>
-                            <td><span class="badge success">Thành công</span></td>
-                            <td>
-                                <button class="btn btn-small">👁️</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Nhap_bhyt_10_04.xlsx</td>
-                            <td>2023-04-10 14:45</td>
-                            <td>30</td>
-                            <td><span class="badge warning">Có lỗi</span></td>
-                            <td>
-                                <button class="btn btn-small">👁️</button>
-                                <button class="btn btn-small">📥</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <div class="form-actions">
-                <button class="btn" onclick="closeBatchUploadModal()">Đóng</button>
-            </div>
-        </div>
-    </div>
+                    <div class="field">
+                        <label>Ghi chú</label>
+                        <textarea id="notes" placeholder="Nhập ghi chú (nếu có)"></textarea>
+                    </div>
 
-    <!-- Modal cấu hình kết nối cổng BHYT -->
-    <div id="configModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">Cấu hình kết nối cổng BHYT</div>
-                <div class="close-modal" onclick="closeConfigModal()">&times;</div>
-            </div>
-            
-            <div class="grid-2">
-                <div class="field">
-                    <label>URL cổng BHYT *</label>
-                    <input type="text" id="portalUrl" value="https://api.bhyt.gov.vn/v1" required>
-                </div>
-                <div class="field">
-                    <label>Phiên bản API</label>
-                    <input type="text" id="apiVersion" value="1.0" readonly>
-                </div>
-                <div class="field">
-                    <label>Mã đơn vị *</label>
-                    <input type="text" id="unitCode" value="DV123456" required>
-                </div>
-                <div class="field">
-                    <label>Token truy cập *</label>
-                    <input type="password" id="accessToken" required>
-                </div>
-                <div class="field">
-                    <label>Thời gian timeout (giây)</label>
-                    <input type="number" id="timeout" value="30" min="5" max="300">
-                </div>
-                <div class="field">
-                    <label>Trạng thái kết nối</label>
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span class="badge success">Kết nối tốt</span>
-                        <button class="btn btn-small" onclick="testConnection()">Kiểm tra kết nối</button>
+                    <div class="notice-box">
+                        <strong>Lưu ý:</strong> Thông tin nhập vào phải chính xác theo mẫu quy định tại Quyết định
+                        1015/QĐ-BYT
+                        để đảm bảo việc gửi lên cổng quốc gia thành công.
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="btn" onclick="closeAddRecordModal()">Hủy</button>
+                        <button class="btn primary" onclick="saveNewRecord()">Lưu hồ sơ</button>
+                        <button class="btn success" onclick="saveAndSendRecord()">Lưu và gửi lên cổng</button>
                     </div>
                 </div>
             </div>
-            
-            <div class="notice-box">
-                <strong>Lưu ý bảo mật:</strong> Token truy cập phải được bảo mật cẩn thận và thay đổi định kỳ theo quy định của cơ quan BHYT.
-            </div>
-            
-            <div class="form-actions">
-                <button class="btn" onclick="closeConfigModal()">Hủy</button>
-                <button class="btn primary" onclick="saveConfig()">Lưu cấu hình</button>
-            </div>
-        </div>
-    </div>
 
-    <script>
-        // Khởi tạo ngày hôm nay cho trường ngày khám
-        document.addEventListener('DOMContentLoaded', function() {
-            const today = new Date();
-            const dateString = today.toISOString().split('T')[0];
-            document.getElementById('examinationDate').value = dateString;
-            
-            // Thêm sự kiện cho danh sách bệnh nhân
-            document.querySelectorAll('.patient-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    // Xóa class active khỏi tất cả bệnh nhân
-                    document.querySelectorAll('.patient-item').forEach(patient => {
-                        patient.classList.remove('active');
+            <!-- Modal nhập hàng loạt -->
+            <div id="batchUploadModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="modal-title">Nhập hàng loạt hồ sơ BHYT</div>
+                        <div class="close-modal" onclick="closeBatchUploadModal()">&times;</div>
+                    </div>
+
+                    <div class="notice-box warning">
+                        <strong>Hướng dẫn nhập:</strong>
+                        <ol style="margin-top: 8px; margin-bottom: 8px; padding-left: 20px;">
+                            <li>Tải mẫu Excel mẫu dưới đây</li>
+                            <li>Điền đầy đủ thông tin theo mẫu</li>
+                            <li>Upload file Excel đã điền</li>
+                            <li>Kiểm tra dữ liệu và xác nhận nhập</li>
+                        </ol>
+                    </div>
+
+                    <div class="file-upload-area" onclick="document.getElementById('batchFileInput').click()">
+                        <input type="file" id="batchFileInput" accept=".xlsx,.xls" style="display: none;">
+                        <div style="margin-bottom: 8px;">📁</div>
+                        <div style="font-weight: 500; margin-bottom: 4px;">Kéo và thả file Excel vào đây</div>
+                        <div style="font-size: 12px; color: var(--muted);">hoặc click để chọn file</div>
+                        <div style="font-size: 11px; color: var(--muted); margin-top: 4px;">XLSX, XLS (tối đa 5MB)</div>
+                    </div>
+
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn" onclick="downloadTemplate()">📥 Tải mẫu Excel</button>
+                        <button class="btn" onclick="viewImportGuide()">📚 Hướng dẫn nhập</button>
+                    </div>
+
+                    <div style="margin-top: 16px;">
+                        <h3 style="font-size: 16px; margin-bottom: 8px;">Lịch sử nhập hàng loạt</h3>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Tên file</th>
+                                    <th>Thời gian</th>
+                                    <th>Số bản ghi</th>
+                                    <th>Trạng thái</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Nhap_bhyt_thang4_2023.xlsx</td>
+                                    <td>2023-04-15 09:30</td>
+                                    <td>50</td>
+                                    <td><span class="badge success">Thành công</span></td>
+                                    <td>
+                                        <button class="btn btn-small">👁️</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Nhap_bhyt_10_04.xlsx</td>
+                                    <td>2023-04-10 14:45</td>
+                                    <td>30</td>
+                                    <td><span class="badge warning">Có lỗi</span></td>
+                                    <td>
+                                        <button class="btn btn-small">👁️</button>
+                                        <button class="btn btn-small">📥</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="btn" onclick="closeBatchUploadModal()">Đóng</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal cấu hình kết nối cổng BHYT -->
+            <div id="configModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="modal-title">Cấu hình kết nối cổng BHYT</div>
+                        <div class="close-modal" onclick="closeConfigModal()">&times;</div>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="field">
+                            <label>URL cổng BHYT *</label>
+                            <input type="text" id="portalUrl" value="https://api.bhyt.gov.vn/v1" required>
+                        </div>
+                        <div class="field">
+                            <label>Phiên bản API</label>
+                            <input type="text" id="apiVersion" value="1.0" readonly>
+                        </div>
+                        <div class="field">
+                            <label>Mã đơn vị *</label>
+                            <input type="text" id="unitCode" value="DV123456" required>
+                        </div>
+                        <div class="field">
+                            <label>Token truy cập *</label>
+                            <input type="password" id="accessToken" required>
+                        </div>
+                        <div class="field">
+                            <label>Thời gian timeout (giây)</label>
+                            <input type="number" id="timeout" value="30" min="5" max="300">
+                        </div>
+                        <div class="field">
+                            <label>Trạng thái kết nối</label>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span class="badge success">Kết nối tốt</span>
+                                <button class="btn btn-small" onclick="testConnection()">Kiểm tra kết nối</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="notice-box">
+                        <strong>Lưu ý bảo mật:</strong> Token truy cập phải được bảo mật cẩn thận và thay đổi định kỳ
+                        theo quy
+                        định của cơ quan BHYT.
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="btn" onclick="closeConfigModal()">Hủy</button>
+                        <button class="btn primary" onclick="saveConfig()">Lưu cấu hình</button>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                // Khởi tạo ngày hôm nay cho trường ngày khám
+                document.addEventListener('DOMContentLoaded', function () {
+                    const today = new Date();
+                    const dateString = today.toISOString().split('T')[0];
+                    document.getElementById('examinationDate').value = dateString;
+
+                    // Thêm sự kiện cho danh sách bệnh nhân
+                    document.querySelectorAll('.patient-item').forEach(item => {
+                        item.addEventListener('click', function () {
+                            // Xóa class active khỏi tất cả bệnh nhân
+                            document.querySelectorAll('.patient-item').forEach(patient => {
+                                patient.classList.remove('active');
+                            });
+                            // Thêm class active cho bệnh nhân được chọn
+                            this.classList.add('active');
+
+                            // Lấy thông tin bệnh nhân
+                            const patientId = this.getAttribute('data-patient-id');
+                            const patientName = this.querySelector('div:first-child').textContent;
+                            const patientInfo = this.querySelector('div:nth-child(2)').textContent;
+                            const patientDob = this.querySelector('div:nth-child(3)').textContent;
+
+                            // Cập nhật thông tin trên header
+                            document.getElementById('currentPatientName').textContent = 'Quản lý Bảo hiểm y tế - ' + patientName;
+                            document.getElementById('currentPatientInfo').textContent =
+                                'Mã BN: ' + patientId + ' | ' + patientInfo + ' | ' + patientDob;
+
+                            // Gọi hàm tải dữ liệu bệnh nhân
+                            loadPatientData(patientId, patientName);
+                        });
                     });
-                    // Thêm class active cho bệnh nhân được chọn
-                    this.classList.add('active');
-                    
-                    // Lấy thông tin bệnh nhân
-                    const patientId = this.getAttribute('data-patient-id');
-                    const patientName = this.querySelector('div:first-child').textContent;
-                    const patientInfo = this.querySelector('div:nth-child(2)').textContent;
-                    const patientDob = this.querySelector('div:nth-child(3)').textContent;
-                    
-                    // Cập nhật thông tin trên header
-                    document.getElementById('currentPatientName').textContent = 'Quản lý Bảo hiểm y tế - ' + patientName;
-                    document.getElementById('currentPatientInfo').textContent = 
-                        'Mã BN: ' + patientId + ' | ' + patientInfo + ' | ' + patientDob;
-                    
-                    // Gọi hàm tải dữ liệu bệnh nhân
-                    loadPatientData(patientId, patientName);
+
+                    // Thêm chức năng tìm kiếm bệnh nhân
+                    document.getElementById('patientSearch').addEventListener('input', function () {
+                        const searchTerm = this.value.toLowerCase();
+                        document.querySelectorAll('.patient-item').forEach(patient => {
+                            const patientName = patient.querySelector('div:first-child').textContent.toLowerCase();
+                            if (patientName.includes(searchTerm)) {
+                                patient.style.display = 'block';
+                            } else {
+                                patient.style.display = 'none';
+                            }
+                        });
+                    });
                 });
-            });
-            
-            // Thêm chức năng tìm kiếm bệnh nhân
-            document.getElementById('patientSearch').addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase();
-                document.querySelectorAll('.patient-item').forEach(patient => {
-                    const patientName = patient.querySelector('div:first-child').textContent.toLowerCase();
-                    if (patientName.includes(searchTerm)) {
-                        patient.style.display = 'block';
-                    } else {
-                        patient.style.display = 'none';
+
+                // Tải dữ liệu bệnh nhân khi chọn
+                function loadPatientData(patientId, patientName) {
+                    console.log('Loading data for patient:', patientId, patientName);
+
+                    // Ở đây sẽ gọi API để tải dữ liệu XML cho bệnh nhân
+                    // Hiện tại chỉ hiển thị thông báo
+                    alert(`📥 Đang tải dữ liệu BHYT cho bệnh nhân: ${patientName} (${patientId})`);
+
+                    // Sau khi tải xong, cập nhật trạng thái các XML
+                    // updateXmlStatus(patientId);
+                }
+
+                // Cập nhật trạng thái các file XML
+                function updateXmlStatus(patientId) {
+                    console.log('Updating XML status for patient:', patientId);
+                    // Ở đây sẽ cập nhật trạng thái của 15 file XML dựa trên dữ liệu bệnh nhân
+                }
+
+                // Xem XML Master
+                function viewXmlMaster() {
+                    alert('👁️ Xem XML Master');
+                }
+
+                // Chỉnh sửa XML Master
+                function editXmlMaster() {
+                    alert('✏️ Chỉnh sửa XML Master');
+                }
+
+                // Lưu XML Master
+                function saveXmlMaster() {
+                    alert('💾 XML Master đã được lưu thành công!');
+                }
+
+                // Xuất tất cả XML
+                function exportAllXml() {
+                    alert('📥 Đang xuất tất cả file XML...');
+                }
+
+                // Validate XML
+                function validateXmlData() {
+                    alert('✅ Validate XML thành công! Tất cả file XML đều hợp lệ.');
+                }
+
+                // In hồ sơ
+                function printInsuranceRecord() {
+                    alert('🖨️ Đang in hồ sơ BHYT...');
+                }
+
+                // Xuất dữ liệu bệnh nhân
+                function exportPatientData() {
+                    alert('📥 Đang xuất dữ liệu bệnh nhân...');
+                }
+
+                // Sửa thông tin bệnh nhân
+                function editPatientInfo() {
+                    alert('✏️ Sửa thông tin bệnh nhân');
+                }
+
+                // Thêm bệnh nhân mới
+                function addNewPatient() {
+                    alert('➕ Thêm bệnh nhân mới');
+                }
+
+                // Hiển thị modal thêm hồ sơ
+                function showAddRecordModal() {
+                    document.getElementById('addRecordModal').style.display = 'flex';
+                }
+
+                // Đóng modal thêm hồ sơ
+                function closeAddRecordModal() {
+                    document.getElementById('addRecordModal').style.display = 'none';
+                }
+
+                // Lưu hồ sơ mới
+                function saveNewRecord() {
+                    // Validate form
+                    if (!validateForm()) {
+                        return;
+                    }
+
+                    // Lấy dữ liệu từ form
+                    const formData = {
+                        patientName: document.getElementById('patientName').value,
+                        patientCode: document.getElementById('patientCode').value,
+                        insuranceNumber: document.getElementById('insuranceNumber').value,
+                        patientDOB: document.getElementById('patientDOB').value,
+                        patientGender: document.getElementById('patientGender').value,
+                        examinationDate: document.getElementById('examinationDate').value,
+                        department: document.getElementById('department').value,
+                        doctor: document.getElementById('doctor').value,
+                        serviceCode: document.getElementById('serviceCode').value,
+                        serviceName: document.getElementById('serviceName').value,
+                        quantity: document.getElementById('quantity').value,
+                        unitPrice: document.getElementById('unitPrice').value,
+                        expenseType: document.getElementById('expenseType').value,
+                        dataEntryPerson: document.getElementById('dataEntryPerson').value,
+                        notes: document.getElementById('notes').value
+                    };
+
+                    console.log('Saving new medical insurance record:', formData);
+                    alert('✅ Hồ sơ BHYT đã được lưu thành công!');
+                    closeAddRecordModal();
+                }
+
+                // Lưu và gửi lên cổng
+                function saveAndSendRecord() {
+                    saveNewRecord();
+                    alert('✅ Hồ sơ BHYT đã được lưu và gửi lên cổng quốc gia!');
+                }
+
+                // Validate form
+                function validateForm() {
+                    const requiredFields = document.querySelectorAll('#addRecordModal [required]');
+                    let isValid = true;
+
+                    requiredFields.forEach(field => {
+                        if (!field.value.trim()) {
+                            field.classList.add('input-error');
+                            isValid = false;
+                        } else {
+                            field.classList.remove('input-error');
+                        }
+                    });
+
+                    if (!isValid) {
+                        alert('❌ Vui lòng điền đầy đủ tất cả các trường bắt buộc!');
+                    }
+
+                    return isValid;
+                }
+
+                // Hiển thị modal nhập hàng loạt
+                function showBatchUploadModal() {
+                    document.getElementById('batchUploadModal').style.display = 'flex';
+                }
+
+                // Đóng modal nhập hàng loạt
+                function closeBatchUploadModal() {
+                    document.getElementById('batchUploadModal').style.display = 'none';
+                }
+
+                // Tải mẫu Excel
+                function downloadTemplate() {
+                    console.log('Downloading Excel template');
+                    alert('📥 Đang tải mẫu Excel...');
+                }
+
+                // Hiển thị hướng dẫn nhập
+                function viewImportGuide() {
+                    console.log('Viewing import guide');
+                    alert('📚 Hướng dẫn nhập sẽ được mở trong cửa sổ mới');
+                }
+
+                // Hiển thị modal cấu hình
+                function showConfigModal() {
+                    document.getElementById('configModal').style.display = 'flex';
+                }
+
+                // Đóng modal cấu hình
+                function closeConfigModal() {
+                    document.getElementById('configModal').style.display = 'none';
+                }
+
+                // Lưu cấu hình
+                function saveConfig() {
+                    const configData = {
+                        portalUrl: document.getElementById('portalUrl').value,
+                        apiVersion: document.getElementById('apiVersion').value,
+                        unitCode: document.getElementById('unitCode').value,
+                        accessToken: document.getElementById('accessToken').value,
+                        timeout: document.getElementById('timeout').value
+                    };
+
+                    console.log('Saving configuration:', configData);
+                    alert('✅ Cấu hình đã được lưu thành công!');
+                    closeConfigModal();
+                }
+
+                // Kiểm tra kết nối
+                function testConnection() {
+                    console.log('Testing connection to insurance portal');
+                    alert('🔄 Đang kiểm tra kết nối đến cổng BHYT...\n✅ Kết nối thành công!');
+                }
+
+                // Sửa bản ghi
+                function editRecord(id) {
+                    console.log('Editing record:', id);
+                    alert(`Sửa bản ghi số ${id}`);
+                }
+
+                // Xem bản ghi
+                function viewRecord(id) {
+                    console.log('Viewing record:', id);
+                    alert(`Xem chi tiết bản ghi số ${id}`);
+                }
+
+                // Xóa bản ghi
+                function deleteRecord(id) {
+                    if (confirm(`Bạn có chắc chắn muốn xóa bản ghi số ${id}?`)) {
+                        console.log('Deleting record:', id);
+                        alert(`✅ Bản ghi số ${id} đã được xóa!`);
+                    }
+                }
+
+                // Gửi lại bản ghi
+                function resendRecord(id) {
+                    console.log('Resending record:', id);
+                    alert(`🔄 Đang gửi lại bản ghi số ${id} lên cổng...`);
+                }
+
+                // Xuất Excel
+                function exportToExcel() {
+                    console.log('Exporting data to Excel');
+                    alert('📊 Đang xuất dữ liệu ra file Excel...');
+                }
+
+                // Lưu tất cả dữ liệu
+                function saveAllData() {
+                    console.log('Saving all data');
+                    alert('💾 Tất cả dữ liệu đã được lưu thành công!');
+                }
+
+                // Gửi lên cổng BHYT
+                function sendToInsurancePortal() {
+                    if (confirm('Bạn muốn gửi tất cả hồ sơ chưa gửi lên cổng BHYT?')) {
+                        console.log('Sending data to insurance portal');
+                        alert('📤 Đang gửi dữ liệu lên cổng BHYT quốc gia...');
+                    }
+                }
+
+                // Xử lý upload file hàng loạt
+                document.getElementById('batchFileInput').addEventListener('change', function (e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        console.log('Uploading batch file:', file.name);
+                        alert(`📁 Đang xử lý file: ${file.name}`);
                     }
                 });
-            });
-        });
-        
-        // Tải dữ liệu bệnh nhân khi chọn
-        function loadPatientData(patientId, patientName) {
-            console.log('Loading data for patient:', patientId, patientName);
-            
-            // Ở đây sẽ gọi API để tải dữ liệu XML cho bệnh nhân
-            // Hiện tại chỉ hiển thị thông báo
-            alert(`📥 Đang tải dữ liệu BHYT cho bệnh nhân: ${patientName} (${patientId})`);
-            
-            // Sau khi tải xong, cập nhật trạng thái các XML
-            // updateXmlStatus(patientId);
-        }
-        
-        // Cập nhật trạng thái các file XML
-        function updateXmlStatus(patientId) {
-            console.log('Updating XML status for patient:', patientId);
-            // Ở đây sẽ cập nhật trạng thái của 15 file XML dựa trên dữ liệu bệnh nhân
-        }
-        
-        // Xem XML Master
-        function viewXmlMaster() {
-            alert('👁️ Xem XML Master');
-        }
-        
-        // Chỉnh sửa XML Master
-        function editXmlMaster() {
-            alert('✏️ Chỉnh sửa XML Master');
-        }
-        
-        // Lưu XML Master
-        function saveXmlMaster() {
-            alert('💾 XML Master đã được lưu thành công!');
-        }
-        
-        // Xuất tất cả XML
-        function exportAllXml() {
-            alert('📥 Đang xuất tất cả file XML...');
-        }
-        
-        // Validate XML
-        function validateXmlData() {
-            alert('✅ Validate XML thành công! Tất cả file XML đều hợp lệ.');
-        }
-        
-        // In hồ sơ
-        function printInsuranceRecord() {
-            alert('🖨️ Đang in hồ sơ BHYT...');
-        }
-        
-        // Xuất dữ liệu bệnh nhân
-        function exportPatientData() {
-            alert('📥 Đang xuất dữ liệu bệnh nhân...');
-        }
-        
-        // Sửa thông tin bệnh nhân
-        function editPatientInfo() {
-            alert('✏️ Sửa thông tin bệnh nhân');
-        }
-        
-        // Thêm bệnh nhân mới
-        function addNewPatient() {
-            alert('➕ Thêm bệnh nhân mới');
-        }
-        
-        // Hiển thị modal thêm hồ sơ
-        function showAddRecordModal() {
-            document.getElementById('addRecordModal').style.display = 'flex';
-        }
-        
-        // Đóng modal thêm hồ sơ
-        function closeAddRecordModal() {
-            document.getElementById('addRecordModal').style.display = 'none';
-        }
-        
-        // Lưu hồ sơ mới
-        function saveNewRecord() {
-            // Validate form
-            if (!validateForm()) {
-                return;
-            }
-            
-            // Lấy dữ liệu từ form
-            const formData = {
-                patientName: document.getElementById('patientName').value,
-                patientCode: document.getElementById('patientCode').value,
-                insuranceNumber: document.getElementById('insuranceNumber').value,
-                patientDOB: document.getElementById('patientDOB').value,
-                patientGender: document.getElementById('patientGender').value,
-                examinationDate: document.getElementById('examinationDate').value,
-                department: document.getElementById('department').value,
-                doctor: document.getElementById('doctor').value,
-                serviceCode: document.getElementById('serviceCode').value,
-                serviceName: document.getElementById('serviceName').value,
-                quantity: document.getElementById('quantity').value,
-                unitPrice: document.getElementById('unitPrice').value,
-                expenseType: document.getElementById('expenseType').value,
-                dataEntryPerson: document.getElementById('dataEntryPerson').value,
-                notes: document.getElementById('notes').value
-            };
-            
-            console.log('Saving new medical insurance record:', formData);
-            alert('✅ Hồ sơ BHYT đã được lưu thành công!');
-            closeAddRecordModal();
-        }
-        
-        // Lưu và gửi lên cổng
-        function saveAndSendRecord() {
-            saveNewRecord();
-            alert('✅ Hồ sơ BHYT đã được lưu và gửi lên cổng quốc gia!');
-        }
-        
-        // Validate form
-        function validateForm() {
-            const requiredFields = document.querySelectorAll('#addRecordModal [required]');
-            let isValid = true;
-            
-            requiredFields.forEach(field => {
-                if (!field.value.trim()) {
-                    field.classList.add('input-error');
-                    isValid = false;
-                } else {
-                    field.classList.remove('input-error');
-                }
-            });
-            
-            if (!isValid) {
-                alert('❌ Vui lòng điền đầy đủ tất cả các trường bắt buộc!');
-            }
-            
-            return isValid;
-        }
-        
-        // Hiển thị modal nhập hàng loạt
-        function showBatchUploadModal() {
-            document.getElementById('batchUploadModal').style.display = 'flex';
-        }
-        
-        // Đóng modal nhập hàng loạt
-        function closeBatchUploadModal() {
-            document.getElementById('batchUploadModal').style.display = 'none';
-        }
-        
-        // Tải mẫu Excel
-        function downloadTemplate() {
-            console.log('Downloading Excel template');
-            alert('📥 Đang tải mẫu Excel...');
-        }
-        
-        // Hiển thị hướng dẫn nhập
-        function viewImportGuide() {
-            console.log('Viewing import guide');
-            alert('📚 Hướng dẫn nhập sẽ được mở trong cửa sổ mới');
-        }
-        
-        // Hiển thị modal cấu hình
-        function showConfigModal() {
-            document.getElementById('configModal').style.display = 'flex';
-        }
-        
-        // Đóng modal cấu hình
-        function closeConfigModal() {
-            document.getElementById('configModal').style.display = 'none';
-        }
-        
-        // Lưu cấu hình
-        function saveConfig() {
-            const configData = {
-                portalUrl: document.getElementById('portalUrl').value,
-                apiVersion: document.getElementById('apiVersion').value,
-                unitCode: document.getElementById('unitCode').value,
-                accessToken: document.getElementById('accessToken').value,
-                timeout: document.getElementById('timeout').value
-            };
-            
-            console.log('Saving configuration:', configData);
-            alert('✅ Cấu hình đã được lưu thành công!');
-            closeConfigModal();
-        }
-        
-        // Kiểm tra kết nối
-        function testConnection() {
-            console.log('Testing connection to insurance portal');
-            alert('🔄 Đang kiểm tra kết nối đến cổng BHYT...\n✅ Kết nối thành công!');
-        }
-        
-        // Sửa bản ghi
-        function editRecord(id) {
-            console.log('Editing record:', id);
-            alert(`Sửa bản ghi số ${id}`);
-        }
-        
-        // Xem bản ghi
-        function viewRecord(id) {
-            console.log('Viewing record:', id);
-            alert(`Xem chi tiết bản ghi số ${id}`);
-        }
-        
-        // Xóa bản ghi
-        function deleteRecord(id) {
-            if (confirm(`Bạn có chắc chắn muốn xóa bản ghi số ${id}?`)) {
-                console.log('Deleting record:', id);
-                alert(`✅ Bản ghi số ${id} đã được xóa!`);
-            }
-        }
-        
-        // Gửi lại bản ghi
-        function resendRecord(id) {
-            console.log('Resending record:', id);
-            alert(`🔄 Đang gửi lại bản ghi số ${id} lên cổng...`);
-        }
-        
-        // Xuất Excel
-        function exportToExcel() {
-            console.log('Exporting data to Excel');
-            alert('📊 Đang xuất dữ liệu ra file Excel...');
-        }
-        
-        // Lưu tất cả dữ liệu
-        function saveAllData() {
-            console.log('Saving all data');
-            alert('💾 Tất cả dữ liệu đã được lưu thành công!');
-        }
-        
-        // Gửi lên cổng BHYT
-        function sendToInsurancePortal() {
-            if (confirm('Bạn muốn gửi tất cả hồ sơ chưa gửi lên cổng BHYT?')) {
-                console.log('Sending data to insurance portal');
-                alert('📤 Đang gửi dữ liệu lên cổng BHYT quốc gia...');
-            }
-        }
-        
-        // Xử lý upload file hàng loạt
-        document.getElementById('batchFileInput').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                console.log('Uploading batch file:', file.name);
-                alert(`📁 Đang xử lý file: ${file.name}`);
-            }
-        });
-        
-        // Phân trang
-        document.querySelectorAll('.page-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                // Ở đây sẽ tải dữ liệu cho trang được chọn
-                console.log('Loading page:', this.textContent);
-            });
-        });
-    </script>
+
+                // Phân trang
+                document.querySelectorAll('.page-btn').forEach(btn => {
+                    btn.addEventListener('click', function () {
+                        document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
+                        this.classList.add('active');
+                        // Ở đây sẽ tải dữ liệu cho trang được chọn
+                        console.log('Loading page:', this.textContent);
+                    });
+                });
+            </script>
 </body>
 
 </html>
