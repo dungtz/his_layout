@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HIS - Khám bệnh Y học cổ truyền</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        /* Biến CSS */
+        :root {
+            --primary: #2E7D32; /* Màu chủ đạo cho YHCT - xanh lá cây */
+            --primary-light: #4CAF50;
+            --primary-dark: #1B5E20;
+            --secondary: #8D6E63; /* Màu phụ - gỗ */
+            --warning: #F57F17;
+            --danger: #D32F2F;
+            --success: #4CAF50;
+            --light: #F5F5F5;
+            --line: #E0E0E0;
+            --text-primary: #333333;
+            --text-secondary: #757575;
+        }
+
+        /* Căn chỉnh chung */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light);
+            color: var(--text-primary);
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar trái: Danh sách bệnh nhân */
+        .sidebar-left {
+            width: 320px;
+            background-color: white;
+            border-right: 1px solid var(--line);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--line);
+            position: sticky;
+            top: 0;
+            background-color: white;
+            z-index: 10;
+        }
+
+        .department-selector {
+            display: flex;
+            gap: 8px;
+            margin: 12px;
+        }
+
+        .patient-list {
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .patient-item {
+            padding: 12px;
+            border-bottom: 1px solid var(--line);
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .patient-item:hover {
+            background-color: #F9FFF9;
+        }
+
+        .patient-item.active {
+            background-color: #E8F5E9;
+            border-left: 3px solid var(--primary);
+        }
+
+        .patient-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .patient-status {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-examining {
+            background-color: #E3F2FD;
+            color: #1976D2;
+        }
+
+        .status-waiting {
+            background-color: #FFF8E1;
+            color: #FF8F00;
+        }
+
+        .status-completed {
+            background-color: #E8F5E9;
+            color: var(--primary-dark);
+        }
+
+        /* Lịch sử khám bệnh */
+        .history-section {
+            height: 40%;
+            border-top: 1px solid var(--line);
+            padding: 12px;
+            overflow-y: auto;
+        }
+
+        .history-card {
+            background-color: #f5f7fa;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--primary);
+        }
+
+        /* Main content: Phần khám bệnh */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            background-color: #FAFAFA;
+        }
+
+        .section {
+            background-color: white;
+            margin: 12px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 16px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 0;
+            margin-bottom: 16px;
+            color: var(--primary-dark);
+            border-bottom: 1px solid var(--line);
+            padding-bottom: 8px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .card {
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            margin-bottom: 16px;
+            background-color: white;
+        }
+
+        .card-header {
+            padding: 12px;
+            background-color: #F1F8E9;
+            border-bottom: 1px solid var(--line);
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        .card-body {
+            padding: 12px;
+        }
+
+        .field {
+            margin-bottom: 12px;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .field input,
+        .field textarea,
+        .field select {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .field textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .detail-info {
+            background-color: white;
+            padding: 16px;
+            border-radius: 8px;
+        }
+
+        .detail-row {
+            margin-bottom: 8px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 2px;
+        }
+
+        .detail-value {
+            font-weight: 500;
+        }
+
+        /* Sidebar phải: Chỉ định, đơn thuốc, file đính kèm */
+        .sidebar-right {
+            width: 320px;
+            background-color: white;
+            border-left: 1px solid var(--line);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .diagnosis-list,
+        .prescription-list,
+        .file-list {
+            overflow-y: auto;
+        }
+
+        .diagnosis-item,
+        .prescription-item,
+        .file-item {
+            padding: 12px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .footer-actions {
+            padding: 12px;
+            border-top: 1px solid var(--line);
+            display: flex;
+            gap: 10px;
+            background-color: white;
+        }
+
+        /* Button styles */
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn.primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn.secondary {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .btn.warning {
+            background-color: var(--warning);
+            color: white;
+        }
+
+        .btn.danger {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        /* Tinh chất huyết */
+        .blood-quality-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .blood-quality-item {
+            text-align: center;
+            padding: 12px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            background-color: #FAFAFA;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .blood-quality-item:hover {
+            background-color: #F1F8E9;
+            border-color: var(--primary);
+        }
+
+        .blood-quality-item.selected {
+            background-color: #E8F5E9;
+            border-color: var(--primary);
+            font-weight: 600;
+        }
+
+        .blood-quality-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Chẩn đoán y học cổ truyền */
+        .tcm-diagnosis-section {
+            margin-bottom: 16px;
+        }
+
+        .tcm-diagnosis-section h4 {
+            color: var(--primary-dark);
+            margin-top: 0;
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--line);
+            padding-bottom: 8px;
+        }
+
+        .diagnosis-checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .diagnosis-checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .modal-body {
+            padding: 16px;
+        }
+
+        .modal-footer {
+            padding: 16px;
+            border-top: 1px solid var(--line);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Sidebar trái: Danh sách bệnh nhân -->
+        <div class="sidebar-left">
+            <div class="header">
+                <a href="home.html" style="display: flex; align-items: center;">
+                    <div style="width: 40px; height: 40px; background-color: var(--primary); border-radius: 4px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px;">
+                        HIS
+                    </div>
+                </a>
+                <button class="btn primary" style="font-size: 12px; padding: 6px 12px;">Bệnh nhân tiếp theo</button>
+            </div>
+            
+            <div class="department-selector">
+                <select style="flex: 1; padding: 6px 8px; border-radius: 4px; border: 1px solid var(--line);">
+                    <option value="">Chọn khoa</option>
+                    <option value="tc">Khoa Y học cổ truyền</option>
+                    <option value="nam">Khoa Nam y</option>
+                    <option value="thuoc">Phòng thuốc đông y</option>
+                    <option value="hinhthuc">Phòng hình thức</option>
+                </select>
+                <select style="flex: 1; padding: 6px 8px; border-radius: 4px; border: 1px solid var(--line);">
+                    <option value="">Chọn phòng</option>
+                    <option value="p1">Phòng 1</option>
+                    <option value="p2">Phòng 2</option>
+                    <option value="p3">Phòng 3</option>
+                    <option value="p4">Phòng 4</option>
+                </select>
+            </div>
+
+            <div class="patient-list">
+                <!-- Bệnh nhân đang khám -->
+                <div class="patient-item active">
+                    <div class="patient-info">
+                        <div>
+                            <h3>Nguyễn Văn A</h3>
+                            <p>Tuổi: 35 | Nam</p>
+                            <p>Thời gian đến: 09:30</p>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px; align-items: flex-end;">
+                            <span class="patient-status status-examining">Đang khám</span>
+                            <button class="btn danger" style="font-size: 11px; padding: 4px 8px;">Bỏ qua</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Bệnh nhân chờ -->
+                <div class="patient-item">
+                    <div class="patient-info">
+                        <div>
+                            <h3>Trần Thị B</h3>
+                            <p>Tuổi: 42 | Nữ</p>
+                            <p>Thời gian đến: 09:45</p>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px; align-items: flex-end;">
+                            <span class="patient-status status-waiting">Chờ khám</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Bệnh nhân chờ -->
+                <div class="patient-item">
+                    <div class="patient-info">
+                        <div>
+                            <h3>Phạm Văn C</h3>
+                            <p>Tuổi: 50 | Nam</p>
+                            <p>Thời gian đến: 10:00</p>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px; align-items: flex-end;">
+                            <span class="patient-status status-waiting">Chờ khám</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Bệnh nhân đã khám -->
+                <div class="patient-item">
+                    <div class="patient-info">
+                        <div>
+                            <h3>Lê Thị D</h3>
+                            <p>Tuổi: 28 | Nữ</p>
+                            <p>Thời gian đến: 08:30</p>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px; align-items: flex-end;">
+                            <span class="patient-status status-completed">Đã khám</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="history-section">
+                <h3 style="margin-top: 0; margin-bottom: 12px; font-size: 16px; color: var(--primary-dark);">Lịch sử khám bệnh</h3>
+                <div id="patient-history">
+                    <!-- Thẻ lịch sử khám bệnh 1 -->
+                    <div class="history-card">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                            <div>
+                                <div style="font-weight: 600; color: var(--text-primary);">Ngày khám: 15/04/2023</div>
+                                <div style="color: var(--text-secondary); font-size: 13px; margin-top: 2px;">Bác sĩ: BS. Lý Trung Quốc</div>
+                            </div>
+                            <button class="btn primary" style="font-size: 11px; padding: 4px 8px;">Xem</button>
+                        </div>
+                        <div style="color: var(--text-secondary); font-size: 13px;">Chẩn đoán: Kém khí huyết, nhiệt trung</div>
+                    </div>
+
+                    <!-- Thẻ lịch sử khám bệnh 2 -->
+                    <div class="history-card">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                            <div>
+                                <div style="font-weight: 600; color: var(--text-primary);">Ngày khám: 22/03/2023</div>
+                                <div style="color: var(--text-secondary); font-size: 13px; margin-top: 2px;">Bác sĩ: BS. Wang Wei</div>
+                            </div>
+                            <button class="btn primary" style="font-size: 11px; padding: 4px 8px;">Xem</button>
+                        </div>
+                        <div style="color: var(--text-secondary); font-size: 13px;">Chẩn đoán: Cảm mạo mùa xuân</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main content: Phần khám bệnh y học cổ truyền -->
+        <div class="main-content">
+            <!-- Thông tin bệnh nhân -->
+            <div class="section">
+                <h2 class="section-title">Thông tin bệnh nhân</h2>
+                <div class="grid-4">
+                    <div class="detail-row">
+                        <span class="detail-label">Họ và tên:</span>
+                        <span class="detail-value">Nguyễn Văn A</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Giới tính / Tuổi:</span>
+                        <span class="detail-value">Nam / 35 tuổi</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Loại hình khám:</span>
+                        <span class="detail-value">Khám bệnh</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Đối tượng khám:</span>
+                        <span class="detail-value">Bảo hiểm y tế</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Nghề nghiệp:</span>
+                        <span class="detail-value">Công an</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">CCCD:</span>
+                        <span class="detail-value">079212345678</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Loại đối tượng:</span>
+                        <span class="detail-value">Công ty</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Chẩn đoán NGT:</span>
+                        <span class="detail-value">Ho tiêu, đau bụng, mệt mỏi</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phần khám bệnh -->
+            <div class="section">
+                <h2 class="section-title">Chi tiết khám bệnh - Y học cổ truyền</h2>
+                <div class="grid-2">
+                    <div class="card">
+                        <div class="card-header">Lý do vào viện - Tình trạng sức khỏe</div>
+                        <div class="card-body">
+                            <div class="field">
+                                <label>Lý do vào viện</label>
+                                <textarea placeholder="Nhập lý do vào viện..."></textarea>
+                            </div>
+                            <div class="field">
+                                <label>Trạng thái cơ thể</label>
+                                <textarea placeholder="Nhập trạng thái cơ thể..."></textarea>
+                            </div>
+                            <div class="field">
+                                <label>Triệu chứng chính</label>
+                                <textarea placeholder="Nhập triệu chứng chính..."></textarea>
+                            </div>
+                            <div class="field">
+                                <label>Triệu chứng kèm theo</label>
+                                <textarea placeholder="Nhập triệu chứng kèm theo..."></textarea>
+                            </div>
+                            <div class="field">
+                                <label>Thời gian bắt đầu</label>
+                                <input type="text" placeholder="VD: 2 tuần trước">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">Thủ pháp kiểm tra cổ truyền</div>
+                        <div class="card-body">
+                            <div class="field">
+                                <label>Khảo sát (Xiang)</label>
+                                <textarea placeholder="Nhập thông tin khảo sát..."></textarea>
+                            </div>
+                            <div class="field">
+                                <label>Thắng âm (Wen)</label>
+                                <textarea placeholder="Nhập thông tin thắng âm..."></textarea>
+                            </div>
+                            <div class="field">
+                                <label>Hỏi bệnh (Wen)</label>
+                                <textarea placeholder="Nhập thông tin hỏi bệnh..."></textarea>
+                            </div>
+                            <div class="field">
+                                <label>Chạm (Qie)</label>
+                                <textarea placeholder="Nhập thông tin chạm..."></textarea>
+                            </div>
+                            <div class="field">
+                                <label>Tình trạng tủy</label>
+                                <select>
+                                    <option value="">Chọn tình trạng tủy</option>
+                                    <option value="da">Da</option>
+                                    <option value="huang">Hoàng</option>
+                                    <option value="chi">Chỉ</option>
+                                    <option value="hei">Hắc</option>
+                                    <option value="bai">Bạch</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phần chẩn đoán cổ truyền -->
+            <div class="section">
+                <h2 class="section-title">Chẩn đoán Y học cổ truyền</h2>
+                
+                <!-- Tinh chất huyết -->
+                <div class="tcm-diagnosis-section">
+                    <h4>Tinh chất huyết</h4>
+                    <div class="blood-quality-grid">
+                        <div class="blood-quality-item" onclick="toggleBloodQuality(this)">
+                            <div class="blood-quality-icon">🩸</div>
+                            <div>Mạnh huyết</div>
+                        </div>
+                        <div class="blood-quality-item" onclick="toggleBloodQuality(this)">
+                            <div class="blood-quality-icon">🩸</div>
+                            <div>Yếu huyết</div>
+                        </div>
+                        <div class="blood-quality-item" onclick="toggleBloodQuality(this)">
+                            <div class="blood-quality-icon">🔥</div>
+                            <div>Nhiệt huyết</div>
+                        </div>
+                        <div class="blood-quality-item" onclick="toggleBloodQuality(this)">
+                            <div class="blood-quality-icon">❄️</div>
+                            <div>Lạnh huyết</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cơ khí huyết -->
+                <div class="tcm-diagnosis-section">
+                    <h4>Cơ khí huyết</h4>
+                    <div class="diagnosis-checkbox-group">
+                        <label>
+                            <input type="checkbox" name="diagnosis" value="weak_qi">
+                            <span>Kém khí</span>
+                        </label>
+                        <label>
+                            <input type="checkbox" name="diagnosis" value="weak_blood">
+                            <span>Kém huyết</span>
+                        </label>
+                        <label>
+                            <input type="checkbox" name="diagnosis" value="blood_stasis">
+                            <span>Trệ huyết</span>
+                        </label>
+                        <label>
+                            <input type="checkbox" name="diagnosis" value="heat">
+                            <span>Nhiệt</span>
+                        </label>
+                        <label>
+                            <input type="checkbox" name="diagnosis" value="cold">
+                            <span>Lạnh</span>
+                        </label>
+                        <label>
+                            <input type="checkbox" name="diagnosis" value="dampness">
+                            <span>Âm ẩm</span>
+                        </label>
+                        <label>
+                            <input type="checkbox" name="diagnosis" value="dryness">
+                            <span>Khô</span>
+                        </label>
+                        <label>
+                            <input type="checkbox" name="diagnosis" value="wind">
+                            <span>Gió</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Chẩn đoán theo bộ phận -->
+                <div class="tcm-diagnosis-section">
+                    <h4>Chẩn đoán theo bộ phận</h4>
+                    <div class="grid-2">
+                        <div class="field">
+                            <label>Thận</label>
+                            <select>
+                                <option value="">Chọn tình trạng</option>
+                                <option value="deficiency">Thiếu</option>
+                                <option value="excess">Thừa</option>
+                                <option value="heat">Nhiệt</option>
+                                <option value="cold">Lạnh</option>
+                                <option value="normal">Bình thường</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>Gan</label>
+                            <select>
+                                <option value="">Chọn tình trạng</option>
+                                <option value="deficiency">Thiếu</option>
+                                <option value="excess">Thừa</option>
+                                <option value="heat">Nhiệt</option>
+                                <option value="cold">Lạnh</option>
+                                <option value="normal">Bình thường</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>Tỳ</label>
+                            <select>
+                                <option value="">Chọn tình trạng</option>
+                                <option value="deficiency">Thiếu</option>
+                                <option value="excess">Thừa</option>
+                                <option value="heat">Nhiệt</option>
+                                <option value="cold">Lạnh</option>
+                                <option value="normal">Bình thường</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>Phế</label>
+                            <select>
+                                <option value="">Chọn tình trạng</option>
+                                <option value="deficiency">Thiếu</option>
+                                <option value="excess">Thừa</option>
+                                <option value="heat">Nhiệt</option>
+                                <option value="cold">Lạnh</option>
+                                <option value="normal">Bình thường</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>Tim</label>
+                            <select>
+                                <option value="">Chọn tình trạng</option>
+                                <option value="deficiency">Thiếu</option>
+                                <option value="excess">Thừa</option>
+                                <option value="heat">Nhiệt</option>
+                                <option value="cold">Lạnh</option>
+                                <option value="normal">Bình thường</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chẩn đoán cuối cùng -->
+                <div class="tcm-diagnosis-section">
+                    <h4>Chẩn đoán cuối cùng</h4>
+                    <div class="field">
+                        <label>Chẩn đoán sơ bộ</label>
+                        <textarea placeholder="Nhập chẩn đoán sơ bộ..."></textarea>
+                    </div>
+                    <div class="field">
+                        <label>Chẩn đoán chính</label>
+                        <input type="text" placeholder="Nhập chẩn đoán chính...">
+                    </div>
+                    <div class="field">
+                        <label>Chẩn đoán kèm theo</label>
+                        <input type="text" placeholder="Nhập chẩn đoán kèm theo...">
+                    </div>
+                    <div class="field">
+                        <label>Chi tiết bệnh</label>
+                        <textarea placeholder="Nhập chi tiết bệnh..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-actions" style="margin: 12px;">
+                <button class="btn secondary" onclick="resetForm()">Xoá hết</button>
+                <button class="btn primary" onclick="saveExamination()">Lưu thông tin khám bệnh</button>
+                <button class="btn primary" onclick="endExamination()">Kết thúc khám</button>
+            </div>
+        </div>
+
+        <!-- Sidebar phải: Phương pháp trị liệu, đơn thuốc đông y, file đính kèm -->
+        <div class="sidebar-right">
+            <!-- Phương pháp trị liệu (33% chiều cao) -->
+            <div class="card" style="margin-bottom: 0; flex: 1; min-height: 0; display: flex; flex-direction: column;">
+                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>Phương pháp trị liệu</span>
+                    <button class="btn primary" style="font-size: 11px; padding: 4px 8px;" onclick="openTreatmentMethodPopup()">Thêm phương pháp</button>
+                </div>
+                <div class="card-body" style="flex: 1; overflow-y: auto; padding: 8px;">
+                    <div class="treatment-method-list">
+                        <div class="treatment-method-item">
+                            <h4>Thức uống thuốc đông y</h4>
+                            <p>Loại: Nội服药</p>
+                            <p>Ngày kê: 20/11/2023</p>
+                            <span class="status-badge" style="display: inline-block; padding: 2px 6px; background-color: #4CAF50; color: white; border-radius: 4px; font-size: 10px; margin-top: 4px;">Đã kê</span>
+                        </div>
+                        <div class="treatment-method-item">
+                            <h4>Thẻ bài</h4>
+                            <p>Loại: Bài needle</p>
+                            <p>Ngày thực hiện: 20/11/2023</p>
+                            <span class="status-badge" style="display: inline-block; padding: 2px 6px; background-color: #F57F17; color: white; border-radius: 4px; font-size: 10px; margin-top: 4px;">Đang thực hiện</span>
+                        </div>
+                        <div class="treatment-method-item">
+                            <h4>Phẫu thuật nhỏ</h4>
+                            <p>Loại: Đường mạch</p>
+                            <p>Ngày thực hiện: 20/11/2023</p>
+                            <span class="status-badge" style="display: inline-block; padding: 2px 6px; background-color: #F8EDDA; color: #333; border-radius: 4px; font-size: 10px; margin-top: 4px;">Chưa thực hiện</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Đơn thuốc đông y (33% chiều cao) -->
+            <div class="card" style="margin-bottom: 0; margin-top: 1px; flex: 1; min-height: 0; display: flex; flex-direction: column;">
+                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>Đơn thuốc đông y</span>
+                    <button class="btn primary" style="font-size: 11px; padding: 4px 8px;" onclick="openMedicinePopup()">Thêm đơn thuốc</button>
+                </div>
+                <div class="card-body" style="flex: 1; overflow-y: auto; padding: 8px;">
+                    <div class="prescription-list">
+                        <div class="prescription-item">
+                            <div class="prescription-info">
+                                <h4>Bộ bài: Xiao Chai Hu Tang</h4>
+                                <p>Ngày kê: 20/11/2023</p>
+                                <p>Người kê: BS. Lý Trung Quốc</p>
+                            </div>
+                            <button class="btn primary" style="font-size: 11px; padding: 4px 8px; margin-top: 8px; width: 100%;">Xem</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- File đính kèm (33% chiều cao) -->
+            <div class="card" style="margin-top: 1px; flex: 1; min-height: 0; display: flex; flex-direction: column;">
+                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>File đính kèm (1/2)</span>
+                    <button class="btn primary" style="font-size: 11px; padding: 4px 8px;" onclick="openFileUploadPopup()">Thêm file</button>
+                </div>
+                <div class="card-body" style="flex: 1; overflow-y: auto; padding: 8px;">
+                    <div class="file-list">
+                        <!-- File mẫu 1 -->
+                        <div class="file-item">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <div>
+                                    <div style="display: flex; align-items: center; gap: 6px;">
+                                        <div style="font-weight: 500; font-size: 13px;">Kết quả chẩn đoán.pdf</div>
+                                        <span class="badge" style="background-color: #4CAF50; color: white; padding: 2px 6px; font-size: 10px; border-radius: 10px; display: inline-block;">Đã ký</span>
+                                    </div>
+                                    <div style="font-size: 11px; color: var(--text-secondary);">20/11/2023 - 2.5MB</div>
+                                </div>
+                            </div>
+                            <button class="btn primary" style="font-size: 11px; padding: 4px 8px; margin-top: 8px; width: 100%;">Xem</button>
+                        </div>
+
+                        <!-- File mẫu 2 -->
+                        <div class="file-item">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <div>
+                                    <div style="display: flex; align-items: center; gap: 6px;">
+                                        <div style="font-weight: 500; font-size: 13px;">Hình ảnh bài thuốc.jpg</div>
+                                        <span class="badge" style="background-color: #D32F2F; color: white; padding: 2px 6px; font-size: 10px; border-radius: 10px; display: inline-block;">Chưa ký</span>
+                                    </div>
+                                    <div style="font-size: 11px; color: var(--text-secondary);">20/11/2023 - 5.8MB</div>
+                                </div>
+                            </div>
+                            <button class="btn primary" style="font-size: 11px; padding: 4px 8px; margin-top: 8px; width: 100%;">Xem</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-actions">
+                <button class="btn secondary" style="flex: 1;">Hồ sơ BHYT</button>
+                <button class="btn secondary" style="flex: 1;">Bệnh án điện tử</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal thêm phương pháp trị liệu -->
+    <div id="treatmentMethodModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Thêm phương pháp trị liệu</h3>
+                <button class="modal-close" onclick="closeModal('treatmentMethodModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="treatment-type">Loại phương pháp</label>
+                    <select id="treatment-type">
+                        <option value="">Chọn loại phương pháp</option>
+                        <option value="internal">Thuốc uống</option>
+                        <option value="acupuncture">Châm cứu</option>
+                        <option value="moxibustion">Cửu liệu</option>
+                        <option value="massage">Xoa bóp</option>
+                        <option value="cupping">Hú huyết</option>
+                        <option value="herbal_pack">Băng thuốc</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="treatment-name">Tên phương pháp</label>
+                    <input type="text" id="treatment-name" placeholder="Nhập tên phương pháp...">
+                </div>
+                <div class="form-group">
+                    <label for="treatment-description">Mô tả</label>
+                    <textarea id="treatment-description" placeholder="Nhập mô tả phương pháp..." rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="treatment-duration">Thời gian thực hiện</label>
+                    <input type="text" id="treatment-duration" placeholder="VD: 30 phút">
+                </div>
+                <div class="form-group">
+                    <label for="treatment-notes">Lưu ý</label>
+                    <textarea id="treatment-notes" placeholder="Nhập lưu ý..." rows="2"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn secondary" onclick="closeModal('treatmentMethodModal')">Hủy</button>
+                <button class="btn primary" onclick="saveTreatmentMethod()">Lưu phương pháp</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal thêm đơn thuốc -->
+    <div id="medicineModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Thêm đơn thuốc đông y</h3>
+                <button class="modal-close" onclick="closeModal('medicineModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="prescription-type">Loại đơn thuốc</label>
+                    <select id="prescription-type">
+                        <option value="">Chọn loại đơn thuốc</option>
+                        <option value="decoction">Thức uống</option>
+                        <option value="powder">Bột</option>
+                        <option value="pill">Viên</option>
+                        <option value="paste">Nên</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="prescription-name">Tên đơn thuốc</label>
+                    <input type="text" id="prescription-name" placeholder="Nhập tên đơn thuốc...">
+                </div>
+                <div class="form-group">
+                    <label for="herb-components">Thành phần thảo dược</label>
+                    <textarea id="herb-components" placeholder="Nhập thành phần thảo dược..." rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="dosage">Liều lượng</label>
+                    <input type="text" id="dosage" placeholder="Nhập liều lượng...">
+                </div>
+                <div class="form-group">
+                    <label for="usage">Cách dùng</label>
+                    <textarea id="usage" placeholder="Nhập cách dùng..." rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn secondary" onclick="closeModal('medicineModal')">Hủy</button>
+                <button class="btn primary" onclick="saveMedicine()">Lưu đơn thuốc</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal tải file -->
+    <div id="fileUploadModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Tải lên file</h3>
+                <button class="modal-close" onclick="closeModal('fileUploadModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="file-type">Loại file</label>
+                    <select id="file-type">
+                        <option value="">Chọn loại file</option>
+                        <option value="report">Báo cáo chẩn đoán</option>
+                        <option value="prescription">Đơn thuốc</option>
+                        <option value="image">Hình ảnh</option>
+                        <option value="other">Khác</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="file-upload">Chọn file</label>
+                    <input type="file" id="file-upload" accept=".pdf,.jpg,.jpeg,.png,.docx">
+                </div>
+                <div class="form-group">
+                    <label for="file-description">Mô tả</label>
+                    <textarea id="file-description" placeholder="Nhập mô tả file..." rows="2"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn secondary" onclick="closeModal('fileUploadModal')">Hủy</button>
+                <button class="btn primary" onclick="uploadFile()">Tải lên</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Chức năng chọn bệnh nhân
+        document.querySelectorAll('.patient-item').forEach(item => {
+            item.addEventListener('click', function() {
+                // Xóa lớp active từ tất cả items
+                document.querySelectorAll('.patient-item').forEach(p => p.classList.remove('active'));
+                // Thêm lớp active cho item được chọn
+                this.classList.add('active');
+                // Tải thông tin bệnh nhân
+                const patientName = this.querySelector('h3').textContent;
+                loadPatientInfo(patientName);
+            });
+        });
+
+        // Tải thông tin bệnh nhân
+        function loadPatientInfo(patientName) {
+            console.log('Loading information for patient:', patientName);
+            // Cập nhật tên bệnh nhân
+            const nameElements = document.querySelectorAll('.detail-value')[0];
+            if (nameElements) {
+                nameElements.textContent = patientName;
+            }
+        }
+
+        // Chọn tinh chất huyết
+        function toggleBloodQuality(element) {
+            element.classList.toggle('selected');
+        }
+
+        // Mở modal
+        function openTreatmentMethodPopup() {
+            document.getElementById('treatmentMethodModal').style.display = 'flex';
+        }
+
+        function openMedicinePopup() {
+            document.getElementById('medicineModal').style.display = 'flex';
+        }
+
+        function openFileUploadPopup() {
+            document.getElementById('fileUploadModal').style.display = 'flex';
+        }
+
+        // Đóng modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Lưu phương pháp trị liệu
+        function saveTreatmentMethod() {
+            const type = document.getElementById('treatment-type').value;
+            const name = document.getElementById('treatment-name').value;
+            
+            if (!type || !name) {
+                alert('Vui lòng nhập đầy đủ thông tin bắt buộc!');
+                return;
+            }
+            
+            alert('✅ Phương pháp trị liệu đã được lưu thành công!');
+            closeModal('treatmentMethodModal');
+        }
+
+        // Lưu đơn thuốc
+        function saveMedicine() {
+            const type = document.getElementById('prescription-type').value;
+            const name = document.getElementById('prescription-name').value;
+            
+            if (!type || !name) {
+                alert('Vui lòng nhập đầy đủ thông tin bắt buộc!');
+                return;
+            }
+            
+            alert('✅ Đơn thuốc đông y đã được lưu thành công!');
+            closeModal('medicineModal');
+        }
+
+        // Tải file
+        function uploadFile() {
+            const type = document.getElementById('file-type').value;
+            const file = document.getElementById('file-upload').files[0];
+            
+            if (!type || !file) {
+                alert('Vui lòng chọn loại file và tệp tải lên!');
+                return;
+            }
+            
+            alert('✅ File đã được tải lên thành công!');
+            closeModal('fileUploadModal');
+        }
+
+        // Lưu thông tin khám bệnh
+        function saveExamination() {
+            alert('✅ Thông tin khám bệnh đã được lưu thành công!');
+        }
+
+        // Kết thúc khám
+        function endExamination() {
+            if (confirm('Bạn có chắc chắn muốn kết thúc khám bệnh cho bệnh nhân này?')) {
+                alert('✅ Khám bệnh đã được kết thúc!');
+                // Chuyển sang bệnh nhân tiếp theo
+                const activePatient = document.querySelector('.patient-item.active');
+                if (activePatient) {
+                    activePatient.classList.remove('active');
+                    activePatient.querySelector('.patient-status').className = 'patient-status status-completed';
+                    activePatient.querySelector('.patient-status').textContent = 'Đã khám';
+                }
+                
+                // Chọn bệnh nhân tiếp theo trong danh sách
+                const nextPatient = document.querySelector('.patient-item.status-waiting');
+                if (nextPatient) {
+                    nextPatient.classList.add('active');
+                    nextPatient.querySelector('.patient-status').className = 'patient-status status-examining';
+                    nextPatient.querySelector('.patient-status').textContent = 'Đang khám';
+                    loadPatientInfo(nextPatient.querySelector('h3').textContent);
+                }
+            }
+        }
+
+        // Xoá hết thông tin
+        function resetForm() {
+            if (confirm('Bạn có chắc chắn muốn xoá hết thông tin khám bệnh?')) {
+                document.querySelectorAll('input, textarea, select').forEach(el => {
+                    if (el.type === 'checkbox' || el.type === 'radio') {
+                        el.checked = false;
+                    } else {
+                        el.value = '';
+                    }
+                });
+                
+                // Xoá chọn tinh chất huyết
+                document.querySelectorAll('.blood-quality-item').forEach(item => {
+                    item.classList.remove('selected');
+                });
+                
+                alert('✅ Thông tin đã được xoá!');
+            }
+        }
+    </script>
+</body>
+
+</html>

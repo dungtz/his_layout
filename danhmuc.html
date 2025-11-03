@@ -96,12 +96,21 @@
             overflow-y: auto;
         }
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: var(--card);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .bar {
+      margin: auto;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      padding: 10px 16px;
+    }
 
         .header h1 {
             margin: 0;
@@ -369,9 +378,16 @@
     <div class="container">
         <!-- Sidebar: Danh sách các danh mục -->
         <div class="sidebar">
-            <a href="home.html" class="logo-link">
-                <div class="logo">HIS</div>
-            </a>
+            <header>
+            <div class="bar" style="display: flex; align-items: center; gap: 20px;">
+
+                <a href="home.html" style="display: flex; align-items: center;">
+                    <div style="width: 40px; height: 40px; background-color: #4CAF50; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px;">
+                    HIS
+                    </div>
+                </a>
+            </div>  
+        </header>
             
             <div class="nav-section">
                 <div class="nav-section-title">Danh mục chính</div>
