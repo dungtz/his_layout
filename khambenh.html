@@ -882,6 +882,167 @@
             </div>
         </div>
 
+        <!-- 弹出窗口：Kết thúc khám bệnh -->
+        <div id="endExaminationPopup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+            <div style="background-color: white; border-radius: 8px; width: 500px; max-height: 80vh; overflow-y: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                <div style="padding: 20px; border-bottom: 1px solid #eee;">
+                    <h3 style="margin: 0;">Kết thúc khám bệnh</h3>
+                </div>
+                <div style="padding: 20px;">
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: bold;">Loại kết thúc khám:</label>
+                        <select id="endExaminationType" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;" onchange="showEndExaminationForm()">
+                            <option value="">-- Chọn loại --</option>
+                            <option value="cho-ve">Cho về</option>
+                            <option value="hen-kham-lai">Hẹn khám lại</option>
+                            <option value="nhap-vien">Nhập viện</option>
+                            <option value="chuyen-vien">Chuyển viện</option>
+                            <option value="khong-kham">Không khám</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Form dành cho từng loại -->
+                    <div id="cho-ve-form" style="display: none;">
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 5px;">Hướng dẫn về nhà:</label>
+                            <textarea style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; min-height: 80px;"></textarea>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 5px;">Thuốc theo dõi:</label>
+                            <textarea style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; min-height: 60px;"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div id="hen-kham-lai-form" style="display: none;">
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 5px;">Ngày hẹn khám lại:</label>
+                            <input type="date" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 5px;">Lý do hẹn khám:</label>
+                            <textarea style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; min-height: 60px;"></textarea>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 5px;">Bộ phận chuyên khoa:</label>
+                            <input type="text" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                        </div>
+                    </div>
+                    
+                    <div id="nhap-vien-form" style="display: none;">
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 5px;">Khoa nhập viện:</label>
+                            <select style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                                <option value="">-- Chọn khoa --</option>
+                                <option value="noi-khoa">Nội khoa</option>
+                                <option value="ngoai-khoa">Ngoại khoa</option>
+                                <option value="phau-thuat">Phẫu thuật</option>
+                                <option value="sinh-hoc">Sinh học</option>
+                                <option value="khac">Khác</option>
+                            </select>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 5px;">Lý do nhập viện:</label>
+                            <textarea style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; min-height: 80px;"></textarea>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 5px;">Ngày dự kiến nhập viện:</label>
+                            <input type="date" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                        </div>
+                    </div>
+                    
+                    <div id="chuyen-vien-form" style="display: none;">
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 5px;">Bệnh viện chuyển tới:</label>
+                            <input type="text" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 5px;">Khoa chuyên môn:</label>
+                            <input type="text" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 5px;">Lý do chuyển viện:</label>
+                            <textarea style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; min-height: 80px;"></textarea>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 5px;">Tình trạng bệnh nhân:</label>
+                            <select style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                                <option value="">-- Chọn tình trạng --</option>
+                                <option value="kha">Khả</option>
+                                <option value="trung-binh">Trung bình</option>
+                                <option value="y-te">Y tế</option>
+                                <option value="nguy-khi">Nguy khi</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div id="khong-kham-form" style="display: none;">
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 5px;">Lý do không khám:</label>
+                            <textarea style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; min-height: 100px;"></textarea>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 5px;">Hướng dẫn sau:</label>
+                            <textarea style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; min-height: 60px;"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div style="padding: 15px 20px; border-top: 1px solid #eee; display: flex; justify-content: flex-end; gap: 10px;">
+                    <button class="btn" onclick="closeEndExaminationPopup()">Hủy</button>
+                    <button class="btn primary" onclick="saveEndExamination()">Lưu</button>
+                </div>
+            </div>
+        </div>
+        
+        <script>
+            // Hiển thị popup kết thúc khám
+            function endExamination() {
+                document.getElementById('endExaminationPopup').style.display = 'flex';
+            }
+            
+            // Đóng popup
+            function closeEndExaminationPopup() {
+                document.getElementById('endExaminationPopup').style.display = 'none';
+                document.getElementById('endExaminationType').value = '';
+                showEndExaminationForm(); // Reset form display
+            }
+            
+            // Hiển thị form tương ứng với loại chọn
+            function showEndExaminationForm() {
+                const type = document.getElementById('endExaminationType').value;
+                
+                // Ẩn tất cả các form
+                document.getElementById('cho-ve-form').style.display = 'none';
+                document.getElementById('hen-kham-lai-form').style.display = 'none';
+                document.getElementById('nhap-vien-form').style.display = 'none';
+                document.getElementById('chuyen-vien-form').style.display = 'none';
+                document.getElementById('khong-kham-form').style.display = 'none';
+                
+                // Hiển thị form tương ứng
+                if (type) {
+                    document.getElementById(type + '-form').style.display = 'block';
+                }
+            }
+            
+            // Lưu thông tin kết thúc khám
+            function saveEndExamination() {
+                const type = document.getElementById('endExaminationType').value;
+                
+                if (!type) {
+                    alert('Vui lòng chọn loại kết thúc khám');
+                    return;
+                }
+                
+                // Thực hiện lưu dữ liệu (giả lập)
+                alert('✅ Thông tin kết thúc khám đã được lưu!');
+                
+                // Đóng popup
+                closeEndExaminationPopup();
+                
+                // Thực hiện các hành động tiếp theo như chuyển sang bệnh nhân khác
+                // (có thể gọi hàm tương tự như trong yhct.html)
+            }
+        </script>
+        
         <!-- Sidebar phải: Chỉ định, đơn thuốc, file đính kèm -->
         <div class="sidebar-right" style="display: flex; flex-direction: column; height: 100%;">
 

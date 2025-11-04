@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>GIẤY CAM KẾT CHẤP THUẬN PHẪU THUẬT, THỦ THUẬT VÀ GÂY MÊ HỒI SỨC</title>
+  <style>
+    :root {
+      --font-main: "Times New Roman", "DejaVu Serif", serif;
+      --font-sans: "Arial", "Helvetica", sans-serif;
+      --border-color: #000;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-main);
+      font-size: 14px;
+      line-height: 1.4;
+      color: #000;
+      background: #f3f4f6;
+    }
+
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto;
+      padding: 20mm 15mm;
+      background: #fff;
+      box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+      .page {
+        width: auto;
+        min-height: auto;
+        margin: 0;
+        padding: 10mm 15mm;
+        box-shadow: none;
+      }
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+
+    .header-left {
+      text-align: left;
+      font-size: 13px;
+    }
+
+    .header-left .line-bold {
+      font-weight: bold;
+    }
+
+    .header-center {
+      text-align: center;
+      flex: 1;
+      font-size: 13px;
+    }
+
+    .header-center .country {
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .header-center .motto {
+      font-style: italic;
+    }
+
+    .header-right {
+      text-align: right;
+      font-size: 13px;
+      min-width: 100px;
+    }
+
+    hr.thin {
+      border: none;
+      border-top: 1px solid #000;
+      margin: 4px 0;
+    }
+
+    h1.title {
+      text-align: center;
+      margin: 10px 0 4px;
+      font-size: 16px;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+
+    .subtitle {
+      text-align: center;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+
+    .code-line {
+      text-align: center;
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .check-row {
+      text-align: left;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+
+    .check-row label {
+      margin-right: 16px;
+      white-space: nowrap;
+    }
+
+    .section-title {
+      margin-top: 8px;
+      margin-bottom: 4px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .section-title span {
+      text-decoration: underline;
+    }
+
+    .field-line {
+      margin-bottom: 4px;
+    }
+
+    .field-label {
+      font-weight: bold;
+    }
+
+    .field-inline {
+      border-bottom: 1px dotted #000;
+      min-width: 120px;
+      display: inline-block;
+      padding: 0 2px;
+    }
+
+    .field-inline.long {
+      min-width: 250px;
+    }
+
+    .field-inline.short {
+      min-width: 60px;
+    }
+
+    .textarea-line {
+      width: 100%;
+      min-height: 40px;
+      border: 1px dotted #000;
+      padding: 2px 4px;
+      font-family: inherit;
+      font-size: inherit;
+      resize: vertical;
+      margin-top: 2px;
+      margin-bottom: 4px;
+    }
+
+    .checkbox-group {
+      margin: 4px 0;
+      padding-left: 12px;
+    }
+
+    .checkbox-group label {
+      display: inline-block;
+      margin-right: 16px;
+      margin-bottom: 2px;
+    }
+
+    .paragraph {
+      text-align: justify;
+      margin-bottom: 4px;
+    }
+
+    .indent {
+      padding-left: 24px;
+    }
+
+    .note {
+      font-size: 12px;
+      font-style: italic;
+    }
+
+    .footer-sign {
+      margin-top: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      font-size: 13px;
+    }
+
+    .signature-block {
+      text-align: center;
+      width: 48%;
+    }
+
+    .signature-block .role {
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .signature-block .hint {
+      font-style: italic;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <div class="line-bold">SỞ Y TẾ {{tinh_thanh}}</div>
+      <div class="line-bold">{{ten_co_so_kham_chua_benh}}</div>
+      <hr class="thin" />
+    </div>
+    <div class="header-center">
+      <div class="country">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
+      <div class="motto">Độc lập - Tự do - Hạnh phúc</div>
+      <hr class="thin" />
+    </div>
+    <div class="header-right">
+      MS: 01/BV2
+    </div>
+  </div>
+
+  <!-- TITLE -->
+  <h1 class="title">GIẤY CAM KẾT CHẤP THUẬN</h1>
+  <div class="subtitle">
+    PHẪU THUẬT, THỦ THUẬT VÀ GÂY MÊ HỒI SỨC
+  </div>
+
+  <div class="check-row">
+    <label><input type="checkbox" /> Cấp cứu</label>
+    <label><input type="checkbox" /> Bán cấp</label>
+    <label><input type="checkbox" /> Chương trình/Phiên</label>
+  </div>
+
+  <div class="paragraph">
+    Chúng tôi có tên dưới đây cùng làm Bản cam kết như sau:
+  </div>
+
+  <!-- I. BÁC SỸ PHẪU THUẬT/THỦ THUẬT/GÂY MÊ HỒI SỨC -->
+  <div class="section-title">I. <span>BÁC SỸ PHẪU THUẬT/THỦ THUẬT/GÂY MÊ HỒI SỨC</span></div>
+
+  <div class="field-line">
+    <span class="field-label">Tôi tên là:</span>
+    <span class="field-inline long">{{ten_bac_si_1}}</span>
+  </div>
+
+  <div class="field-line">
+    <span class="field-label">Chức danh:</span>
+    <span class="field-inline short">{{chuc_danh_bs1}}</span>
+    &nbsp;&nbsp;Khoa:
+    <span class="field-inline short">{{khoa_bs1}}</span>
+  </div>
+
+  <div class="field-line">
+    và Bác sỹ:
+    <span class="field-inline long">{{ten_bac_si_2}}</span>
+  </div>
+
+  <div class="field-line">
+    Chức danh:
+    <span class="field-inline short">{{chuc_danh_bs2}}</span>
+    &nbsp;&nbsp;(Khoa phẫu thuật Gây mê hồi sức)
+  </div>
+
+  <div class="field-line">
+    Được phân công thực hiện phẫu thuật/thủ thuật/gây mê cho người bệnh:
+    <span class="field-inline long">{{ten_nguoi_benh}}</span>
+  </div>
+
+  <div class="field-line">
+    Chẩn đoán:
+    <span class="field-inline long">{{chan_doan_truoc_phau_thuat}}</span>
+  </div>
+
+  <div class="paragraph">
+    Chúng tôi đã tư vấn, giải thích đầy đủ, rõ ràng những thông tin liên quan đến cuộc phẫu thuật/thủ thuật/gây mê hồi sức cho người bệnh/thân nhân người bệnh về các vấn đề sau:
+  </div>
+
+  <div class="checkbox-group">
+    <label><input type="checkbox" /> Chẩn đoán</label>
+  </div>
+
+  <div class="checkbox-group">
+    <label><input type="checkbox" /> Lý do phẫu thuật/thủ thuật</label>
+  </div>
+
+  <div class="checkbox-group">
+    <label><input type="checkbox" /> Rủi ro, nguy cơ nếu không thực hiện phẫu thuật/thủ thuật</label>
+  </div>
+
+  <div class="field-line">
+    <span class="field-label">Kết quả sau phẫu thuật/thủ thuật (dự kiến):</span>
+  </div>
+  <textarea class="textarea-line">{{ket_qua_du_kien}}</textarea>
+
+  <div class="field-line">
+    Phương pháp phẫu thuật/thủ thuật dự kiến:
+  </div>
+  <div class="checkbox-group">
+    <label><input type="checkbox" /> Phẫu thuật mở</label>
+    <label><input type="checkbox" /> Phẫu thuật nội soi</label>
+    <label><input type="checkbox" /> Thủ thuật</label>
+  </div>
+
+  <div class="field-line">
+    Phương pháp gây mê hồi sức dự kiến:
+  </div>
+  <div class="checkbox-group">
+    <label><input type="checkbox" /> Mê nội khí quản</label>
+    <label><input type="checkbox" /> Mê mask thanh quản</label>
+    <label><input type="checkbox" /> Mê tĩnh mạch</label>
+  </div>
+  <div class="checkbox-group">
+    <label><input type="checkbox" /> Tê tủy sống</label>
+    <label><input type="checkbox" /> Tê ngoài màng cứng</label>
+    <label><input type="checkbox" /> Tê đám rối thần kinh</label>
+  </div>
+  <div class="checkbox-group">
+    <label><input type="checkbox" /> Tiền mê + Tê tại chỗ</label>
+    <label><input type="checkbox" /> Khác: <span class="field-inline short">{{phuong_phap_khac}}</span></label>
+  </div>
+
+  <div class="field-line">
+    Các phương pháp điều trị khác ngoài phẫu thuật/thủ thuật:
+  </div>
+  <div class="checkbox-group">
+    <label><input type="checkbox" /> Không</label>
+    <label>
+      <input type="checkbox" /> Có, cụ thể:
+      <span class="field-inline long">{{phuong_phap_dieu_tri_khac}}</span>
+    </label>
+  </div>
+
+  <div class="field-line">
+    Nguy cơ, tai biến trong và sau phẫu thuật/thủ thuật có thể xảy ra:
+  </div>
+  <div class="checkbox-group">
+    <label><input type="checkbox" /> Phản ứng thuốc</label>
+    <label><input type="checkbox" /> Suy hô hấp - tuần hoàn</label>
+    <label><input type="checkbox" /> Chảy máu</label>
+  </div>
+  <div class="checkbox-group">
+    <label><input type="checkbox" /> Nhiễm trùng</label>
+    <label><input type="checkbox" /> Tử vong</label>
+    <label>
+      <input type="checkbox" /> Nguy cơ/rủi ro khác:
+      <span class="field-inline long">{{nguy_co_khac}}</span>
+    </label>
+  </div>
+
+  <div class="paragraph">
+    Chúng tôi đã dành đủ thời gian để người bệnh/thân nhân đặt các câu hỏi liên quan đến phẫu thuật/thủ thuật/gây mê sẽ được thực hiện hoặc các mối quan tâm khác và chúng tôi đã trả lời tất cả các câu hỏi đó.
+  </div>
+
+  <div class="paragraph">
+    Chúng tôi cam kết phục vụ người bệnh bằng lương tâm và trách nhiệm của người thầy thuốc cùng với tất cả kiến thức, sự hiểu biết về chuyên môn và phương tiện hiện có của
+    <span class="field-inline long">{{ten_co_so_kham_chua_benh}}</span>
+    để nỗ lực đem lại kết quả tốt nhất cho người bệnh.
+  </div>
+
+  <!-- II. NGƯỜI BỆNH/THÂN NHÂN -->
+  <div class="section-title">II. <span>NGƯỜI BỆNH/THÂN NHÂN</span></div>
+
+  <div class="field-line">
+    Họ và tên người bệnh:
+    <span class="field-inline long">{{ten_nguoi_benh}}</span>
+    &nbsp;&nbsp;Năm sinh:
+    <span class="field-inline short">{{nam_sinh_nb}}</span>
+  </div>
+
+  <div class="field-line">
+    Họ và tên thân nhân:
+    <span class="field-inline long">{{ten_than_nhan}}</span>
+    &nbsp;&nbsp;Năm sinh:
+    <span class="field-inline short">{{nam_sinh_tn}}</span>
+  </div>
+
+  <div class="field-line">
+    Quan hệ với người bệnh:
+    <span class="field-inline short">{{quan_he_voi_nb}}</span>
+  </div>
+
+  <div class="paragraph">
+    Tôi đã được nghe các Bác sỹ giải thích và đã trao đổi với các Bác sỹ về tất cả các thông tin của cuộc phẫu thuật/thủ thuật/gây mê, những nguy cơ thường gặp có thể xảy ra trong phẫu thuật/thủ thuật/gây mê như:
+  </div>
+  <textarea class="textarea-line">{{noi_dung_nguy_co_giai_thich}}</textarea>
+
+  <div class="paragraph">
+    ...và mức độ thành công. Tôi đã hiểu lý do phải thực hiện phẫu thuật/thủ thuật/gây mê và đồng ý để Bác sỹ phẫu thuật/thủ thuật/gây mê cho tôi/thân nhân của tôi.
+  </div>
+
+  <div class="paragraph">
+    Tôi đã được tư vấn những thông tin về chi phí phẫu thuật/thủ thuật/gây mê, vật tư y tế tiêu hao dự kiến sử dụng trong cuộc phẫu thuật/thủ thuật/gây mê, tôi cam kết chi trả chi phí khám bệnh, chữa bệnh ngoài phạm vi được hưởng và mức hưởng theo quy định của pháp luật về bảo hiểm y tế và các quy định khác.
+  </div>
+
+  <div class="paragraph">
+    Tôi đồng ý để các Bác sỹ thực hiện các phẫu thuật/thủ thuật/gây mê/kiểm tra/điều trị nếu việc đó là cần thiết để cứu tính mạng hoặc ngăn ngừa tác hại nghiêm trọng cho sức khỏe của tôi/thân nhân của tôi.
+  </div>
+
+  <div class="paragraph">
+    Tôi hiểu rằng các Bác sỹ của
+    <span class="field-inline long">{{ten_co_so_kham_chua_benh}}</span>
+    sẽ làm hết lương tâm, trách nhiệm cùng với tất cả kiến thức, sự hiểu biết và phương tiện hiện có để nỗ lực đem lại kết quả tốt nhất cho tôi/thân nhân của tôi. Tuy nhiên, cũng không thể đảm bảo hoàn toàn với tôi rằng phẫu thuật/thủ thuật sẽ cải thiện tình trạng hoặc không làm cho tình trạng của tôi/thân nhân của tôi trở nên xấu đi.
+  </div>
+
+  <div class="paragraph">
+    Tôi đã đọc bản cam kết với tinh thần hoàn toàn minh mẫn và hiểu biết. Tôi đã hiểu các vấn đề mà Bác sỹ đã giải thích về tiến trình phẫu thuật/thủ thuật/gây mê cho tôi/thân nhân của tôi. Tôi xin hoàn toàn chịu trách nhiệm với quyết định đồng ý cho Bác sỹ phẫu thuật/thủ thuật cho tôi/thân nhân của tôi.
+  </div>
+
+  <div class="paragraph">
+    Sau khi nghe các Bác sỹ cho biết tình trạng bệnh của tôi/thân nhân của tôi, những nguy hiểm của bệnh nếu không thực hiện phẫu thuật/thủ thuật/gây mê hồi sức và những rủi ro có thể xảy ra do bệnh tật, do khi tiến hành phẫu thuật/thủ thuật/gây mê hồi sức; tôi tự nguyện viết giấy cam đoan này:
+  </div>
+
+  <div class="indent">
+    1. Đồng ý xin phẫu thuật, thủ thuật, gây mê hồi sức và để giấy này làm bằng chứng. <br />
+    <br />
+    2. Không đồng ý phẫu thuật, thủ thuật, gây mê hồi sức và để giấy này làm bằng chứng.
+  </div>
+
+  <div class="note indent">
+    (Câu 1 và câu 2 do người bệnh, thân nhân của người bệnh tự viết dưới đây)
+  </div>
+
+  <textarea class="textarea-line" style="min-height: 80px;">{{noi_dung_tu_viet}}</textarea>
+
+  <!-- SIGNATURES -->
+  <div class="footer-sign">
+    <div class="signature-block">
+      <div>........, ngày ...... tháng ...... năm ......</div>
+      <div class="role">PHẪU THUẬT VIÊN / BÁC SỸ THỰC HIỆN THỦ THUẬT</div>
+      <div class="hint">(Ký, ghi rõ họ tên)</div>
+      <div style="margin-top: 60px;">
+        {{chu_ky_bac_si}}
+      </div>
+    </div>
+
+    <div class="signature-block">
+      <div class="role">NGƯỜI BỆNH / THÂN NHÂN</div>
+      <div class="hint">(Ký, ghi rõ họ tên)</div>
+      <div style="margin-top: 60px;">
+        {{chu_ky_nguoi_benh_than_nhan}}
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
