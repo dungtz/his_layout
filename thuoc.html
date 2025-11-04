@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Thuốc - HIS</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+            --muted: #6b7280;
+            --line: #e5e7eb;
+            --background: #f9fafb;
+            --sidebar-width: 280px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #1f2937;
+            background-color: var(--background);
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: white;
+            border-right: 1px solid var(--line);
+            overflow-y: auto;
+        }
+
+        .logo-link {
+            display: block;
+            text-decoration: none;
+            padding: 16px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .nav-section {
+            padding: 12px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .nav-section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .nav-item:hover {
+            background-color: var(--background);
+        }
+
+        .nav-item.active {
+            background-color: #eff6ff;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .nav-item-icon {
+            margin-right: 12px;
+            font-size: 16px;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: var(--card);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .bar {
+      margin: auto;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      padding: 10px 16px;
+    }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #1f2937;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            background-color: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #f9fafb;
+        }
+
+        .btn.primary {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .btn.primary:hover {
+            background-color: #1d4ed8;
+        }
+
+        .btn.success {
+            background-color: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+
+        .btn.warning {
+            background-color: var(--warning);
+            color: white;
+            border-color: var(--warning);
+        }
+
+        .btn.danger {
+            background-color: var(--danger);
+            color: white;
+            border-color: var(--danger);
+        }
+
+        .btn.btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .card-body {
+            padding: 16px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--line);
+        }
+
+        th {
+            background-color: #f9fafb;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .filter-section {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .filter-section input,
+        .filter-section select {
+            padding: 8px 12px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .badge.success {
+            background-color: #dcfce7;
+            color: var(--success);
+        }
+
+        .badge.warning {
+            background-color: #fef3c7;
+            color: var(--warning);
+        }
+
+        .badge.danger {
+            background-color: #fee2e2;
+            color: var(--danger);
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .page-btn {
+            padding: 6px 12px;
+            border: 1px solid var(--line);
+            background-color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .page-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--muted);
+        }
+
+        .modal-body {
+            padding: 16px;
+        }
+
+        .modal-footer {
+            padding: 16px;
+            border-top: 1px solid var(--line);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--muted);
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+        
+        .tab-container {
+            border-bottom: 1px solid var(--line);
+            margin-bottom: 20px;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            border-bottom: none;
+            background-color: transparent;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
+            transition: all 0.2s;
+        }
+        
+        .tab.active {
+            background-color: white;
+            border-color: var(--line);
+            font-weight: 500;
+            color: var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar: Quản lý thuốc -->
+        <div class="sidebar">
+            <header>
+            <div class="bar" style="display: flex; align-items: center; gap: 20px;">
+
+                <a href="home.html" style="display: flex; align-items: center;">
+                    <div style="width: 40px; height: 40px; background-color: #4CAF50; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px;">
+                    HIS
+                    </div>
+                </a>
+            </div>  
+        </header>
+            
+            <div class="nav-section">
+                <div class="nav-section-title">Quản lý thuốc</div>
+                <div class="nav-item active" data-tab="medicine-list">
+                    <span class="nav-item-icon">💊</span>
+                    <span>Danh sách thuốc</span>
+                </div>
+                <div class="nav-item" data-tab="medicine-supplier">
+                    <span class="nav-item-icon">📦</span>
+                    <span>Nhà cung cấp</span>
+                </div>
+                <div class="nav-item" data-tab="medicine-import">
+                    <span class="nav-item-icon">📥</span>
+                    <span>Nhập thuốc</span>
+                </div>
+                <div class="nav-item" data-tab="medicine-export">
+                    <span class="nav-item-icon">📤</span>
+                    <span>Xuất thuốc</span>
+                </div>
+                <div class="nav-item" data-tab="medicine-return">
+                    <span class="nav-item-icon">↩️</span>
+                    <span>Trả thuốc</span>
+                </div>
+                <div class="nav-item" data-tab="medicine-inventory">
+                    <span class="nav-item-icon">📊</span>
+                    <span>Tồn kho thuốc</span>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-section-title">Kiểm soát thuốc</div>
+                <div class="nav-item" data-tab="medicine-expiry">
+                    <span class="nav-item-icon">⏰</span>
+                    <span>Thuốc sắp hết hạn</span>
+                </div>
+                <div class="nav-item" data-tab="medicine-alert">
+                    <span class="nav-item-icon">⚠️</span>
+                    <span>Cảnh báo tồn kho</span>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-section-title">Báo cáo thống kê</div>
+                <div class="nav-item" data-tab="medicine-report">
+                    <span class="nav-item-icon">📈</span>
+                    <span>Báo cáo sử dụng thuốc</span>
+                </div>
+                <div class="nav-item" data-tab="medicine-statistic">
+                    <span class="nav-item-icon">📊</span>
+                    <span>Thống kê tồn kho</span>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-section-title">Hệ thống</div>
+                <div class="nav-item" data-tab="medicine-config">
+                    <span class="nav-item-icon">⚙️</span>
+                    <span>Cấu hình</span>
+                </div>
+                <div class="nav-item" data-tab="medicine-unit">
+                    <span class="nav-item-icon">📏</span>
+                    <span>Đơn vị tính</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main content: Nội dung quản lý thuốc -->
+        <div class="main-content">
+            <div class="header">
+                <h1 id="page-title">Danh sách thuốc</h1>
+                <div class="header-actions">
+                    <button class="btn" onclick="refreshData()">🔄 Tải lại</button>
+                    <button class="btn primary" onclick="showAddModal()">➕ Thêm thuốc</button>
+                </div>
+            </div>
+
+            <!-- Bộ lọc và tìm kiếm -->
+            <div class="filter-section">
+                <input type="text" placeholder="Nhập tên thuốc hoặc mã thuốc..." id="search-input" class="search-input">
+                <select id="category-filter">
+                    <option value="">Tất cả phân loại</option>
+                    <option value="kháng sinh">Kháng sinh</option>
+                    <option value="thuốc giảm đau">Thuốc giảm đau</option>
+                    <option value="thuốc hạ nhiệt">Thuốc hạ nhiệt</option>
+                    <option value="thuốc tiêu hóa">Thuốc tiêu hóa</option>
+                    <option value="thuốc tim mạch">Thuốc tim mạch</option>
+                </select>
+                <select id="supplier-filter">
+                    <option value="">Tất cả nhà cung cấp</option>
+                    <option value="cty1">Công ty dược phẩm A</option>
+                    <option value="cty2">Công ty dược phẩm B</option>
+                    <option value="cty3">Công ty dược phẩm C</option>
+                </select>
+                <select id="status-filter">
+                    <option value="">Tất cả trạng thái</option>
+                    <option value="active">Đang sử dụng</option>
+                    <option value="inactive">Ngừng sử dụng</option>
+                    <option value="low-stock">Còn ít</option>
+                </select>
+                <button class="btn primary" onclick="filterData()">🔍 Tìm kiếm</button>
+            </div>
+
+            <!-- Nội dung quản lý thuốc -->
+            <div class="card">
+                <div class="card-header">
+                    <span>Danh sách thuốc</span>
+                    <div>
+                        <button class="btn btn-small" onclick="exportToExcel()">📊 Xuất Excel</button>
+                        <button class="btn btn-small" onclick="importFromExcel()">📥 Nhập Excel</button>
+                        <button class="btn btn-small" onclick="printMedicineList()">🖨️ In danh sách</button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table id="medicine-table">
+                        <thead>
+                            <tr>
+                                <th>MA_THUOC</th>
+                                <th>MA_PP_CHEBIEN</th>
+                                <th>MA_NHOM</th>
+                                <th>Tên thuốc</th>
+                                <th>DON_VI_TINH</th>
+                                <th>Hàm lượng</th>
+                                <th>Đường dùng</th>
+                                <th>Dạng bào chế</th>
+                                <th>SO_DANG_KY</th>
+                                <th>TT_THAU</th>
+                                <th>PHAM_VI</th>
+                                <th>TYLE_TT_BH</th>
+                                <th>MA_PTTT</th>
+                                <th>NGUON_CTRA</th>
+                                <th>TRANG_THAI</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dữ liệu thuốc -->
+                            <tr>
+                                <td>T001</td>
+                                <td>PP001</td>
+                                <td>111</td>
+                                <td>Paracetamol 500mg</td>
+                                <td>mg</td>
+                                <td>100mg</td>
+                                <td>Uống</td>
+                                <td>Viên nén</td>
+                                <td>D3942020</td>
+                                <td>1sdfff</td>
+                                <td>1</td>
+                                <td>80</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td><span class="badge success">Đang sử dụng</span></td>
+                                <td>
+                                    <button class="btn btn-small" onclick="viewMedicine('T001')">👁️</button>
+                                    <button class="btn btn-small" onclick="editMedicine('T001')">✏️</button>
+                                    <button class="btn btn-small danger" onclick="deleteMedicine('T001')">🗑️</button>
+                                </td>
+                            </tr>
+                            <!-- Dữ liệu thuốc -->
+                            <tr>
+                                <td>T001</td>
+                                <td>PP001</td>
+                                <td>111</td>
+                                <td>Paracetamol 500mg</td>
+                                <td>mg</td>
+                                <td>100mg</td>
+                                <td>Uống</td>
+                                <td>Viên nén</td>
+                                <td>D3942020</td>
+                                <td>1sdfff</td>
+                                <td>1</td>
+                                <td>80</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td><span class="badge success">Đang sử dụng</span></td>
+                                <td>
+                                    <button class="btn btn-small" onclick="viewMedicine('T001')">👁️</button>
+                                    <button class="btn btn-small" onclick="editMedicine('T001')">✏️</button>
+                                    <button class="btn btn-small danger" onclick="deleteMedicine('T001')">🗑️</button>
+                                </td>
+                            </tr>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div style="padding: 16px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--line);">
+                    <div>
+                        <strong>Tổng số bản ghi:</strong> 6
+                    </div>
+                    <div class="pagination">
+                        <button class="page-btn" onclick="prevPage()">‹</button>
+                        <button class="page-btn active" id="page-1">1</button>
+                        <button class="page-btn" id="page-2">2</button>
+                        <button class="page-btn" id="page-3">3</button>
+                        <button class="page-btn" onclick="nextPage()">›</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal thêm/sửa thuốc -->
+    <div id="medicine-modal" class="modal">
+        <div class="modal-content" style="width: 90%; height: 90%; max-width: none;">
+            <div class="modal-header">
+                <h3 id="modal-title">Thêm thuốc mới</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="medicine-form">
+                    <!-- Grid 4 cột -->
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;">
+                        <style>
+                            .modal-body input, .modal-body select, .modal-body textarea {
+                                width: 100%;
+                                box-sizing: border-box;
+                                max-width: 100%;
+                                padding: 6px 12px;
+                                margin-top: 4px;
+                            }
+                            .modal-body label {
+                                display: block;
+                                font-size: 12px;
+                                margin-bottom: 2px;
+                            }
+                            .form-group {
+                                margin-bottom: 10px;
+                            }
+                        </style>
+                        <!-- Cột 1 -->
+                        <div class="form-group">
+                            <label for="medicine-type">Loại thuốc <span style="color: red;">*</span></label>
+                            <select id="medicine-type" required>
+                                <option value="">Chọn loại thuốc</option>
+                                <option value="A">BHYT</option>
+                                <option value="B">Ngoài BHYT</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Cột 2 -->
+                        <div class="form-group">
+                            <label for="medicine-code">MA_THUOC <span style="color: red;">*</span></label>
+                            <input type="text" id="medicine-code" required>
+                        </div>
+                        
+                        <!-- Cột 2 -->
+                        <div class="form-group">
+                            <label for="medicine-name">Tên thuốc <span style="color: red;">*</span></label>
+                            <input type="text" id="medicine-name" required>
+                        </div>
+                        
+                        <!-- Cột 3 -->
+                        <div class="form-group">
+                            <label for="medicine-donvi">DON_VI_TINH <span style="color: red;">*</span></label>
+                            <select id="medicine-donvi" required>
+                                <option value="">Chọn đơn vị tính</option>
+                                <option value="hộp">Hộp</option>
+                                <option value="lít">Lít</option>
+                                <option value="ml">ml</option>
+                                <option value="mg">mg</option>
+                                <option value="g">g</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Cột 3 -->
+                        <div class="form-group">
+                            <label for="medicine-bhyt-code">Mã thuốc BHYT </label>
+                            <input type="text" id="medicine-bhyt-code" required>
+                        </div>
+                        
+                        <!-- Cột 4 -->
+                        <div class="form-group">
+                            <label for="medicine-pp">MA_PP_CHEBIEN </label>
+                            <select id="medicine-pp" required>
+                                <option value="">Chọn PP chế biến</option>
+                                <option value="PP001">PP A</option>
+                                <option value="PP002">PP B</option>
+                                <option value="PP003">PP C</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Cột 1 -->
+                        <div class="form-group">
+                            <label for="medicine-group">MA_NHOM <span style="color: red;">*</span></label>
+                            <select id="medicine-group" required>
+                                <option value="">Chọn nhóm thuốc</option>
+                                <option value="111">Nhóm A</option>
+                                <option value="222">Nhóm B</option>
+                                <option value="333">Nhóm C</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Cột 4 -->
+                        <div class="form-group">
+                            <label for="medicine-hamluong">Hàm lượng <span style="color: red;">*</span></label>
+                            <input type="text" id="medicine-hamluong" required>
+                        </div>
+                        
+                        <!-- Cột 1 -->
+                        <div class="form-group">
+                            <label for="medicine-direction">Đường dùng <span style="color: red;">*</span></label>
+                            <input type="text" id="medicine-direction" required>
+                        </div>
+                        
+                        <!-- Cột 2 -->
+                        <div class="form-group">
+                            <label for="medicine-form">Dạng bào chế<span style="color: red;">*</span></label>
+                            <select id="medicine-form" required>
+                                <option value="">Chọn dạng thuốc</option>
+                                <option value="viên nén">Viên nén</option>
+                                <option value="viên nén trụng muối">Viên nén trụng muối</option>
+                                <option value="thuốc bột">Thuốc bột</option>
+                                <option value="dạng lỏng">Dạng lỏng</option>
+                                <option value="xịt mũi">Xịt mũi</option>
+                                <option value="xịt miệng">Xịt miệng</option>
+                                <option value="thuốc tiêm">Thuốc tiêm</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Cột 3 -->
+                        <div class="form-group">
+                            <label for="medicine-so-dang-ky">SO_DANG_KY </label>
+                            <input type="text" id="medicine-so-dang-ky" required>
+                        </div>
+                        
+                        <!-- Cột 4 -->
+                        <div class="form-group">
+                            <label for="medicine-tt-thau">TT_THAU </label>
+                            <input type="text" id="medicine-tt-thau" required>
+                        </div>
+                        
+                        <!-- Cột 1 -->
+                        <div class="form-group">
+                            <label for="medicine-phamvi">PHAM_VI </label>
+                            <input type="text" id="medicine-phamvi" required>
+                        </div>
+                        
+                        <!-- Cột 2 -->
+                        <div class="form-group">
+                            <label for="medicine-tyle-tt-bh">TYLE_TT_BH </label>
+                            <input type="text" id="medicine-tyle-tt-bh" required>
+                        </div>
+                        
+                        <!-- Cột 3 -->
+                        <div class="form-group">
+                            <label for="medicine-pttt">MA_PTTT </label>
+                            <input type="text" id="medicine-pttt" required>
+                        </div>
+                        
+                        <!-- Cột 4 -->
+                        <div class="form-group">
+                            <label for="medicine-nguon-ctra">NGUON_CTRA </label>
+                            <input type="text" id="medicine-nguon-ctra" required>
+                        </div>
+                        
+                        <!-- Cột 1 -->
+                        <div class="form-group">
+                            <label for="medicine-trang-thai">TRANG_THAI <span style="color: red;">*</span></label>
+                            <select id="medicine-trang-thai" required>
+                                <option value="">Chọn trạng thái</option>
+                                <option value="hoat-dong">Hoạt động</option>
+                                <option value="khong-hoat-dong">Không hoạt động</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Cột 2 -->
+                        <div class="form-group">
+                            <label for="medicine-barcode">Mã vạch</label>
+                            <input type="text" id="medicine-barcode">
+                        </div>
+                        
+                        <!-- Cột 2 -->
+                        <div class="form-group">
+                            <label for="medicine-status">Trạng thái <span style="color: red;">*</span></label>
+                            <select id="medicine-status" required>
+                                <option value="active">Đang sử dụng</option>
+                                <option value="inactive">Ngừng sử dụng</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Dòng 2 cột cho mô tả và ghi chú -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+                        <div class="form-group">
+                            <label for="medicine-description">Mô tả</label>
+                            <textarea id="medicine-description" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="medicine-note">Ghi chú</label>
+                            <textarea id="medicine-note" rows="3"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeModal()">Hủy</button>
+                <button class="btn primary" onclick="saveMedicine()">Lưu</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Biến toàn cục để lưu trạng thái hiện tại
+        let currentTab = 'medicine-list';
+        let currentMedicineId = null;
+        let currentPage = 1;
+        const totalPages = 3;
+
+        // Khởi tạo trang
+        document.addEventListener('DOMContentLoaded', function() {
+            // Thêm sự kiện cho menu sidebar
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const tab = this.getAttribute('data-tab');
+                    if (tab) {
+                        switchTab(tab);
+                    }
+                });
+            });
+
+            // Thêm sự kiện tìm kiếm với Enter
+            document.getElementById('search-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    filterData();
+                }
+            });
+
+            // Cài đặt bảng phân trang
+            document.querySelectorAll('.page-btn[id^="page-"]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const page = parseInt(this.textContent);
+                    goToPage(page);
+                });
+            });
+
+            // Cài đặt ngày hết hạn mặc định là 1 năm sau ngày hiện tại
+            const today = new Date();
+            const nextYear = new Date(today);
+            nextYear.setFullYear(today.getFullYear() + 1);
+            const formattedDate = nextYear.toISOString().split('T')[0];
+            document.getElementById('medicine-expiry-date').value = formattedDate;
+        });
+
+        // Chuyển đổi giữa các tab chức năng
+        function switchTab(tab) {
+            // Cập nhật class active cho menu
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('data-tab') === tab) {
+                    item.classList.add('active');
+                }
+            });
+
+            // Cập nhật tiêu đề trang
+            updatePageTitle(tab);
+
+            // Lưu tab hiện tại
+            currentTab = tab;
+
+            // Tải dữ liệu tương ứng
+            loadTabData(tab);
+        }
+
+        // Cập nhật tiêu đề trang
+        function updatePageTitle(tab) {
+            const titleMap = {
+                'medicine-list': 'Danh sách thuốc',
+                'medicine-category': 'Phân loại thuốc',
+                'medicine-supplier': 'Nhà cung cấp thuốc',
+                'medicine-import': 'Nhập thuốc',
+                'medicine-export': 'Xuất thuốc',
+                'medicine-inventory': 'Tồn kho thuốc',
+                'medicine-expiry': 'Thuốc sắp hết hạn',
+                'medicine-alert': 'Cảnh báo tồn kho',
+                'medicine-return': 'Trả thuốc',
+                'medicine-report': 'Báo cáo sử dụng thuốc',
+                'medicine-statistic': 'Thống kê tồn kho',
+                'medicine-config': 'Cấu hình thuốc',
+                'medicine-unit': 'Đơn vị tính thuốc'
+            };
+            
+            const pageTitle = document.getElementById('page-title');
+            if (pageTitle && titleMap[tab]) {
+                pageTitle.textContent = titleMap[tab];
+            }
+        }
+
+        // Tải dữ liệu cho tab
+        function loadTabData(tab) {
+            console.log('Loading data for tab:', tab);
+            
+            // Ở đây sẽ gọi API để tải dữ liệu tương ứng cho từng tab
+            // Hiện tại chỉ hiển thị thông báo mẫu
+            if (tab === 'medicine-import') {
+                // Hiển thị modal nhập thuốc khi chọn tab nhập thuốc
+                showImportModal();
+            } else if (tab !== 'medicine-list') {
+                alert(`Đang chuyển đến chức năng: ${document.getElementById('page-title').textContent}`);
+            }
+        }
+
+        // Hiển thị modal thêm mới thuốc
+        function showAddModal() {
+            currentMedicineId = null;
+            document.getElementById('modal-title').textContent = 'Thêm thuốc mới';
+            
+            // Reset form
+            document.getElementById('medicine-form').reset();
+            
+            
+            // Hiển thị modal
+            document.getElementById('medicine-modal').style.display = 'flex';
+        }
+
+        // Hiển thị modal chỉnh sửa thuốc
+        function editMedicine(id) {
+            currentMedicineId = id;
+            document.getElementById('modal-title').textContent = 'Chỉnh sửa thuốc';
+            
+            // Giả lập tải dữ liệu cho chỉnh sửa
+            // Trong thực tế, đây sẽ là một вызов API để lấy thông tin thuốc theo ID
+            console.log('Editing medicine with ID:', id);
+            
+            // Mô phỏng dữ liệu mẫu dựa trên ID
+            if (id === 'T001') {
+                document.getElementById('medicine-code').value = 'T001';
+                document.getElementById('medicine-name').value = 'Paracetamol 500mg';
+                document.getElementById('medicine-form').value = 'viên nén';
+                document.getElementById('medicine-strength').value = 'Paracetamol 500mg';
+                document.getElementById('medicine-packaging').value = 'Hộp 100 viên';
+                document.getElementById('medicine-unit').value = 'hộp';
+                document.getElementById('medicine-manufacturer').value = 'Dược phẩm ABC';
+                document.getElementById('medicine-supplier').value = 'cty1';
+                document.getElementById('medicine-category').value = 'thuốc hạ nhiệt';
+                document.getElementById('medicine-barcode').value = '8938503850001';
+                document.getElementById('medicine-import-price').value = 15000;
+                document.getElementById('medicine-retail-price').value = 25000;
+                document.getElementById('medicine-stock').value = 50;
+                document.getElementById('medicine-min-stock').value = 10;
+                document.getElementById('medicine-expiry-date').value = '2025-12-31';
+                document.getElementById('medicine-status').value = 'active';
+                document.getElementById('medicine-description').value = 'Thuốc hạ nhiệt, giảm đau nhẹ đến中度';
+                document.getElementById('medicine-note').value = 'Lưu tại nhiệt độ phòng, tránh ánh sáng trực tiếp';
+            }
+            
+            // Hiển thị modal
+            document.getElementById('medicine-modal').style.display = 'flex';
+        }
+
+        // Xem chi tiết thuốc
+        function viewMedicine(id) {
+            console.log('Viewing medicine details with ID:', id);
+            alert(`Xem chi tiết thuốc với mã: ${id}`);
+        }
+
+        // Xóa thuốc
+        function deleteMedicine(id) {
+            if (confirm(`Bạn chắc chắn muốn xóa thuốc có mã ${id} không?`)) {
+                // Ở đây sẽ gọi API để xóa dữ liệu
+                console.log('Deleting medicine:', id);
+                alert('Xóa thuốc thành công!');
+                refreshData();
+            }
+        }
+
+        // Lưu thuốc
+        function saveMedicine() {
+            // Lấy dữ liệu từ form
+            const code = document.getElementById('medicine-code').value;
+            const name = document.getElementById('medicine-name').value;
+            const medicineForm = document.getElementById('medicine-form').value;
+            const strength = document.getElementById('medicine-strength').value;
+            const importPrice = document.getElementById('medicine-import-price').value;
+            const retailPrice = document.getElementById('medicine-retail-price').value;
+            
+            if (!code || !name || !medicineForm || !strength || !importPrice || !retailPrice) {
+                alert('Vui lòng nhập đầy đủ thông tin bắt buộc!');
+                return;
+            }
+            
+            // Ở đây sẽ gọi API để lưu dữ liệu
+            console.log(currentMedicineId ? 'Updating medicine:' : 'Adding new medicine:', {
+                code, name, medicineForm, strength, importPrice, retailPrice
+            });
+            
+            // Hiển thị thông báo
+            alert(currentMedicineId ? 'Cập nhật thuốc thành công!' : 'Thêm thuốc mới thành công!');
+            
+            // Đóng modal và làm mới danh sách
+            closeModal();
+            refreshData();
+        }
+
+        // Đóng modal
+        function closeModal() {
+            document.getElementById('medicine-modal').style.display = 'none';
+        }
+
+        // Làm mới dữ liệu
+        function refreshData() {
+            loadTabData(currentTab);
+        }
+
+        // Lọc dữ liệu
+        function filterData() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const categoryFilter = document.getElementById('category-filter').value;
+            const supplierFilter = document.getElementById('supplier-filter').value;
+            const statusFilter = document.getElementById('status-filter').value;
+            
+            console.log('Filtering with:', searchTerm, categoryFilter, supplierFilter, statusFilter);
+            
+            // Ở đây sẽ thực hiện lọc dữ liệu
+            alert('Lọc dữ liệu thành công!');
+        }
+
+        // Xuất Excel
+        function exportToExcel() {
+            console.log('Exporting medicine data to Excel');
+            alert('Xuất Excel thành công!');
+        }
+
+        // Nhập Excel
+        function importFromExcel() {
+            console.log('Importing medicine data from Excel');
+            alert('Vui lòng chọn file Excel để nhập dữ liệu!');
+        }
+
+        // In danh sách thuốc
+        function printMedicineList() {
+            console.log('Printing medicine list');
+            alert('Chức năng in danh sách thuốc sẽ được thực hiện!');
+        }
+
+        // Chuyển tới trang phân trang
+        function goToPage(page) {
+            if (page < 1 || page > totalPages) return;
+            
+            currentPage = page;
+            
+            // Cập nhật class active cho nút phân trang
+            document.querySelectorAll('.page-btn[id^="page-"]').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.id === `page-${page}`) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            console.log('Loading page:', page);
+            // Ở đây sẽ tải dữ liệu cho trang tương ứng
+        }
+
+        // Trang trước
+        function prevPage() {
+            if (currentPage > 1) {
+                goToPage(currentPage - 1);
+            }
+        }
+
+        // Trang sau
+        function nextPage() {
+            if (currentPage < totalPages) {
+                goToPage(currentPage + 1);
+            }
+        }
+
+        // ====== Chức năng nhập thuốc ======
+        // Modal phiếu nhập thuốc
+        function showImportModal() {
+            document.getElementById('import-modal-title').textContent = 'Thêm phiếu nhập thuốc';
+            
+            // Reset form
+            document.getElementById('import-form').reset();
+            document.getElementById('import-medicine-body').innerHTML = '';
+            document.getElementById('import-total-amount').value = '0';
+            
+            // Tạo mã phiếu nhập tự động
+            const today = new Date();
+            const code = 'PN' + today.getFullYear() + 
+                       String(today.getMonth() + 1).padStart(2, '0') + 
+                       String(today.getDate()).padStart(2, '0') + 
+                       String(Math.floor(Math.random() * 1000)).padStart(3, '0');
+            document.getElementById('import-code').value = code;
+            
+            // Set ngày hiện tại
+            document.getElementById('import-date').value = today.toISOString().split('T')[0];
+            
+            // Hiển thị modal
+            document.getElementById('import-modal').style.display = 'flex';
+        }
+
+        // Đóng modal nhập thuốc
+        function closeImportModal() {
+            document.getElementById('import-modal').style.display = 'none';
+        }
+
+        // Lưu phiếu nhập
+        function saveImport() {
+            // Lấy dữ liệu phiếu nhập
+            const importData = {
+                code: document.getElementById('import-code').value,
+                date: document.getElementById('import-date').value,
+                supplier: document.getElementById('import-supplier').value,
+                staff: document.getElementById('import-staff').value,
+                reference: document.getElementById('import-reference').value,
+                status: document.getElementById('import-status').value,
+                note: document.getElementById('import-note').value,
+                totalAmount: document.getElementById('import-total-amount').value
+            };
+            
+            console.log('Saving import:', importData);
+            alert('Lưu phiếu nhập thành công!');
+        }
+
+        // Xác nhận nhập kho
+        function confirmImport() {
+            if (confirm('Xác nhận nhập kho thuốc?')) {
+                document.getElementById('import-status').value = 'confirmed';
+                saveImport();
+                alert('Xác nhận nhập kho thành công!');
+                closeImportModal();
+            }
+        }
+
+        // Xem phiếu nhập
+        function viewImport(id) {
+            console.log('Viewing import with ID:', id);
+            alert(`Xem phiếu nhập: ${id}`);
+        }
+
+        // Sửa phiếu nhập
+        function editImport(id) {
+            console.log('Editing import with ID:', id);
+            alert(`Chỉnh sửa phiếu nhập: ${id}`);
+        }
+
+        // Xóa phiếu nhập
+        function deleteImport(id) {
+            if (confirm(`Bạn chắc chắn muốn xóa phiếu nhập ${id} không?`)) {
+                console.log('Deleting import:', id);
+                alert('Xóa phiếu nhập thành công!');
+            }
+        }
+
+        // Thêm thuốc vào phiếu nhập
+        function addMedicineToImport() {
+            document.getElementById('select-medicine-modal').style.display = 'flex';
+        }
+
+        // Đóng modal chọn thuốc
+        function closeSelectMedicineModal() {
+            document.getElementById('select-medicine-modal').style.display = 'none';
+        }
+
+        // Lọc thuốc trong modal chọn
+        function filterSelectMedicine() {
+            const searchTerm = document.getElementById('select-medicine-search').value.toLowerCase();
+            console.log('Filtering medicines:', searchTerm);
+            // Thực hiện lọc dữ liệu
+        }
+
+        // Chọn thuốc
+        function selectMedicine(code, name, unit) {
+            const tbody = document.getElementById('import-medicine-body');
+            const rowCount = tbody.rows.length + 1;
+            
+            // Tạo dòng mới
+            const row = tbody.insertRow();
+            row.innerHTML = `
+                <td>${rowCount}</td>
+                <td><input type="text" value="${code}" readonly style="width: 80px;"></td>
+                <td><input type="text" value="${name}" readonly style="width: 200px;"></td>
+                <td><input type="text" value="${unit}" readonly style="width: 80px;"></td>
+                <td><input type="number" onchange="calculateTotalAmount()" min="1" value="1" style="width: 100px;"></td>
+                <td><input type="number" onchange="calculateTotalAmount()" min="0" step="1000" value="0" style="width: 120px;"></td>
+                <td><input type="text" readonly class="amount-cell" value="0" style="width: 120px; text-align: right;"></td>
+                <td><input type="date" style="width: 120px;"></td>
+                <td><input type="text" style="width: 150px;"></td>
+                <td><button class="btn btn-small danger" onclick="removeImportMedicine(this)">🗑️</button></td>
+            `;
+            
+            // Đóng modal chọn thuốc
+            closeSelectMedicineModal();
+            
+            // Tính toán lại tổng tiền
+            calculateTotalAmount();
+        }
+
+        // Xóa thuốc khỏi phiếu nhập
+        function removeImportMedicine(button) {
+            const row = button.closest('tr');
+            row.remove();
+            
+            // Cập nhật số thứ tự
+            const tbody = document.getElementById('import-medicine-body');
+            for (let i = 0; i < tbody.rows.length; i++) {
+                tbody.rows[i].cells[0].textContent = i + 1;
+            }
+            
+            // Tính toán lại tổng tiền
+            calculateTotalAmount();
+        }
+
+        // Tính tổng tiền phiếu nhập
+        function calculateTotalAmount() {
+            const tbody = document.getElementById('import-medicine-body');
+            let total = 0;
+            
+            for (let i = 0; i < tbody.rows.length; i++) {
+                const row = tbody.rows[i];
+                const quantity = parseInt(row.cells[4].querySelector('input').value) || 0;
+                const price = parseInt(row.cells[5].querySelector('input').value) || 0;
+                const amount = quantity * price;
+                
+                // Cập nhật thành tiền cho dòng
+                row.cells[6].querySelector('input').value = amount.toLocaleString();
+                total += amount;
+            }
+            
+            // Cập nhật tổng tiền
+            document.getElementById('import-total-amount').value = total.toLocaleString();
+        }
+    </script>
+
+    <!-- Modal phiếu nhập thuốc -->
+    <div id="import-modal" class="modal">
+        <div class="modal-content" style="width: 95%; height: 95%; max-width: none;">
+            <div class="modal-header">
+                <h3 id="import-modal-title">Thêm phiếu nhập thuốc</h3>
+                <button class="modal-close" onclick="closeImportModal()">&times;</button>
+            </div>
+            <div class="modal-body" style="overflow-y: auto;">
+                <form id="import-form">
+                    <!-- Thông tin phiếu nhập -->
+                    <div class="section-title">Thông tin phiếu nhập</div>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px;">
+                        <div class="form-group">
+                            <label for="import-code">Mã phiếu nhập <span style="color: red;">*</span></label>
+                            <input type="text" id="import-code" required readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="import-date">Ngày nhập <span style="color: red;">*</span></label>
+                            <input type="date" id="import-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="import-supplier">Nhà cung cấp <span style="color: red;">*</span></label>
+                            <select id="import-supplier" required>
+                                <option value="">Chọn nhà cung cấp</option>
+                                <option value="cty1">Công ty dược phẩm A</option>
+                                <option value="cty2">Công ty dược phẩm B</option>
+                                <option value="cty3">Công ty dược phẩm C</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="import-staff">Nhân viên nhập <span style="color: red;">*</span></label>
+                            <select id="import-staff" required>
+                                <option value="NV001">NV001 - Nguyễn Văn A</option>
+                                <option value="NV002">NV002 - Trần Thị B</option>
+                                <option value="NV003">NV003 - Lê Văn C</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="import-reference">Số hóa đơn/đề nghị</label>
+                            <input type="text" id="import-reference">
+                        </div>
+                        <div class="form-group">
+                            <label for="import-status">Trạng thái <span style="color: red;">*</span></label>
+                            <select id="import-status" required>
+                                <option value="pending">Chờ xác nhận</option>
+                                <option value="confirmed">Đã xác nhận</option>
+                                <option value="canceled">Đã hủy</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Danh sách thuốc nhập -->
+                    <div class="section-title">Danh sách thuốc nhập</div>
+                    <div style="margin-bottom: 15px;">
+                        <button type="button" class="btn primary" onclick="addMedicineToImport()">➕ Thêm thuốc</button>
+                    </div>
+                    <div class="table-container" style="margin-bottom: 20px;">
+                        <table id="import-medicine-table">
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Mã thuốc</th>
+                                    <th>Tên thuốc</th>
+                                    <th>Đơn vị tính</th>
+                                    <th>Số lượng</th>
+                                    <th>Đơn giá</th>
+                                    <th>Thành tiền</th>
+                                    <th>Hạn sử dụng</th>
+                                    <th>Ghi chú</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="import-medicine-body">
+                                <!-- Dòng thuốc sẽ được thêm khi chọn thuốc -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Tổng tiền -->
+                    <div style="display: flex; justify-content: flex-end; gap: 15px; margin-bottom: 20px;">
+                        <div class="form-group" style="width: 250px;">
+                            <label for="import-total-amount">Tổng tiền (VND)</label>
+                            <input type="text" id="import-total-amount" readonly style="font-weight: bold; text-align: right;">
+                        </div>
+                    </div>
+
+                    <!-- Ghi chú -->
+                    <div class="form-group">
+                        <label for="import-note">Ghi chú</label>
+                        <textarea id="import-note" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeImportModal()">Hủy</button>
+                <button class="btn primary" onclick="saveImport()">Lưu</button>
+                <button class="btn success" onclick="confirmImport()">Xác nhận nhập kho</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal chọn thuốc -->
+    <div id="select-medicine-modal" class="modal">
+        <div class="modal-content" style="width: 90%; height: 80%; max-width: none;">
+            <div class="modal-header">
+                <h3>Chọn thuốc</h3>
+                <button class="modal-close" onclick="closeSelectMedicineModal()">&times;</button>
+            </div>
+            <div class="modal-body" style="overflow-y: auto;">
+                <div class="filter-section" style="margin-bottom: 15px;">
+                    <input type="text" placeholder="Nhập tên thuốc hoặc mã thuốc..." id="select-medicine-search" class="search-input">
+                    <button class="btn primary" onclick="filterSelectMedicine()">🔍 Tìm kiếm</button>
+                </div>
+                <div class="table-container">
+                    <table id="select-medicine-table">
+                        <thead>
+                            <tr>
+                                <th>Mã thuốc</th>
+                                <th>Tên thuốc</th>
+                                <th>Đơn vị tính</th>
+                                <th>Hàm lượng</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dữ liệu mẫu thuốc -->
+                            <tr>
+                                <td>T001</td>
+                                <td>Paracetamol 500mg</td>
+                                <td>Viên</td>
+                                <td>500mg</td>
+                                <td><span class="badge success">Đang sử dụng</span></td>
+                                <td>
+                                    <button class="btn btn-small primary" onclick="selectMedicine('T001', 'Paracetamol 500mg', 'Viên')">Chọn</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>T002</td>
+                                <td>Amoxicillin 500mg</td>
+                                <td>Viên</td>
+                                <td>500mg</td>
+                                <td><span class="badge success">Đang sử dụng</span></td>
+                                <td>
+                                    <button class="btn btn-small primary" onclick="selectMedicine('T002', 'Amoxicillin 500mg', 'Viên')">Chọn</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>T003</td>
+                                <td>Omeprazole 20mg</td>
+                                <td>Viên</td>
+                                <td>20mg</td>
+                                <td><span class="badge success">Đang sử dụng</span></td>
+                                <td>
+                                    <button class="btn btn-small primary" onclick="selectMedicine('T003', 'Omeprazole 20mg', 'Viên')">Chọn</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>T004</td>
+                                <td>Cetirizine 10mg</td>
+                                <td>Viên</td>
+                                <td>10mg</td>
+                                <td><span class="badge success">Đang sử dụng</span></td>
+                                <td>
+                                    <button class="btn btn-small primary" onclick="selectMedicine('T004', 'Cetirizine 10mg', 'Viên')">Chọn</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>T005</td>
+                                <td>Ibuprofen 400mg</td>
+                                <td>Viên</td>
+                                <td>400mg</td>
+                                <td><span class="badge success">Đang sử dụng</span></td>
+                                <td>
+                                    <button class="btn btn-small primary" onclick="selectMedicine('T005', 'Ibuprofen 400mg', 'Viên')">Chọn</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeSelectMedicineModal()">Đóng</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -714,7 +714,7 @@
                 <!-- Thông tin cá nhân bệnh nhân -->
                 <div class="card">
                     <div class="card-header">
-                        <span>Thông tin cá nhân</span>
+                        <span>Bìa bệnh án</span>
                         <button class="btn btn-small" onclick="editPatientInfo()">Sửa</button>
                     </div>
                     <div class="card-body" style="padding: 0;">
@@ -732,7 +732,7 @@
                                     <span>Số lưu trữ: 124</span>
                                 </div>
                                 <div style="display: flex; justify-content: space-between;">
-                                    <span>Khoa: <input type="text" style="width: 150px; border: 1px solid #ccc;" /> Giường: <input type="text" style="width: 100px; border: 1px solid #ccc;" /></span>
+                                    <span>Khoa: <input type="text" style="width: 150px; border-bottom: 1px solid #ccc !important;" /> Giường: <input type="text" style="width: 100px; border: 1px solid #ccc;" /></span>
                                     <span>Mã YT: <input type="text" style="width: 200px; border: 1px solid #ccc;" /></span>
                                 </div>
                             </div>
@@ -1190,6 +1190,155 @@
             </div>
         </div>
     </div>
+    
+    <!-- Modal chọn biểu mẫu -->
+    <div id="formListModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Chọn biểu mẫu</div>
+                <div class="close-modal" onclick="closeFormListModal()">&times;</div>
+            </div>
+            <div class="modal-body">
+                <div class="form-list">
+                    <div class="form-item" onclick="selectForm('phieu_xuat_vien')">
+                        <span class="form-icon">🏥</span>
+                        <span class="form-name">Phiếu xuất viện</span>
+                    </div>
+                    <div class="form-item" onclick="selectForm('phieu_nghi_bhxh')">
+                        <span class="form-icon">📋</span>
+                        <span class="form-name">Phiếu nghỉ bảo hiểm xã hội</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Phiếu xuất viện -->
+    <div id="phieuXuatVienModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Phiếu xuất viện</div>
+                <div class="close-modal" onclick="closeFormModal('phieuXuatVienModal')">&times;</div>
+            </div>
+            <div class="modal-body">
+                <div class="grid-2">
+                    <div class="field">
+                        <label>Mã bệnh nhân</label>
+                        <input type="text" value="BN001234" disabled>
+                    </div>
+                    <div class="field">
+                        <label>Họ và tên</label>
+                        <input type="text" value="Nguyễn Văn A" disabled>
+                    </div>
+                    <div class="field">
+                        <label>Ngày nhập viện</label>
+                        <input type="date" id="ngayNhapVien">
+                    </div>
+                    <div class="field">
+                        <label>Ngày xuất viện</label>
+                        <input type="date" id="ngayXuatVien">
+                    </div>
+                    <div class="field">
+                        <label>Chẩn đoán chính</label>
+                        <input type="text" id="chanDoanChinh">
+                    </div>
+                    <div class="field">
+                        <label>Chẩn đoán phụ</label>
+                        <input type="text" id="chanDoanPhu">
+                    </div>
+                    <div class="field grid-span-2">
+                        <label>Nhận xét điều trị</label>
+                        <textarea id="nhanXetDieuTri" rows="4"></textarea>
+                    </div>
+                    <div class="field grid-span-2">
+                        <label>Lời dặn</label>
+                        <textarea id="loiDan" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button class="btn" onclick="closeFormModal('phieuXuatVienModal')">Hủy</button>
+                <button class="btn primary" onclick="savePhieuXuatVien()">Lưu và in</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Phiếu nghỉ bảo hiểm xã hội -->
+    <div id="phieuNghiBHXHModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Phiếu nghỉ bảo hiểm xã hội</div>
+                <div class="close-modal" onclick="closeFormModal('phieuNghiBHXHModal')">&times;</div>
+            </div>
+            <div class="modal-body">
+                <div class="grid-2">
+                    <div class="field">
+                        <label>Mã bệnh nhân</label>
+                        <input type="text" value="BN001234" disabled>
+                    </div>
+                    <div class="field">
+                        <label>Họ và tên</label>
+                        <input type="text" value="Nguyễn Văn A" disabled>
+                    </div>
+                    <div class="field">
+                        <label>Từ ngày</label>
+                        <input type="date" id="tuNgayNghi">
+                    </div>
+                    <div class="field">
+                        <label>Đến ngày</label>
+                        <input type="date" id="denNgayNghi">
+                    </div>
+                    <div class="field">
+                        <label>Lý do nghỉ</label>
+                        <select id="lyDoNghi">
+                            <option value="suc_khoe">Sức khỏe</option>
+                            <option value="ngoai_le">Ngoại lệ</option>
+                        </select>
+                    </div>
+                    <div class="field grid-span-2">
+                        <label>Thông tin chẩn đoán</label>
+                        <textarea id="thongTinChanDoan" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button class="btn" onclick="closeFormModal('phieuNghiBHXHModal')">Hủy</button>
+                <button class="btn primary" onclick="savePhieuNghiBHXH()">Lưu và in</button>
+            </div>
+        </div>
+    </div>
+    
+    <style>
+        .form-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 12px;
+        }
+        .form-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .form-item:hover {
+            background: #f0f9ff;
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        .form-icon {
+            font-size: 24px;
+        }
+        .form-name {
+            font-weight: 500;
+        }
+        .grid-span-2 {
+            grid-column: span 2;
+        }
+    </style>
 
     <script>
         // Khởi tạo ngày hôm nay cho trường ngày khám mới
@@ -1418,10 +1567,92 @@
             }
         }
         
-        // Tạo báo cáo
+        // Hiển thị danh sách biểu mẫu
         function generateReport() {
-            console.log('Generating report');
-            alert('✅ Báo cáo đã được tạo thành công!');
+            // Đặt ngày hôm nay cho các trường ngày
+            const today = new Date();
+            const dateString = today.toISOString().split('T')[0];
+            
+            // Cập nhật ngày cho các modal
+            const dateInputs = document.querySelectorAll('#phieuXuatVienModal input[type="date"], #phieuNghiBHXHModal input[type="date"]');
+            dateInputs.forEach(input => {
+                input.value = dateString;
+            });
+            
+            // Hiển thị modal chọn biểu mẫu
+            document.getElementById('formListModal').style.display = 'flex';
+        }
+        
+        // Đóng modal danh sách biểu mẫu
+        function closeFormListModal() {
+            document.getElementById('formListModal').style.display = 'none';
+        }
+        
+        // Chọn một biểu mẫu
+        function selectForm(formType) {
+            // Đóng modal danh sách
+            closeFormListModal();
+            
+            // Hiển thị modal tương ứng
+            switch(formType) {
+                case 'phieu_xuat_vien':
+                    document.getElementById('phieuXuatVienModal').style.display = 'flex';
+                    break;
+                case 'phieu_nghi_bhxh':
+                    document.getElementById('phieuNghiBHXHModal').style.display = 'flex';
+                    break;
+                case 'phieu_kham_chuyen_khoa':
+                    alert('Mở biểu mẫu: Phiếu khám chuyên khoa');
+                    break;
+                case 'phieu_don_thuoc':
+                    alert('Mở biểu mẫu: Đơn thuốc');
+                    break;
+                case 'phieu_yeu_cau_xn':
+                    alert('Mở biểu mẫu: Yêu cầu xét nghiệm');
+                    break;
+                case 'phieu_yeu_cau_sieu_am':
+                    alert('Mở biểu mẫu: Yêu cầu siêu âm');
+                    break;
+                default:
+                    alert('Biểu mẫu không được hỗ trợ');
+            }
+        }
+        
+        // Đóng modal biểu mẫu
+        function closeFormModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        
+        // Lưu phiếu xuất viện
+        function savePhieuXuatVien() {
+            const ngayNhapVien = document.getElementById('ngayNhapVien').value;
+            const ngayXuatVien = document.getElementById('ngayXuatVien').value;
+            const chanDoanChinh = document.getElementById('chanDoanChinh').value;
+            
+            if (!chanDoanChinh) {
+                alert('Vui lòng nhập chẩn đoán chính');
+                return;
+            }
+            
+            console.log('Lưu phiếu xuất viện:', { ngayNhapVien, ngayXuatVien, chanDoanChinh });
+            alert('✅ Phiếu xuất viện đã được lưu và sẵn sàng in!');
+            closeFormModal('phieuXuatVienModal');
+        }
+        
+        // Lưu phiếu nghỉ bảo hiểm xã hội
+        function savePhieuNghiBHXH() {
+            const tuNgayNghi = document.getElementById('tuNgayNghi').value;
+            const denNgayNghi = document.getElementById('denNgayNghi').value;
+            const thongTinChanDoan = document.getElementById('thongTinChanDoan').value;
+            
+            if (!thongTinChanDoan) {
+                alert('Vui lòng nhập thông tin chẩn đoán');
+                return;
+            }
+            
+            console.log('Lưu phiếu nghỉ BHXH:', { tuNgayNghi, denNgayNghi, thongTinChanDoan });
+            alert('✅ Phiếu nghỉ bảo hiểm xã hội đã được lưu và sẵn sàng in!');
+            closeFormModal('phieuNghiBHXHModal');
         }
         
         // Xóa hồ sơ bệnh án
