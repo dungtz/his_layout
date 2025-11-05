@@ -411,6 +411,10 @@
                     <span class="nav-item-icon">⚙️</span>
                     <span>Dịch vụ y tế</span>
                 </div>
+                <div class="nav-item" data-category="hanghoa">
+                    <span class="nav-item-icon">📦</span>
+                    <span>Hàng hoá, Dịch vụ, Thuốc</span>
+                </div>
             </div>
             
             <div class="nav-section">
@@ -589,54 +593,157 @@
             </div>
             <div class="modal-body">
                 <form id="category-form">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="category-code">Mã khoa/phòng</label>
-                            <input type="text" id="category-code" required>
+                    <!-- Nội dung form sẽ được cập nhật động dựa trên danh mục -->
+                    <div id="department-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="category-code">Mã khoa/phòng</label>
+                                <input type="text" id="category-code" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="category-name">Tên khoa/phòng</label>
+                                <input type="text" id="category-name" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="category-type">Loại khoa/phòng</label>
+                                <select id="category-type">
+                                    <option value="chinh">Chính</option>
+                                    <option value="phu">Phụ</option>
+                                    <option value="chung">Chung</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="department-head">Trưởng khoa</label>
+                                <select id="department-head">
+                                    <option value="">Chọn trưởng khoa</option>
+                                    <option value="PGS.TS Nguyễn Văn A">PGS.TS Nguyễn Văn A</option>
+                                    <option value="PGS.TS Trần Thị B">PGS.TS Trần Thị B</option>
+                                    <option value="PGS.TS Phạm Văn C">PGS.TS Phạm Văn C</option>
+                                    <option value="PGS.TS Lê Thị D">PGS.TS Lê Thị D</option>
+                                    <option value="PGS.TS Hoàng Văn E">PGS.TS Hoàng Văn E</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="room-count">Số phòng</label>
+                                <input type="number" id="room-count" min="0" value="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="category-status">Trạng thái</label>
+                                <select id="category-status">
+                                    <option value="active">Hoạt động</option>
+                                    <option value="inactive">Ngừng hoạt động</option>
+                                    <option value="upcoming">Sắp khai trương</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="category-name">Tên khoa/phòng</label>
-                            <input type="text" id="category-name" required>
+                            <label for="category-description">Mô tả</label>
+                            <textarea id="category-description"></textarea>
                         </div>
                     </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="category-type">Loại khoa/phòng</label>
-                            <select id="category-type">
-                                <option value="chinh">Chính</option>
-                                <option value="phu">Phụ</option>
-                                <option value="chung">Chung</option>
-                            </select>
+                    
+                    <!-- Form dành cho Hàng hoá, Dịch vụ, Thuốc -->
+                    <div id="hanghoa-form" style="display: none;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="hanghoa-id">ID</label>
+                                <input type="text" id="hanghoa-id" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="hanghoa-code">Code</label>
+                                <input type="text" id="hanghoa-code" required>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="department-head">Trưởng khoa</label>
-                            <select id="department-head">
-                                <option value="">Chọn trưởng khoa</option>
-                                <option value="PGS.TS Nguyễn Văn A">PGS.TS Nguyễn Văn A</option>
-                                <option value="PGS.TS Trần Thị B">PGS.TS Trần Thị B</option>
-                                <option value="PGS.TS Phạm Văn C">PGS.TS Phạm Văn C</option>
-                                <option value="PGS.TS Lê Thị D">PGS.TS Lê Thị D</option>
-                                <option value="PGS.TS Hoàng Văn E">PGS.TS Hoàng Văn E</option>
-                            </select>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="hanghoa-name">Tên</label>
+                                <input type="text" id="hanghoa-name" required style="width: 100%;">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="room-count">Số phòng</label>
-                            <input type="number" id="room-count" min="0" value="0">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="hanghoa-donvitinh-id">Đơn Vị Tính ID</label>
+                                <input type="text" id="hanghoa-donvitinh-id">
+                            </div>
+                            <div class="form-group">
+                                <label for="hanghoa-active">Active</label>
+                                <input type="checkbox" id="hanghoa-active" checked>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="category-status">Trạng thái</label>
-                            <select id="category-status">
-                                <option value="active">Hoạt động</option>
-                                <option value="inactive">Ngừng hoạt động</option>
-                                <option value="upcoming">Sắp khai trương</option>
-                            </select>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="hanghoa-loaichiphi-id">Loại Chi Phí ID</label>
+                                <input type="text" id="hanghoa-loaichiphi-id">
+                            </div>
+                            <div class="form-group">
+                                <label for="hanghoa-nhomchiphi-id">Nhóm Chi Phí ID</label>
+                                <input type="text" id="hanghoa-nhomchiphi-id">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="category-description">Mô tả</label>
-                        <textarea id="category-description"></textarea>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="hanghoa-is-bhyt">Là BHYT</label>
+                                <input type="checkbox" id="hanghoa-is-bhyt">
+                            </div>
+                            <div class="form-group">
+                                <label for="hanghoa-is-thuoc">Là Thuốc</label>
+                                <input type="checkbox" id="hanghoa-is-thuoc">
+                            </div>
+                        </div>
+                        
+                        <!-- Thông tin BHYT -->
+                        <div id="bhyt-info" style="margin-top: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 6px;">
+                            <h4 style="margin-top: 0; margin-bottom: 15px; color: #495057;">Thông tin BHYT</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="bhyt-ma-dich-vu">Mã Dịch Vụ</label>
+                                    <input type="text" id="bhyt-ma-dich-vu">
+                                </div>
+                                <div class="form-group">
+                                    <label for="bhyt-ten-dich-vu">Tên Dịch Vụ</label>
+                                    <input type="text" id="bhyt-ten-dich-vu">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="bhyt-don-gia-bv">Đơn Giá BV</label>
+                                    <input type="number" id="bhyt-don-gia-bv">
+                                </div>
+                                <div class="form-group">
+                                    <label for="bhyt-don-gia-bh">Đơn Giá BH</label>
+                                    <input type="number" id="bhyt-don-gia-bh">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Thông tin Thuốc -->
+                        <div id="thuoc-info" style="margin-top: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 6px;">
+                            <h4 style="margin-top: 0; margin-bottom: 15px; color: #495057;">Thông tin Thuốc</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="thuoc-ma-thuoc">Mã Thuốc</label>
+                                    <input type="text" id="thuoc-ma-thuoc">
+                                </div>
+                                <div class="form-group">
+                                    <label for="thuoc-ten-thuoc">Tên Thuốc</label>
+                                    <input type="text" id="thuoc-ten-thuoc">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="thuoc-ham-luong">Hàm Lượng</label>
+                                    <input type="text" id="thuoc-ham-luong">
+                                </div>
+                                <div class="form-group">
+                                    <label for="thuoc-duong-dung">Dường Dùng</label>
+                                    <input type="text" id="thuoc-duong-dung">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -669,6 +776,10 @@
             service: {
                 title: "Quản lý Dịch vụ y tế",
                 columns: ["Mã dịch vụ", "Tên dịch vụ", "Khoa thực hiện", "Đơn giá", "Thời gian thực hiện", "Trạng thái", "Thao tác"]
+            },
+            hanghoa: {
+                title: "Quản lý Hàng hoá, Dịch vụ, Thuốc",
+                columns: ["Mã", "Mã Code", "Tên hàng hóa", "Đơn vị tính", "Loại chi phí", "Nhóm chi phí", "Thuốc", "BHYT", "Trạng thái", "Thao tác"]
             },
             "patient-type": {
                 title: "Quản lý Loại bệnh nhân",
@@ -757,6 +868,17 @@
             if (categoryData[category]) {
                 document.getElementById('category-title').textContent = categoryData[category].title;
                 document.getElementById('modal-title').textContent = `Thêm ${getCategoryName(category)} mới`;
+                
+                // Cập nhật tiêu đề bảng
+                const tableHeader = document.querySelector('#category-table thead tr');
+                tableHeader.innerHTML = '';
+                
+                // Thêm cột vào bảng
+                categoryData[category].columns.forEach(column => {
+                    const th = document.createElement('th');
+                    th.textContent = column;
+                    tableHeader.appendChild(th);
+                });
             }
 
             // Lưu danh mục hiện tại
@@ -782,7 +904,8 @@
                 unit: "Đơn vị tính",
                 user: "Người dùng hệ thống",
                 role: "Vai trò quyền hạn",
-                config: "Cấu hình hệ thống"
+                config: "Cấu hình hệ thống",
+                hanghoa: "Hàng hoá, Dịch vụ, Thuốc"
             };
             return categoryMap[category] || category;
         }
@@ -837,6 +960,25 @@
                                 </td>
                             `;
                             break;
+                        case 'hanghoa':
+                            const isThuoc = i % 3 === 0;
+                            const isBHYT = i % 2 === 0;
+                            cells = `
+                                <td>HH${String(i).padStart(5, '0')}</td>
+                                <td>HH${String(i).padStart(5, '0')}</td>
+                                <td>Hàng hóa ${i}</td>
+                                <td>Cái</td>
+                                <td>Đồ dùng y tế</td>
+                                <td>Vật tư y tế</td>
+                                <td>${isThuoc ? '✓' : '✗'}</td>
+                                <td>${isBHYT ? '✓' : '✗'}</td>
+                                <td><span class="badge ${statusClass}">${statusText}</span></td>
+                                <td>
+                                    <button class="btn btn-small" onclick="editItem('HH${String(i).padStart(5, '0')}')">✏️</button>
+                                    <button class="btn btn-small danger" onclick="deleteItem('HH${String(i).padStart(5, '0')}')">🗑️</button>
+                                </td>
+                            `;
+                            break;
                         default:
                             cells = `
                                 <td>${category.toUpperCase().slice(0, 2)}${String(i).padStart(3, '0')}</td>
@@ -861,11 +1003,28 @@
             currentItemId = null;
             document.getElementById('modal-title').textContent = `Thêm ${getCategoryName(currentCategory)} mới`;
             
+            // Cập nhật form hiển thị
+            updateModalForm();
+            
             // Reset form
             document.getElementById('category-form').reset();
             
             // Hiển thị modal
             document.getElementById('modal').style.display = 'flex';
+        }
+        
+        // Cập nhật form trong modal dựa trên danh mục hiện tại
+        function updateModalForm() {
+            // Ẩn tất cả các form
+            document.getElementById('department-form').style.display = 'none';
+            document.getElementById('hanghoa-form').style.display = 'none';
+            
+            // Hiển thị form tương ứng
+            if (currentCategory === 'hanghoa') {
+                document.getElementById('hanghoa-form').style.display = 'block';
+            } else {
+                document.getElementById('department-form').style.display = 'block';
+            }
         }
 
         // Hiển thị modal chỉnh sửa
@@ -873,9 +1032,26 @@
             currentItemId = id;
             document.getElementById('modal-title').textContent = `Chỉnh sửa ${getCategoryName(currentCategory)}`;
             
+            // Cập nhật form hiển thị
+            updateModalForm();
+            
             // Giả lập tải dữ liệu cho chỉnh sửa
-            document.getElementById('category-code').value = id;
-            document.getElementById('category-name').value = `${getCategoryName(currentCategory)} ${id.slice(-3)}`;
+            if (currentCategory === 'hanghoa') {
+                // Đối với hàng hóa
+                document.getElementById('hanghoa-id').value = id;
+                document.getElementById('hanghoa-code').value = id;
+                document.getElementById('hanghoa-name').value = `Hàng hóa ${id.slice(-3)}`;
+                document.getElementById('hanghoa-donvitinh-id').value = 'DV001';
+                document.getElementById('hanghoa-active').checked = true;
+                document.getElementById('hanghoa-loaichiphi-id').value = 'LCP001';
+                document.getElementById('hanghoa-nhomchiphi-id').value = 'NCP001';
+                document.getElementById('hanghoa-is-bhyt').checked = id.slice(-1) % 2 === 0;
+                document.getElementById('hanghoa-is-thuoc').checked = id.slice(-1) % 3 === 0;
+            } else {
+                // Đối với danh mục khác
+                document.getElementById('category-code').value = id;
+                document.getElementById('category-name').value = `${getCategoryName(currentCategory)} ${id.slice(-3)}`;
+            }
             
             // Hiển thị modal
             document.getElementById('modal').style.display = 'flex';
@@ -893,17 +1069,61 @@
 
         // Lưu danh mục
         function saveCategory() {
-            // Lấy dữ liệu từ form
-            const code = document.getElementById('category-code').value;
-            const name = document.getElementById('category-name').value;
+            let isValid = true;
+            let data = {};
             
-            if (!code || !name) {
-                alert('Vui lòng nhập đầy đủ thông tin bắt buộc!');
-                return;
+            if (currentCategory === 'hanghoa') {
+                // Lấy dữ liệu từ form hàng hóa
+                const id = document.getElementById('hanghoa-id').value;
+                const code = document.getElementById('hanghoa-code').value;
+                const name = document.getElementById('hanghoa-name').value;
+                const active = document.getElementById('hanghoa-active').checked;
+                
+                if (!id || !code || !name) {
+                    isValid = false;
+                    alert('Vui lòng nhập đầy đủ thông tin bắt buộc (ID, Code, Name)!');
+                }
+                
+                data = {
+                    id,
+                    code,
+                    name,
+                    donViTinh_ID: document.getElementById('hanghoa-donvitinh-id').value,
+                    description: '',
+                    active,
+                    legal_Docs: '',
+                    loaiChiPhi_ID: document.getElementById('hanghoa-loaichiphi-id').value,
+                    nhomChiPhi_ID: document.getElementById('hanghoa-nhomchiphi-id').value,
+                    is_BHYT: document.getElementById('hanghoa-is-bhyt').checked,
+                    is_Thuoc: document.getElementById('hanghoa-is-thuoc').checked,
+                    // Các trường BHYT
+                    BHYT_MA_DICH_VU: document.getElementById('bhyt-ma-dich-vu').value,
+                    BHYT_TEN_DICH_VU: document.getElementById('bhyt-ten-dich-vu').value,
+                    BHYT_DON_GIA_BV: document.getElementById('bhyt-don-gia-bv').value,
+                    BHYT_DON_GIA_BH: document.getElementById('bhyt-don-gia-bh').value,
+                    // Các trường Thuốc
+                    BHYT_MA_THUOC: document.getElementById('thuoc-ma-thuoc').value,
+                    BHYT_TEN_THUOC: document.getElementById('thuoc-ten-thuoc').value,
+                    BHYT_HAM_LUONG: document.getElementById('thuoc-ham-luong').value,
+                    BHYT_DUONG_DUNG: document.getElementById('thuoc-duong-dung').value
+                };
+            } else {
+                // Lấy dữ liệu từ form danh mục khác
+                const code = document.getElementById('category-code').value;
+                const name = document.getElementById('category-name').value;
+                
+                if (!code || !name) {
+                    isValid = false;
+                    alert('Vui lòng nhập đầy đủ thông tin bắt buộc!');
+                }
+                
+                data = { code, name };
             }
             
+            if (!isValid) return;
+            
             // Ở đây sẽ gọi API để lưu dữ liệu
-            console.log(currentItemId ? 'Updating item:' : 'Adding new item:', { code, name });
+            console.log(currentItemId ? 'Updating item:' : 'Adding new item:', data);
             
             // Hiển thị thông báo
             alert(currentItemId ? 'Cập nhật thành công!' : 'Thêm mới thành công!');
