@@ -17,12 +17,14 @@
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
-            --sidebar-width: 300px;
-            --right-sidebar-width: 350px;
+            --sidebar-width: 250px;
+            --right-sidebar-width: 250px;
+            --font-family: 'Times New Roman';
         }
 
         * {
             box-sizing: border-box;
+            font-family: var(--font-family);
         }
 
         html,
@@ -32,6 +34,7 @@
             font: 14px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
             color: var(--txt);
             background: var(--bg);
+            font-family: var(--font-family);
         }
 
         /* Layout tổng thể */
@@ -99,6 +102,7 @@
             cursor: pointer;
             font-size: 13px;
             transition: all 0.2s;
+            font-family: var(--font-family);
         }
 
         .btn:hover {
@@ -148,11 +152,13 @@
             background: #fff;
             outline: none;
             font-size: 14px;
+            font-family: var(--font-family);
         }
 
         textarea {
             min-height: 100px;
             resize: vertical;
+            font-family: var(--font-family);
         }
 
         /* Patient list */
