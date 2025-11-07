@@ -289,7 +289,7 @@
       <div class="search">
         <input type="text" placeholder="Tìm BN / CCCD / Mã hồ sơ" aria-label="Tìm bệnh nhân" />
         <button class="btn">Tìm kiếm</button>
-        <button class="btn">Danh sách tiếp nhận</button>
+        <button class="btn">Danh sách tiếp đón</button>
       </div>
       <div class="toolbar">
         <select id="counter">
@@ -591,7 +591,7 @@
       const buttons = document.querySelectorAll('button');
       let listButton = null;
       for (let i = 0; i < buttons.length; i++) {
-        if (buttons[i].textContent.trim() === 'Danh sách tiếp nhận') {
+        if (buttons[i].textContent.trim() === 'Danh sách tiếp đón') {
           listButton = buttons[i];
           break;
         }
@@ -927,7 +927,7 @@
       let found = false;
       
       for (let i = 0; i < buttons.length; i++) {
-        if (buttons[i].textContent.trim() === 'Danh sách tiếp nhận') {
+        if (buttons[i].textContent.trim() === 'Danh sách tiếp đón') {
           // 为了确保可维护性，为按钮添加ID
           buttons[i].id = 'patientListButton';
           found = true;
@@ -969,7 +969,7 @@
   <div id="patientListPopup" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000; align-items: center; justify-content: center;">
     <div style="background-color: white; border-radius: 8px; width: 90%; height: 90%; overflow-y: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
       <div style="padding: 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;">
-        <h3>Danh sách bệnh nhân đã tiếp nhận</h3>
+        <h3>Danh sách bệnh nhân đã tiếp đón</h3>
         <button id="closePatientListPopup" class="btn danger" style="padding: 6px 12px;">Đóng</button>
       </div>
       <div style="padding: 20px;">
@@ -989,8 +989,8 @@
               <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Họ tên</th>
               <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Ngày sinh</th>
               <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Giới tính</th>
-              <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Thời gian tiếp nhận</th>
-              <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Loại tiếp nhận</th>
+              <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Thời gian tiếp đón</th>
+              <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Loại tiếp đón</th>
               <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Trạng thái</th>
               <th style="padding: 12px; border: 1px solid #ddd; text-align: center;">Thao tác</th>
             </tr>
