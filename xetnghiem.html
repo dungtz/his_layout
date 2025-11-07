@@ -66,12 +66,44 @@
             z-index: 100;
         }
 
+        input[type="text"],
+        input[type="date"],
+        input[type="time"],
+        select,
+        textarea {
+        width: 100%;
+        padding: 2px 4px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+        outline: none;
+        font-family: var(--font-family);
+        border: none; border-bottom: 1px dashed #000; outline: none;
+        margin-bottom: 10px;
+        }
+
+        textarea {
+        min-height: 84px;
+        resize: vertical;
+
+        }
+
+        .btn {
+        appearance: none;
+        border: 1px solid var(--line);
+        background: #fff;
+        padding: 10px 14px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-family: var(--font-family);
+        }
+
+
         .header-container {
             display: flex;
             align-items: center;
             justify-content: space-between;
             width: 100%;
-            max-width: 1400px;
             margin: 0 auto;
         }
 
@@ -148,9 +180,9 @@
             background: var(--card);
             border: 1px solid var(--line);
             border-radius: 8px;
-            padding: 4px;
-            min-width: calc(20% - 6.4px);
-            max-width: calc(20% - 6.4px);
+            padding: 10px;
+            min-width: calc(25% - 6px);
+            max-width: calc(25% - 6px);
             flex-shrink: 0;
             display: flex;
             flex-direction: column;
@@ -160,15 +192,16 @@
     
     @media (max-width: 1200px) {
         .kanban-column {
-            min-width: calc(25% - 6px);
-            max-width: calc(25% - 6px);
+            min-width: calc(33.333% - 5.333px);
+            max-width: calc(33.333% - 5.333px);
         }
     }
     
     @media (max-width: 768px) {
         .kanban-column {
-            min-width: 200px;
-            max-width: 280px;
+            min-width: 300px;
+            max-width: 300px;
+            height: calc(100vh - 180px);
         }
     }
 
@@ -459,6 +492,11 @@
                 padding: 12px;
             }
         }
+        search {
+        flex: 1;
+        display: flex;
+        gap: 8px;
+        }
     </style>
 </head>
 <body>
@@ -496,74 +534,27 @@
     <main class="main-content">
         <!-- Kanban Board -->
         <div class="kanban-board">
-            <!-- Column: Chờ tiếp nhận -->
-            <div class="kanban-column">
-                <div class="column-header">
-                    <div class="column-title">Chờ tiếp nhận</div>
-                    <div class="task-count">3</div>
-                </div>
-                <div class="column-content">
-                    <!-- Task Card -->
-                    <div class="task-card" onclick="viewTestOrder('PT001')">
-                        <div class="task-header">
-                            <div class="task-id">PT001</div>
-                            <div class="task-priority priority-high">Khẩn cấp</div>
-                        </div>
-                        <div class="task-patient">
-                            <div class="patient-name">Nguyễn Văn A</div>
-                            <div class="patient-info">Tuổi: 45 - Nam | Khám: Nội tiết</div>
-                        </div>
-                        <div class="task-tests">
-                            <div class="test-name">• Huyết sugar (GLU)</div>
-                            <div class="test-name">• Huyết lipid toàn phần</div>
-                        </div>
-                        <div class="task-footer">
-                            Yêu cầu: BS. Lê Văn B | 10:30 AM
-                        </div>
-                    </div>
-
-                    <div class="task-card" onclick="viewTestOrder('PT002')">
-                        <div class="task-header">
-                            <div class="task-id">PT002</div>
-                            <div class="task-priority priority-medium">Trung bình</div>
-                        </div>
-                        <div class="task-patient">
-                            <div class="patient-name">Trần Thị B</div>
-                            <div class="patient-info">Tuổi: 32 - Nữ | Khám: Nội</div>
-                        </div>
-                        <div class="task-tests">
-                            <div class="test-name">• CBC đầy đủ</div>
-                            <div class="test-name">• Đường huyết</div>
-                        </div>
-                        <div class="task-footer">
-                            Yêu cầu: BS. Phạm Thị C | 11:15 AM
-                        </div>
-                    </div>
-
-                    <div class="task-card" onclick="viewTestOrder('PT003')">
-                        <div class="task-header">
-                            <div class="task-id">PT003</div>
-                            <div class="task-priority priority-low">Thường</div>
-                        </div>
-                        <div class="task-patient">
-                            <div class="patient-name">Phạm Văn C</div>
-                            <div class="patient-info">Tuổi: 28 - Nam | Khám: Răng hàm mặt</div>
-                        </div>
-                        <div class="task-tests">
-                            <div class="test-name">• Xét nghiệm máu thường quy</div>
-                        </div>
-                        <div class="task-footer">
-                            Yêu cầu: BS. Huỳnh Văn D | 11:45 AM
-                        </div>
-                    </div>
-                </div>
-                <button class="add-task-btn">+ Thêm phiếu</button>
-            </div>
 
             <!-- Column: Chờ lấy mẫu -->
             <div class="kanban-column">
+                <div class="bar" style="display: flex; gap: 8px; margin-bottom: 10px;">
+                    <select style="flex: 1; padding: 8px 12px; border: 1px solid var(--line); border-radius: 4px; background: #fff; font-family: var(--font-family);">
+                        <option value="all">Tất cả phòng chức năng</option>
+                        <option value="blood">Huyết học - Huyết thanh học</option>
+                        <option value="biochemistry">Sinh hóa - Điện giải chất</option>
+                        <option value="microbiology">Vi sinh - Song ngữ</option>
+                        <option value="immunology">Miễn dịch học - Huyết thanh học đặc biệt</option>
+                        <option value="histology">Giải phẫu - Lâm sàng</option>
+                        <option value="cytology">Tế bào học - Nhi khoa</option>
+                    </select>
+                </div>
+                <div class="search" style="display: flex; gap: 8px; width: 100%; padding-bottom: 14px;">
+                    <input type="text" style="flex: 1; padding: 10px 14px;" placeholder="Tìm BN / CCCD / Mã hồ sơ" aria-label="Tìm bệnh nhân" />
+                    <button class="btn" style="white-space: nowrap;" onclick="showSearchResults()">Tìm kiếm</button>
+                </div>
+
                 <div class="column-header">
-                    <div class="column-title">Chờ lấy mẫu</div>
+                    <div class="column-title">Chờ nhận mẫu</div>
                     <div class="task-count">4</div>
                 </div>
                 <div class="column-content">
@@ -786,7 +777,7 @@
             <!-- Column: Chờ ký số -->
             <div class="kanban-column">
                 <div class="column-header">
-                    <div class="column-title">Chờ ký số</div>
+                    <div class="column-title">Hoàn tất</div>
                     <div class="task-count">8</div>
                 </div>
                 <div class="column-content">
@@ -833,7 +824,54 @@
     </main>
 
     <!-- Modal for Test Order Details -->
-    <div id="testOrderModal" class="modal-overlay">
+    <div id="searchResultsModal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title">Kết quả tìm kiếm</h2>
+            <button class="close-modal-btn" onclick="document.getElementById('searchResultsModal').style.display = 'none'">×</button>
+        </div>
+        <div class="modal-body">
+            <div style="margin-bottom: 15px; font-size: 14px; color: #666;">
+                Hiển thị kết quả tìm kiếm cho: <span id="searchKeyword" style="font-weight: 600; color: #333;">--</span>
+            </div>
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+                    <thead>
+                        <tr style="background-color: #e9ecef;">
+                            <th style="padding: 10px; text-align: left; border: 1px solid var(--border-color); font-weight: 600;">STT</th>
+                            <th style="padding: 10px; text-align: left; border: 1px solid var(--border-color); font-weight: 600;">Mã bệnh nhân</th>
+                            <th style="padding: 10px; text-align: left; border: 1px solid var(--border-color); font-weight: 600;">Họ tên bệnh nhân</th>
+                            <th style="padding: 10px; text-align: left; border: 1px solid var(--border-color); font-weight: 600;">Giới tính / Tuổi</th>
+                            <th style="padding: 10px; text-align: left; border: 1px solid var(--border-color); font-weight: 600;">Điện thoại</th>
+                            <th style="padding: 10px; text-align: left; border: 1px solid var(--border-color); font-weight: 600;">Ngày khám</th>
+                            <th style="padding: 10px; text-align: left; border: 1px solid var(--border-color); font-weight: 600;">Trạng thái</th>
+                            <th style="padding: 10px; text-align: left; border: 1px solid var(--border-color); font-weight: 600;">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="searchResultsTable">
+                        <!-- Dữ liệu bệnh nhân sẽ được điền vào đây bằng JavaScript -->
+                        <tr>
+                            <td colspan="8" style="text-align: center; padding: 30px; color: #666; border: 1px solid var(--border-color);">Nhập từ khóa và nhấn tìm kiếm để hiển thị kết quả</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: #666;">
+                <div>Tổng số: <span id="totalResults" style="font-weight: 600;">0</span> bệnh nhân</div>
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn btn-secondary" disabled>Trang trước</button>
+                    <span style="padding: 6px 0;">Trang <span id="currentPage">1</span>/<span id="totalPages">0</span></span>
+                    <button class="btn btn-secondary" disabled>Trang sau</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="document.getElementById('searchResultsModal').style.display = 'none'">Đóng</button>
+        </div>
+    </div>
+</div>
+
+<div id="testOrderModal" class="modal-overlay" style="display: none;">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="modal-title">Chi tiết phiếu xét nghiệm</h2>
@@ -843,9 +881,9 @@
                 <!-- Test Order Details will be dynamically populated -->
                 <div id="modal-test-content">
                     <!-- Sample content, will be replaced by JavaScript -->
-                    <div style="padding: 16px; background-color: #f8f9fa; border-radius: var(--radius-md); margin-bottom: 20px;">
-                        <h3 style="margin-bottom: 12px;">Thông tin bệnh nhân</h3>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div style=" border-radius: var(--radius-md); ">
+                        <h3 style="margin-bottom: 12px;margin-top: 0px !important; ">Thông tin bệnh nhân</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px;">
                             <div><strong>Mã phiếu:</strong> <span id="modal-test-order-number">PT001</span></div>
                             <div><strong>Ngày yêu cầu:</strong> 15/04/2023</div>
                             <div><strong>Tên bệnh nhân:</strong> <span id="modal-test-patient-name">Nguyễn Văn A</span></div>
@@ -861,6 +899,7 @@
                     <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
                         <thead>
                             <tr style="background-color: #e9ecef;">
+                                <th style="padding: 10px; text-align: center; border: 1px solid var(--border-color);">Chọn</th>
                                 <th style="padding: 10px; text-align: left; border: 1px solid var(--border-color);">Mã xét nghiệm</th>
                                 <th style="padding: 10px; text-align: left; border: 1px solid var(--border-color);">Tên xét nghiệm</th>
                                 <th style="padding: 10px; text-align: center; border: 1px solid var(--border-color);">Đơn vị</th>
@@ -871,6 +910,7 @@
                         </thead>
                         <tbody id="modal-test-table-body">
                             <tr>
+                                <td style="padding: 10px; text-align: center; border: 1px solid var(--border-color);"><input type="checkbox" style="margin-right: 5px;"></td>
                                 <td style="padding: 10px; border: 1px solid var(--border-color);">GLU</td>
                                 <td style="padding: 10px; border: 1px solid var(--border-color);">Huyết sugar (Glucose)</td>
                                 <td style="padding: 10px; text-align: center; border: 1px solid var(--border-color);">mmol/L</td>
@@ -883,6 +923,7 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td style="padding: 10px; text-align: center; border: 1px solid var(--border-color);"><input type="checkbox" style="margin-right: 5px;"></td>
                                 <td style="padding: 10px; border: 1px solid var(--border-color);">LIPID</td>
                                 <td style="padding: 10px; border: 1px solid var(--border-color);">Huyết lipid toàn phần</td>
                                 <td style="padding: 10px; text-align: center; border: 1px solid var(--border-color);">-</td>
@@ -900,11 +941,15 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" onclick="closeTestOrderModal()">Đóng</button>
+                <button class="btn btn-primary">Tiếp nhận</button>
+                <button class="btn btn-primary">In tem</button>
+                <button class="btn btn-primary">Nhận mẫu</button>
+                <button class="btn btn-primary">Gửi LIS</button>
                 <button class="btn btn-primary">Lưu kết quả</button>
                 <button class="btn btn-success">Xác nhận hoàn thành</button>
             </div>
         </div>
-    </div>
+</div>
 
     <script>
         // Function to view test order details
@@ -980,15 +1025,270 @@
                 });
             });
             
-            function updateTaskCounts() {
-                columns.forEach(column => {
-                    const columnHeader = column.parentElement.querySelector('.column-header');
-                    const taskCount = columnHeader.querySelector('.task-count');
-                    const count = column.querySelectorAll('.task-card').length;
-                    taskCount.textContent = count;
-                });
+            function showSearchResults() {
+            // Lấy giá trị từ ô tìm kiếm
+            const searchInput = document.querySelector('.search input').value.trim();
+            const keywordElement = document.getElementById('searchKeyword');
+            const resultsTable = document.getElementById('searchResultsTable');
+            const totalResultsElement = document.getElementById('totalResults');
+            const currentPageElement = document.getElementById('currentPage');
+            const totalPagesElement = document.getElementById('totalPages');
+            
+            // Hiển thị từ khóa tìm kiếm
+            keywordElement.textContent = searchInput || '--';
+            
+            // Dữ liệu mẫu bệnh nhân (trong thực tế, đây sẽ được lấy từ API)
+            const mockPatients = [
+                { id: 1, code: 'BN001', name: 'Nguyễn Văn A', gender: 'Nam', age: 35, phone: '0123456789', examDate: '2025-06-10', status: 'Chờ lấy mẫu' },
+                { id: 2, code: 'BN002', name: 'Trần Thị B', gender: 'Nữ', age: 28, phone: '0987654321', examDate: '2025-06-10', status: 'Chờ kết quả' },
+                { id: 3, code: 'BN003', name: 'Phạm Văn C', gender: 'Nam', age: 42, phone: '0369852147', examDate: '2025-06-09', status: 'Chờ xác nhận' },
+                { id: 4, code: 'BN004', name: 'Lê Thị D', gender: 'Nữ', age: 50, phone: '0159753468', examDate: '2025-06-09', status: 'Chờ lấy mẫu' },
+                { id: 5, code: 'BN005', name: 'Hoàng Văn E', gender: 'Nam', age: 31, phone: '0357951468', examDate: '2025-06-08', status: 'Chờ kết quả' },
+                { id: 6, code: 'BN006', name: 'Ngô Thị F', gender: 'Nữ', age: 25, phone: '0258369147', examDate: '2025-06-08', status: 'Hoàn thành' },
+                { id: 7, code: 'BN007', name: 'Bùi Văn G', gender: 'Nam', age: 55, phone: '0123789456', examDate: '2025-06-07', status: 'Chờ xác nhận' },
+                { id: 8, code: 'BN008', name: 'Đặng Thị H', gender: 'Nữ', age: 48, phone: '0987321654', examDate: '2025-06-07', status: 'Chờ lấy mẫu' },
+                { id: 9, code: 'BN009', name: 'Vũ Văn I', gender: 'Nam', age: 60, phone: '0147258369', examDate: '2025-06-06', status: 'Chờ kết quả' },
+                { id: 10, code: 'BN010', name: 'Trương Thị K', gender: 'Nữ', age: 29, phone: '0369258147', examDate: '2025-06-06', status: 'Chờ xác nhận' }
+            ];
+            
+            // Lọc bệnh nhân theo từ khóa
+            let filteredPatients = mockPatients;
+            if (searchInput) {
+                filteredPatients = mockPatients.filter(patient => 
+                    patient.code.toLowerCase().includes(searchInput.toLowerCase()) ||
+                    patient.name.toLowerCase().includes(searchInput.toLowerCase()) ||
+                    patient.phone.includes(searchInput) ||
+                    patient.examDate.includes(searchInput)
+                );
             }
+            
+            // Hiển thị kết quả
+            totalResultsElement.textContent = filteredPatients.length;
+            
+            // Xóa nội dung bảng cũ
+            resultsTable.innerHTML = '';
+            
+            // Thêm dữ liệu vào bảng
+            if (filteredPatients.length > 0) {
+                filteredPatients.forEach((patient, index) => {
+                    // Xác định class trạng thái
+                    let statusClass = '';
+                    switch (patient.status) {
+                        case 'Chờ lấy mẫu':
+                            statusClass = 'status-waiting';
+                            break;
+                        case 'Chờ kết quả':
+                            statusClass = 'status-processing';
+                            break;
+                        case 'Chờ xác nhận':
+                            statusClass = 'status-review';
+                            break;
+                        case 'Hoàn thành':
+                            statusClass = 'status-completed';
+                            break;
+                    }
+                    
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">${index + 1}</td>
+                        <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">${patient.code}</td>
+                        <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">${patient.name}</td>
+                        <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">${patient.gender} / ${patient.age} tuổi</td>
+                        <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">${patient.phone}</td>
+                        <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">${patient.examDate}</td>
+                        <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">
+                            <span class="${statusClass}" style="padding: 4px 8px; border-radius: 4px; font-size: 12px; display: inline-block;">${patient.status}</span>
+                        </td>
+                        <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">
+                            <button class="btn" style="padding: 4px 8px; font-size: 12px; margin-right: 5px;" onclick="viewPatientDetails('${patient.code}')">Xem chi tiết</button>
+                        </td>
+                    `;
+                    resultsTable.appendChild(row);
+                });
+            } else {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td colspan="8" style="text-align: center; padding: 30px; color: #666;">Không tìm thấy bệnh nhân nào khớp với từ khóa tìm kiếm</td>
+                `;
+                resultsTable.appendChild(row);
+            }
+            
+            // Cập nhật phân trang (số lượng mẫu ít nên chỉ hiển thị 1 trang)
+            currentPageElement.textContent = '1';
+            totalPagesElement.textContent = '1';
+            
+            // Hiển thị modal
+            document.getElementById('searchResultsModal').style.display = 'flex';
+        }
+        
+        updateTaskCounts();
+    });
+    
+    // Định nghĩa hàm viewPatientDetails trong phạm vi toàn cục
+    function viewPatientDetails(patientCode) {
+        // Đóng modal tìm kiếm
+        document.getElementById('searchResultsModal').style.display = 'none';
+        
+        // Mở modal chi tiết phiếu xét nghiệm (có thể truyền mã bệnh nhân vào hàm viewTestOrder)
+            viewTestOrder(patientCode);
+        }
+        
+        // Thêm hàm showSearchResults vào phạm vi toàn cục
+        window.showSearchResults = showSearchResults;
+    
+    // Định nghĩa hàm updateTaskCounts trong phạm vi toàn cục
+    function updateTaskCounts() {
+        const columns = document.querySelectorAll('.column-content');
+        columns.forEach(column => {
+            const columnHeader = column.parentElement.querySelector('.column-header');
+            const taskCount = columnHeader.querySelector('.task-count');
+            const count = column.querySelectorAll('.task-card').length;
+            taskCount.textContent = count;
         });
+    }
+    
+    // Định nghĩa hàm showSearchResults trong phạm vi toàn cục
+    function showSearchResults() {
+        // Lấy giá trị từ ô tìm kiếm
+        const searchInput = document.querySelector('.search input').value.trim();
+        const keywordElement = document.getElementById('searchKeyword');
+        const resultsTable = document.getElementById('searchResultsTable');
+        const totalResultsElement = document.getElementById('totalResults');
+        const currentPageElement = document.getElementById('currentPage');
+        const totalPagesElement = document.getElementById('totalPages');
+        
+        // Hiển thị từ khóa tìm kiếm
+        keywordElement.textContent = searchInput || '--';
+        
+        // Dữ liệu mẫu bệnh nhân (trong thực tế, đây sẽ được lấy từ API)
+        const mockPatients = [
+            { id: 1, code: 'BN001', name: 'Nguyễn Văn A', gender: 'Nam', age: 35, phone: '0123456789', examDate: '2025-06-10', status: 'Chờ lấy mẫu' },
+            { id: 2, code: 'BN002', name: 'Trần Thị B', gender: 'Nữ', age: 28, phone: '0987654321', examDate: '2025-06-10', status: 'Chờ kết quả' },
+            { id: 3, code: 'BN003', name: 'Phạm Văn C', gender: 'Nam', age: 42, phone: '0369852147', examDate: '2025-06-09', status: 'Chờ xác nhận' },
+            { id: 4, code: 'BN004', name: 'Lê Thị D', gender: 'Nữ', age: 50, phone: '0159753468', examDate: '2025-06-09', status: 'Chờ lấy mẫu' },
+            { id: 5, code: 'BN005', name: 'Hoàng Văn E', gender: 'Nam', age: 31, phone: '0357951468', examDate: '2025-06-08', status: 'Chờ kết quả' },
+            { id: 6, code: 'BN006', name: 'Ngô Thị F', gender: 'Nữ', age: 25, phone: '0258369147', examDate: '2025-06-08', status: 'Hoàn thành' },
+            { id: 7, code: 'BN007', name: 'Bùi Văn G', gender: 'Nam', age: 55, phone: '0123789456', examDate: '2025-06-07', status: 'Chờ xác nhận' },
+            { id: 8, code: 'BN008', name: 'Đặng Thị H', gender: 'Nữ', age: 48, phone: '0987321654', examDate: '2025-06-07', status: 'Chờ lấy mẫu' },
+            { id: 9, code: 'BN009', name: 'Vũ Văn I', gender: 'Nam', age: 60, phone: '0147258369', examDate: '2025-06-06', status: 'Chờ kết quả' },
+            { id: 10, code: 'BN010', name: 'Trương Thị K', gender: 'Nữ', age: 29, phone: '0369258147', examDate: '2025-06-06', status: 'Chờ xác nhận' }
+        ];
+        
+        // Lọc bệnh nhân theo từ khóa
+        let filteredPatients = mockPatients;
+        if (searchInput) {
+            filteredPatients = mockPatients.filter(patient => 
+                patient.code.toLowerCase().includes(searchInput.toLowerCase()) ||
+                patient.name.toLowerCase().includes(searchInput.toLowerCase()) ||
+                patient.phone.includes(searchInput) ||
+                patient.examDate.includes(searchInput)
+            );
+        }
+        
+        // Hiển thị kết quả
+        totalResultsElement.textContent = filteredPatients.length;
+        
+        // Xóa nội dung bảng cũ
+        resultsTable.innerHTML = '';
+        
+        // Thêm dữ liệu vào bảng
+        if (filteredPatients.length > 0) {
+            filteredPatients.forEach((patient, index) => {
+                // Xác định class trạng thái
+                let statusClass = '';
+                switch (patient.status) {
+                    case 'Chờ lấy mẫu':
+                        statusClass = 'status-waiting';
+                        break;
+                    case 'Chờ kết quả':
+                        statusClass = 'status-processing';
+                        break;
+                    case 'Chờ xác nhận':
+                        statusClass = 'status-review';
+                        break;
+                    case 'Hoàn thành':
+                        statusClass = 'status-completed';
+                        break;
+                }
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">${index + 1}</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">${patient.code}</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">${patient.name}</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">${patient.gender} / ${patient.age} tuổi</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">${patient.phone}</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">${patient.examDate}</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">
+                        <span class="${statusClass}" style="padding: 4px 8px; border-radius: 4px; font-size: 12px; display: inline-block;">${patient.status}</span>
+                    </td>
+                    <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">
+                        <button class="btn" style="padding: 4px 8px; font-size: 12px; margin-right: 5px;" onclick="viewPatientDetails('${patient.code}')">Xem chi tiết</button>
+                    </td>
+                `;
+                resultsTable.appendChild(row);
+            });
+        } else {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td colspan="8" style="text-align: center; padding: 30px; color: #666;">Không tìm thấy bệnh nhân nào khớp với từ khóa tìm kiếm</td>
+            `;
+            resultsTable.appendChild(row);
+        }
+        
+        // Cập nhật phân trang (số lượng mẫu ít nên chỉ hiển thị 1 trang)
+        currentPageElement.textContent = '1';
+        totalPagesElement.textContent = '1';
+        
+        // Hiển thị modal
+        document.getElementById('searchResultsModal').style.display = 'flex';
+    }
     </script>
-</body>
+</script>
+
+<!-- 搜索结果弹窗结构 -->
+<div id="searchResultsModal" class="modal-overlay" style="display: none; z-index: 1000;">
+    <div class="modal-content">
+        <div class="modal-header">
+                <h2 class="modal-title">Kết quả tìm kiếm</h2>
+            <button class="btn" onclick="document.getElementById('searchResultsModal').style.display = 'none'" style="padding: 6px 12px; font-size: 14px;">Đóng</button>
+        </div>
+        <div class="modal-body">
+            <div style="margin-bottom: 15px; font-size: 14px; color: #666;">
+                Hiển thị kết quả tìm kiếm cho: <span id="searchKeyword" style="font-weight: 600; color: #333;">--</span>
+            </div>
+            <div class="modal-body" style="overflow-x: auto;">
+                <table class="table" style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+                    <thead style="background-color: #f9f9f9;">
+                        <tr>
+                            <th style="padding: 12px; text-align: left; border-bottom: 2px solid #e0e0e0; font-weight: 600;">STT</th>
+                            <th style="padding: 12px; text-align: left; border-bottom: 2px solid #e0e0e0; font-weight: 600;">Mã bệnh nhân</th>
+                            <th style="padding: 12px; text-align: left; border-bottom: 2px solid #e0e0e0; font-weight: 600;">Họ tên bệnh nhân</th>
+                            <th style="padding: 12px; text-align: left; border-bottom: 2px solid #e0e0e0; font-weight: 600;">Giới tính / Tuổi</th>
+                            <th style="padding: 12px; text-align: left; border-bottom: 2px solid #e0e0e0; font-weight: 600;">Điện thoại</th>
+                            <th style="padding: 12px; text-align: left; border-bottom: 2px solid #e0e0e0; font-weight: 600;">Ngày khám</th>
+                            <th style="padding: 12px; text-align: left; border-bottom: 2px solid #e0e0e0; font-weight: 600;">Trạng thái</th>
+                            <th style="padding: 12px; text-align: left; border-bottom: 2px solid #e0e0e0; font-weight: 600;">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="searchResultsTable">
+                        <!-- Dữ liệu bệnh nhân sẽ được điền vào đây bằng JavaScript -->
+                        <tr>
+                            <td colspan="8" style="text-align: center; padding: 30px; color: #666;">Nhập từ khóa và nhấn tìm kiếm để hiển thị kết quả</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: #666;">
+                <div>Tổng số: <span id="totalResults" style="font-weight: 600;">0</span> bệnh nhân</div>
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn" disabled style="padding: 6px 12px; font-size: 14px;">Trang trước</button>
+                    <span style="padding: 6px 0;">Trang <span id="currentPage">1</span>/<span id="totalPages">0</span></span>
+                    <button class="btn" disabled style="padding: 6px 12px; font-size: 14px;">Trang sau</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    </body>
 </html>

@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quản Lý Chẩn Đoán Hình Ảnh - Hệ Thống Bệnh Viện</title>
+    <style>
+        :root {
+            --bg: #f6f7f9;
+            --card: #fff;
+            --line: #e5e7eb;
+            --txt: #111827;
+            --muted: #6b7280;
+            --primary: #2563eb;
+            --secondary: #4b5563;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --sidebar-width: 250px;
+            --right-sidebar-width: 250px;
+            --font-family: 'Times New Roman';
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            font: 14px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+            color: var(--txt);
+            background: var(--bg);
+            font-family: var(--font-family);
+        }
+
+        /* Layout tổng thể */
+        .container {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Main content */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            padding-top: 80px;
+            background: var(--bg);
+            overflow: hidden;
+        }
+
+        /* Header chung */
+        .header {
+            padding: 12px 16px;
+            background: var(--card);
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="time"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius-md);
+            background: #fff;
+            outline: none;
+            font-family: var(--font-family);
+            margin-bottom: 10px;
+        }
+
+        textarea {
+            min-height: 84px;
+            resize: vertical;
+        }
+
+        .btn {
+            padding: 8px 12px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius-md);
+            background: #fff;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+            font-family: var(--font-family);
+        }
+
+
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo img {
+            height: 40px;
+            width: auto;
+        }
+
+        .logo h1 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--primary);
+            margin: 0;
+        }
+
+        .stats-container {
+            display: flex;
+            gap: 12px;
+        }
+
+        .stat-card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 4px 6px;
+            min-width: 140px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 10px;
+            color: var(--muted);
+        }
+
+        .stat-waiting {
+            color: var(--warning);
+        }
+
+        .stat-processing {
+            color: var(--primary);
+        }
+
+        .stat-completed {
+            color: var(--success);
+        }
+
+        .stat-total {
+            color: var(--secondary);
+        }
+
+        /* Kanban Board Styles */
+        .kanban-board {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 16px;
+            width: 100%;
+            height: calc(100vh - 150px);
+        }
+
+    .kanban-column {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 10px;
+            min-width: calc(25% - 6px);
+            max-width: calc(25% - 6px);
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            height: 100%;
+        }
+    
+    @media (max-width: 1200px) {
+        .kanban-column {
+            min-width: calc(33.333% - 5.333px);
+            max-width: calc(33.333% - 5.333px);
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .kanban-column {
+            min-width: 300px;
+            max-width: 300px;
+            height: calc(100vh - 180px);
+        }
+    }
+
+        .column-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .column-title {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--txt);
+            margin: 0;
+        }
+
+        .task-count {
+            background: #f9fafb;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 2px 8px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--secondary);
+        }
+
+        .column-content {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: calc(100% - 80px);
+        }
+
+        /* Task Card Styles */
+        .task-card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .task-card:hover {
+            border-color: var(--primary);
+            background: #f0f9ff;
+        }
+
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .task-id {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 13px;
+        }
+
+        .task-priority {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .priority-high {
+            background: #fee2e2;
+            color: var(--danger);
+            border: 1px solid #fecaca;
+        }
+
+        .priority-medium {
+            background: #fef3c7;
+            color: var(--warning);
+            border: 1px solid #fde68a;
+        }
+
+        .priority-low {
+            background: #dbeafe;
+            color: var(--primary);
+            border: 1px solid #bfdbfe;
+        }
+
+        .task-patient {
+            margin-bottom: 6px;
+        }
+
+        .patient-name {
+            font-weight: 500;
+            margin-bottom: 2px;
+            font-size: 14px;
+        }
+
+        .patient-info {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .task-exams {
+            margin-bottom: 8px;
+            padding: 8px;
+            background: #f9fafb;
+            border-radius: 4px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .exam-name {
+            font-size: 12px;
+            color: var(--secondary);
+            margin-bottom: 2px;
+            line-height: 1.4;
+        }
+
+        .task-footer {
+            font-size: 11px;
+            color: var(--muted);
+            padding-top: 6px;
+            border-top: 1px solid var(--line);
+        }
+
+        .add-task-btn {
+            background: transparent;
+            border: 1px dashed var(--line);
+            color: var(--secondary);
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+            text-align: center;
+            margin-top: 8px;
+        }
+
+        .add-task-btn:hover {
+            background: #f9fafb;
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 1100;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            width: 90%;
+            height: 90%;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0;
+            color: var(--txt);
+        }
+
+        .close-modal-btn {
+            background: none;
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            padding: 4px 8px;
+            cursor: pointer;
+            color: var(--secondary);
+            font-size: 14px;
+        }
+
+        .modal-body {
+            padding: 16px;
+        }
+
+        .modal-footer {
+            padding: 12px 16px;
+            border-top: 1px solid var(--line);
+            background: #f9fafb;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        /* Button styles */
+        .btn {
+            padding: 8px 12px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: #fff;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+            font-family: var(--font-family);
+        }
+
+        .btn:hover {
+            background: #f9fafb;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: #fff;
+            border-color: var(--secondary);
+        }
+
+        .btn-secondary:hover {
+            background: #374151;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: #fff;
+            border-color: var(--success);
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .header-container {
+                flex-direction: column;
+                gap: 12px;
+                align-items: stretch;
+            }
+
+            .stats-container {
+                width: 100%;
+                overflow-x: auto;
+                padding-bottom: 8px;
+                justify-content: space-between;
+            }
+
+            .stat-card {
+                min-width: 120px;
+            }
+
+            .main-content {
+                padding: 12px;
+            }
+
+            .kanban-board {
+                gap: 12px;
+            }
+
+            .kanban-column {
+                min-width: 260px;
+                padding: 12px;
+            }
+        }
+        
+        .search {
+            flex: 1;
+            display: flex;
+            gap: 8px;
+        }
+    
+    .modal-body {
+        padding: 16px;
+    }
+    
+    /* Additional styles for radiology images */
+    .image-preview {
+        background: #f3f4f6;
+        border: 1px dashed var(--line);
+        border-radius: 8px;
+        padding: 20px;
+        text-align: center;
+        margin-bottom: 16px;
+    }
+    
+    .image-preview img {
+        max-width: 100%;
+        max-height: 400px;
+        border-radius: 4px;
+    }
+    
+    .image-placeholder {
+        color: var(--muted);
+        font-size: 14px;
+    }
+    
+    .diagnosis-form {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+    
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    .form-group label {
+        font-weight: 500;
+        color: var(--txt);
+    }
+    
+    .form-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+    }
+    
+    .radiology-type {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+    }
+    
+    .radiology-type label {
+        background: #f9fafb;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 6px 12px;
+        font-size: 12px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .radiology-type label:hover {
+        border-color: var(--primary);
+    }
+    
+    .radiology-type input[type="radio"] {
+        display: none;
+    }
+    
+    .radiology-type input[type="radio"]:checked + label {
+        background: var(--primary);
+        color: white;
+        border-color: var(--primary);
+    }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="home.html" style="display: flex; align-items: center;">
+                <div style="width: 40px; height: 40px; background-color: #4CAF50; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px;">
+                HIS
+                </div>
+            </a>
+
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-number stat-waiting">9</div>
+                    <div class="stat-label">Chờ tiếp nhận</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number stat-processing">5</div>
+                    <div class="stat-label">Đang chẩn đoán</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number stat-completed">18</div>
+                    <div class="stat-label">Hoàn thành hôm nay</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number stat-total">32</div>
+                    <div class="stat-label">Tổng yêu cầu hôm nay</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Kanban Board -->
+        <div class="kanban-board">
+            <!-- Column: Tìm bệnh nhân -->
+            <div class="kanban-column">
+                <div class="bar" style="display: flex; gap: 8px; margin-bottom: 10px;">
+                    <select style="flex: 1; padding: 8px 12px; border: 1px solid var(--line); border-radius: 4px; background: #fff; font-family: var(--font-family);">
+                        <option value="all">Tất cả phương tiện</option>
+                        <option value="x-ray">X-Quang</option>
+                        <option value="ct">CT Scanner</option>
+                        <option value="mri">MRI</option>
+                        <option value="ultrasound">Siêu Âm</option>
+                        <option value="mammogram">Mammography</option>
+                        <option value="angiography">Chụp mạch máu</option>
+                    </select>
+                </div>
+                <div class="search" style="display: flex; gap: 8px; width: 100%; padding-bottom: 14px;">
+                    <input type="text" style="flex: 1; padding: 10px 14px;" placeholder="Tìm BN / CCCD / Mã hồ sơ" aria-label="Tìm bệnh nhân" />
+                    <button class="btn" style="white-space: nowrap;" onclick="showSearchResults()">Tìm kiếm</button>
+                </div>
+
+                <div class="column-header">
+                    <div class="column-title">Tìm bệnh nhân</div>
+                    <div class="task-count">8</div>
+                </div>
+                <div class="column-content">
+                    <div class="task-card" onclick="viewExamOrder('CD001')">
+                        <div class="task-header">
+                            <div class="task-id">CD001</div>
+                            <div class="task-priority priority-medium">Trung bình</div>
+                        </div>
+                        <div class="task-patient">
+                            <div class="patient-name">Nguyễn Văn A</div>
+                            <div class="patient-info">Tuổi: 45 - Nam | Khám: Hồi máu não</div>
+                        </div>
+                        <div class="task-exams">
+                            <div class="exam-name">• CT não</div>
+                        </div>
+                        <div class="task-footer">
+                            Yêu cầu: BS. Trần Văn B | 08:15 AM
+                        </div>
+                    </div>
+
+                    <!-- More task cards -->
+                    <div class="task-card" onclick="viewExamOrder('CD002')">
+                        <div class="task-header">
+                            <div class="task-id">CD002</div>
+                            <div class="task-priority priority-high">Khẩn cấp</div>
+                        </div>
+                        <div class="task-patient">
+                            <div class="patient-name">Trần Thị B</div>
+                            <div class="patient-info">Tuổi: 68 - Nữ | Khám: Đau ngực cấp</div>
+                        </div>
+                        <div class="task-exams">
+                            <div class="exam-name">• X-quang ngực</div>
+                            <div class="exam-name">• CT ngực</div>
+                        </div>
+                        <div class="task-footer">
+                            Yêu cầu: BS. Phạm Thị C | 08:30 AM
+                        </div>
+                    </div>
+
+                    <div class="task-card" onclick="viewExamOrder('CD003')">
+                        <div class="task-header">
+                            <div class="task-id">CD003</div>
+                            <div class="task-priority priority-low">Thường</div>
+                        </div>
+                        <div class="task-patient">
+                            <div class="patient-name">Lê Văn C</div>
+                            <div class="patient-info">Tuổi: 32 - Nam | Khám: Rối loạn xương khớp</div>
+                        </div>
+                        <div class="task-exams">
+                            <div class="exam-name">• X-quang hông</div>
+                        </div>
+                        <div class="task-footer">
+                            Yêu cầu: BS. Võ Văn D | 09:00 AM
+                        </div>
+                    </div>
+
+                    <div class="task-card" onclick="viewExamOrder('CD004')">
+                        <div class="task-header">
+                            <div class="task-id">CD004</div>
+                            <div class="task-priority priority-medium">Trung bình</div>
+                        </div>
+                        <div class="task-patient">
+                            <div class="patient-name">Phạm Thị D</div>
+                            <div class="patient-info">Tuổi: 52 - Nữ | Khám: Tụ máu tụy</div>
+                        </div>
+                        <div class="task-exams">
+                            <div class="exam-name">• Siêu âm tụy</div>
+                            <div class="exam-name">• CT bụng</div>
+                        </div>
+                        <div class="task-footer">
+                            Yêu cầu: BS. Đinh Văn E | 09:15 AM
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Column: Chờ xử lý -->
+            <div class="kanban-column">
+                <div class="column-header">
+                    <div class="column-title">Chờ xử lý</div>
+                    <div class="task-count">5</div>
+                </div>
+                <div class="column-content">
+                    <!-- Task cards -->
+                    <div class="task-card" onclick="viewExamOrder('CD005')">
+                        <div class="task-header">
+                            <div class="task-id">CD005</div>
+                            <div class="task-priority priority-high">Khẩn cấp</div>
+                        </div>
+                        <div class="task-patient">
+                            <div class="patient-name">Nguyễn Thị E</div>
+                            <div class="patient-info">Tuổi: 75 - Nữ | Khám: Đau bụng cấp</div>
+                        </div>
+                        <div class="task-exams">
+                            <div class="exam-name">• CT bụng</div>
+                            <div class="exam-name">• Siêu âm bụng</div>
+                        </div>
+                        <div class="task-footer">
+                            Yêu cầu: BS. Hồ Văn F | 10:00 AM
+                        </div>
+                    </div>
+
+                    <!-- More task cards -->
+                    <div class="task-card" onclick="viewExamOrder('CD006')">
+                        <div class="task-header">
+                            <div class="task-id">CD006</div>
+                            <div class="task-priority priority-medium">Trung bình</div>
+                        </div>
+                        <div class="task-patient">
+                            <div class="patient-name">Bùi Văn F</div>
+                            <div class="patient-info">Tuổi: 48 - Nam | Khám: Sưng khớp</div>
+                        </div>
+                        <div class="task-exams">
+                            <div class="exam-name">• X-quang khuỷu tay</div>
+                            <div class="exam-name">• MRI khớp</div>
+                        </div>
+                        <div class="task-footer">
+                            Yêu cầu: BS. Lý Thị G | 10:30 AM
+                        </div>
+                    </div>
+
+                    <div class="task-card" onclick="viewExamOrder('CD007')">
+                        <div class="task-header">
+                            <div class="task-id">CD007</div>
+                            <div class="task-priority priority-low">Thường</div>
+                        </div>
+                        <div class="task-patient">
+                            <div class="patient-name">Vũ Thị G</div>
+                            <div class="patient-info">Tuổi: 28 - Nữ | Khám: Khám thai</div>
+                        </div>
+                        <div class="task-exams">
+                            <div class="exam-name">• Siêu âm thai</div>
+                        </div>
+                        <div class="task-footer">
+                            Yêu cầu: BS. Nguyễn Văn H | 11:00 AM
+                        </div>
+                    </div>
+
+                    <div class="task-card" onclick="viewExamOrder('CD008')">
+                        <div class="task-header">
+                            <div class="task-id">CD008</div>
+                            <div class="task-priority priority-low">Thường</div>
+                        </div>
+                        <div class="task-patient">
+                            <div class="patient-name">Trần Văn H</div>
+                            <div class="patient-info">Tuổi: 62 - Nam | Khám: Tắc nghẽn thở</div>
+                        </div>
+                        <div class="task-exams">
+                            <div class="exam-name">• X-quang ngực</div>
+                        </div>
+                        <div class="task-footer">
+                            Yêu cầu: BS. Hoàng Thị I | 11:30 AM
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Column: Đang xử lý -->
+            <div class="kanban-column">
+                <div class="column-header">
+                    <div class="column-title">Đang xử lý</div>
+                    <div class="task-count">3</div>
+                </div>
+                <div class="column-content">
+                    <!-- Task cards -->
+                    <div class="task-card" onclick="viewExamOrder('CD009')">
+                        <div class="task-header">
+                            <div class="task-id">CD009</div>
+                            <div class="task-priority priority-medium">Trung bình</div>
+                        </div>
+                        <div class="task-patient">
+                            <div class="patient-name">Phan Văn I</div>
+                            <div class="patient-info">Tuổi: 56 - Nam | Khám: Rối loạn thận</div>
+                        </div>
+                        <div class="task-exams">
+                            <div class="exam-name">• Siêu âm thận</div>
+                            <div class="exam-name">• CT thận</div>
+                        </div>
+                        <div class="task-footer">
+                            Đang xử lý bởi: BS. Chẩn đoán Lý | 13:00 PM
+                        </div>
+                    </div>
+
+                    <!-- More task cards -->
+                    <div class="task-card" onclick="viewExamOrder('CD010')">
+                        <div class="task-header">
+                            <div class="task-id">CD010</div>
+                            <div class="task-priority priority-high">Khẩn cấp</div>
+                        </div>
+                        <div class="task-patient">
+                            <div class="patient-name">Lê Thị J</div>
+                            <div class="patient-info">Tuổi: 36 - Nữ | Khám: Đau bụng cấp</div>
+                        </div>
+                        <div class="task-exams">
+                            <div class="exam-name">• CT bụng</div>
+                        </div>
+                        <div class="task-footer">
+                            Đang xử lý bởi: BS. Chẩn đoán Võ | 13:30 PM
+                        </div>
+                    </div>
+
+                    <div class="task-card" onclick="viewExamOrder('CD011')">
+                        <div class="task-header">
+                            <div class="task-id">CD011</div>
+                            <div class="task-priority priority-low">Thường</div>
+                        </div>
+                        <div class="task-patient">
+                            <div class="patient-name">Nguyễn Văn K</div>
+                            <div class="patient-info">Tuổi: 42 - Nam | Khám: Rối loạn khớp cổ</div>
+                        </div>
+                        <div class="task-exams">
+                            <div class="exam-name">• X-quang cổ</div>
+                            <div class="exam-name">• MRI cổ</div>
+                        </div>
+                        <div class="task-footer">
+                            Đang xử lý bởi: BS. Chẩn đoán Phạm | 14:00 PM
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Column: Hoàn tất -->
+            <div class="kanban-column">
+                <div class="column-header">
+                    <div class="column-title">Hoàn tất</div>
+                    <div class="task-count">16</div>
+                </div>
+                <div class="column-content">
+                    <!-- Task cards -->
+                    <div class="task-card" onclick="viewExamOrder('CD012')">
+                        <div class="task-header">
+                            <div class="task-id">CD012</div>
+                            <div class="task-priority priority-low">Thường</div>
+                        </div>
+                        <div class="task-patient">
+                            <div class="patient-name">Vương Thị L</div>
+                            <div class="patient-info">Tuổi: 50 - Nữ | Khám: Rối loạn gân</div>
+                        </div>
+                        <div class="task-exams">
+                            <div class="exam-name">• X-quang gối</div>
+                        </div>
+                        <div class="task-footer">
+                            Hoàn thành: BS. Chẩn đoán Trần | 10:45 AM
+                        </div>
+                    </div>
+
+                    <!-- More task cards -->
+                    <div class="task-card" onclick="viewExamOrder('CD013')">
+                        <div class="task-header">
+                            <div class="task-id">CD013</div>
+                            <div class="task-priority priority-medium">Trung bình</div>
+                        </div>
+                        <div class="task-patient">
+                            <div class="patient-name">Dương Văn M</div>
+                            <div class="patient-info">Tuổi: 38 - Nam | Khám: Sưng tim</div>
+                        </div>
+                        <div class="task-exams">
+                            <div class="exam-name">• X-quang ngực</div>
+                            <div class="exam-name">• Echo tim</div>
+                        </div>
+                        <div class="task-footer">
+                            Hoàn thành: BS. Chẩn đoán Dương | 11:20 AM
+                        </div>
+                    </div>
+
+                    <div class="task-card" onclick="viewExamOrder('CD014')">
+                        <div class="task-header">
+                            <div class="task-id">CD014</div>
+                            <div class="task-priority priority-high">Khẩn cấp</div>
+                        </div>
+                        <div class="task-patient">
+                            <div class="patient-name">Phạm Văn N</div>
+                            <div class="patient-info">Tuổi: 67 - Nam | Khám: Đau tim cấp</div>
+                        </div>
+                        <div class="task-exams">
+                            <div class="exam-name">• X-quang ngực</div>
+                            <div class="exam-name">• CT tim</div>
+                        </div>
+                        <div class="task-footer">
+                            Hoàn thành: BS. Chẩn đoán Hoàng | 11:55 AM
+                        </div>
+                    </div>
+
+                    <div class="task-card" onclick="viewExamOrder('CD015')">
+                        <div class="task-header">
+                            <div class="task-id">CD015</div>
+                            <div class="task-priority priority-low">Thường</div>
+                        </div>
+                        <div class="task-patient">
+                            <div class="patient-name">Trần Thị O</div>
+                            <div class="patient-info">Tuổi: 44 - Nữ | Khám: Khám răng</div>
+                        </div>
+                        <div class="task-exams">
+                            <div class="exam-name">• X-quang răng</div>
+                        </div>
+                        <div class="task-footer">
+                            Hoàn thành: BS. Chẩn đoán Phan | 12:15 PM
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal for Exam Order Details -->
+    <div id="examOrderModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Chi tiết phiếu chẩn đoán hình ảnh</h2>
+                <button class="close-modal-btn" onclick="closeExamOrderModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Exam Order Details will be dynamically populated -->
+                <div id="modal-exam-content">
+                    <!-- Sample content, will be replaced by JavaScript -->
+                    <div style="padding: 8px; background-color: #f8f9fa; border-radius: var(--radius-md); margin-bottom: 20px;">
+                        <h3 style="margin-bottom: 12px; margin-top: 0px !important;">Thông tin bệnh nhân</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px;">
+                            <div><strong>Mã phiếu:</strong> <span id="modal-exam-order-number">CD001</span></div>
+                            <div><strong>Ngày yêu cầu:</strong> 15/04/2023</div>
+                            <div><strong>Tên bệnh nhân:</strong> <span id="modal-exam-patient-name">Nguyễn Văn A</span></div>
+                            <div><strong>Ngày sinh:</strong> 01/01/1978</div>
+                            <div><strong>Giới tính:</strong> Nam</div>
+                            <div><strong>Tuổi:</strong> 45</div>
+                            <div><strong>Phòng khám:</strong> Nội tiết</div>
+                            <div><strong>Bác sĩ yêu cầu:</strong> BS. Trần Văn B</div>
+                        </div>
+                    </div>
+
+                    <!-- Image Preview Section -->
+                    <h3 style="margin-bottom: 12px;">Hình ảnh chẩn đoán</h3>
+                    <div class="image-preview">
+                        <div class="image-placeholder">
+                            Chưa có hình ảnh. Kết nối thiết bị chụp ảnh để tải lên.
+                        </div>
+                    </div>
+
+                    <!-- Radiology Type Selection -->
+                    <h3 style="margin-bottom: 12px;">Phương pháp chẩn đoán</h3>
+                    <div class="radiology-type">
+                        <input type="radio" id="x-ray" name="radiology-type" checked>
+                        <label for="x-ray">X-Quang</label>
+                        <input type="radio" id="ct" name="radiology-type">
+                        <label for="ct">CT Scanner</label>
+                        <input type="radio" id="mri" name="radiology-type">
+                        <label for="mri">MRI</label>
+                        <input type="radio" id="ultrasound" name="radiology-type">
+                        <label for="ultrasound">Siêu Âm</label>
+                        <input type="radio" id="other" name="radiology-type">
+                        <label for="other">Khác</label>
+                    </div>
+
+                    <!-- Diagnosis Form -->
+                    <h3 style="margin-bottom: 12px;">Thông tin chẩn đoán</h3>
+                    <div class="diagnosis-form">
+                        <div class="form-group">
+                            <label for="findings">Tìm thấy:</label>
+                            <textarea id="findings" placeholder="Nhập phát hiện hình ảnh..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="impression">Đánh giá:</label>
+                            <textarea id="impression" placeholder="Nhập đánh giá chẩn đoán..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="recommendations">Khuyến nghị:</label>
+                            <textarea id="recommendations" placeholder="Nhập khuyến nghị thêm..."></textarea>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="diagnosing-doctor">Bác sĩ chẩn đoán:</label>
+                                <input type="text" id="diagnosing-doctor" placeholder="Tên bác sĩ">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="diagnosis-date">Ngày chẩn đoán:</label>
+                                <input type="date" id="diagnosis-date">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="diagnosis-time">Thời gian:</label>
+                                <input type="time" id="diagnosis-time">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="status">Trạng thái:</label>
+                                <select id="status">
+                                    <option value="pending">Đang chẩn đoán</option>
+                                    <option value="review">Chờ kiểm duyệt</option>
+                                    <option value="completed">Hoàn thành</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeExamOrderModal()">Đóng</button>
+                <button class="btn btn-primary">Lưu nháp</button>
+                <button class="btn btn-primary">Nhận yêu cầu</button>
+                <button class="btn btn-primary">In phiếu</button>
+                <button class="btn btn-success">Xác nhận hoàn thành</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Search Results -->
+    <div id="searchResultsModal" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); display: flex; justify-content: center; align-items: center;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Kết quả tìm kiếm</h2>
+                <button class="close-modal-btn" onclick="document.getElementById('searchResultsModal').style.display = 'none'">×</button>
+            </div>
+            <div class="modal-body">
+                <div style="margin-bottom: 15px; font-size: 14px; color: #666;">
+                    Hiển thị kết quả tìm kiếm cho: <span id="searchKeyword" style="font-weight: 600; color: #333;">--</span>
+                </div>
+                <div class="modal-body" style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+                        <thead>
+                            <tr style="background-color: #e9ecef;">
+                                <th style="padding: 10px; text-align: left; border: 1px solid var(--border-color); font-weight: 600;">STT</th>
+                                <th style="padding: 10px; text-align: left; border: 1px solid var(--border-color); font-weight: 600;">Mã bệnh nhân</th>
+                                <th style="padding: 10px; text-align: left; border: 1px solid var(--border-color); font-weight: 600;">Họ tên bệnh nhân</th>
+                                <th style="padding: 10px; text-align: left; border: 1px solid var(--border-color); font-weight: 600;">Giới tính / Tuổi</th>
+                                <th style="padding: 10px; text-align: left; border: 1px solid var(--border-color); font-weight: 600;">Điện thoại</th>
+                                <th style="padding: 10px; text-align: left; border: 1px solid var(--border-color); font-weight: 600;">Ngày khám</th>
+                                <th style="padding: 10px; text-align: left; border: 1px solid var(--border-color); font-weight: 600;">Trạng thái</th>
+                                <th style="padding: 10px; text-align: left; border: 1px solid var(--border-color); font-weight: 600;">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="searchResultsTable">
+                            <!-- Dữ liệu bệnh nhân sẽ được điền vào đây bằng JavaScript -->
+                            <tr>
+                                <td colspan="8" style="text-align: center; padding: 30px; color: #666; border: 1px solid var(--border-color);">Nhập từ khóa và nhấn tìm kiếm để hiển thị kết quả</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: #666;">
+                    <div>Tổng số: <span id="totalResults" style="font-weight: 600;">0</span> bệnh nhân</div>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn btn-secondary" disabled>Trang trước</button>
+                        <span style="padding: 6px 0;">Trang <span id="currentPage">1</span>/<span id="totalPages">0</span></span>
+                        <button class="btn btn-secondary" disabled>Trang sau</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="document.getElementById('searchResultsModal').style.display = 'none'">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample patient data for search results
+        const samplePatients = [
+            { code: "BN001", name: "Nguyễn Văn A", gender: "Nam", age: 45, phone: "0901234567", date: "15/04/2023", status: "Chờ tiếp nhận" },
+            { code: "BN002", name: "Trần Thị B", gender: "Nữ", age: 68, phone: "0912345678", date: "15/04/2023", status: "Chờ xử lý" },
+            { code: "BN003", name: "Lê Văn C", gender: "Nam", age: 32, phone: "0923456789", date: "14/04/2023", status: "Đang xử lý" },
+            { code: "BN004", name: "Phạm Thị D", gender: "Nữ", age: 52, phone: "0934567890", date: "15/04/2023", status: "Hoàn thành" },
+            { code: "BN005", name: "Bùi Văn E", gender: "Nam", age: 48, phone: "0945678901", date: "13/04/2023", status: "Chờ tiếp nhận" },
+            { code: "BN006", name: "Nguyễn Thị F", gender: "Nữ", age: 28, phone: "0956789012", date: "15/04/2023", status: "Chờ xử lý" },
+            { code: "BN007", name: "Trần Văn G", gender: "Nam", age: 62, phone: "0967890123", date: "14/04/2023", status: "Đang xử lý" },
+            { code: "BN008", name: "Vũ Thị H", gender: "Nữ", age: 36, phone: "0978901234", date: "15/04/2023", status: "Hoàn thành" },
+            { code: "BN009", name: "Phan Văn I", gender: "Nam", age: 56, phone: "0989012345", date: "13/04/2023", status: "Chờ tiếp nhận" },
+            { code: "BN010", name: "Lê Thị J", gender: "Nữ", age: 44, phone: "0990123456", date: "14/04/2023", status: "Chờ xử lý" }
+        ];
+
+        // Function to display exam order details
+        function viewExamOrder(orderNumber) {
+            // In a real application, this would fetch data from a server
+            // For now, we'll just populate with dummy data
+            document.getElementById('modal-exam-order-number').textContent = orderNumber;
+            
+            // Show modal
+            document.getElementById('examOrderModal').style.display = 'flex';
+        }
+
+        // Function to close the exam order modal
+        function closeExamOrderModal() {
+            document.getElementById('examOrderModal').style.display = 'none';
+        }
+
+        // Function to show search results
+        function showSearchResults() {
+            // Get search keyword
+            const searchInput = document.querySelector('.search input');
+            const keyword = searchInput ? searchInput.value.trim() : '';
+            
+            // Update search keyword display
+            document.getElementById('searchKeyword').textContent = keyword || '--';
+            
+            // Filter patients based on keyword
+            let filteredPatients = [];
+            if (keyword) {
+                filteredPatients = samplePatients.filter(patient => 
+                    patient.code.toLowerCase().includes(keyword.toLowerCase()) ||
+                    patient.name.toLowerCase().includes(keyword.toLowerCase()) ||
+                    patient.phone.includes(keyword) ||
+                    patient.date.includes(keyword)
+                );
+            }
+            
+            // Update table content
+            const tableBody = document.getElementById('searchResultsTable');
+            tableBody.innerHTML = '';
+            
+            if (filteredPatients.length > 0) {
+                // Add rows for each patient
+                filteredPatients.forEach((patient, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td style="padding: 10px; border: 1px solid var(--border-color);">${index + 1}</td>
+                        <td style="padding: 10px; border: 1px solid var(--border-color);">${patient.code}</td>
+                        <td style="padding: 10px; border: 1px solid var(--border-color);">${patient.name}</td>
+                        <td style="padding: 10px; border: 1px solid var(--border-color);">${patient.gender} / ${patient.age}</td>
+                        <td style="padding: 10px; border: 1px solid var(--border-color);">${patient.phone}</td>
+                        <td style="padding: 10px; border: 1px solid var(--border-color);">${patient.date}</td>
+                        <td style="padding: 10px; border: 1px solid var(--border-color);">${patient.status}</td>
+                        <td style="padding: 10px; border: 1px solid var(--border-color);">
+                            <button class="btn btn-secondary" onclick="viewPatientDetails('${patient.code}')" style="padding: 4px 8px; font-size: 12px;">Xem chi tiết</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } else if (keyword) {
+                // No results found
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td colspan="8" style="text-align: center; padding: 30px; color: #666; border: 1px solid var(--border-color);">Không tìm thấy bệnh nhân nào khớp</td>
+                `;
+                tableBody.appendChild(row);
+            } else {
+                // Initial state - no search performed
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td colspan="8" style="text-align: center; padding: 30px; color: #666; border: 1px solid var(--border-color);">Nhập từ khóa và nhấn tìm kiếm để hiển thị kết quả</td>
+                `;
+                tableBody.appendChild(row);
+            }
+            
+            // Update pagination and total count
+            document.getElementById('totalResults').textContent = filteredPatients.length;
+            document.getElementById('totalPages').textContent = Math.ceil(filteredPatients.length / 10) || 0;
+            
+            // Show modal
+            document.getElementById('searchResultsModal').style.display = 'flex';
+        }
+
+        // Function to view patient details
+        function viewPatientDetails(patientCode) {
+            // Close search results modal
+            document.getElementById('searchResultsModal').style.display = 'none';
+            
+            // Find patient in sample data
+            const patient = samplePatients.find(p => p.code === patientCode);
+            if (patient) {
+                // In a real application, you would fetch the patient's exam orders
+                // For now, just show a sample exam order
+                viewExamOrder('CD' + patientCode.substring(2));
+            }
+        }
+
+        // Update task counts
+        function updateTaskCounts() {
+            // In a real application, this would fetch data from a server
+            // For now, we'll just use static counts
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTaskCounts();
+        });
+    </script>
+</body>
+</html>
