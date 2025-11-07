@@ -45,10 +45,10 @@
         /* Main content */
         .main-content {
             flex: 1;
-            overflow-y: auto;
             padding: 20px;
             padding-top: 80px;
             background: var(--bg);
+            overflow: hidden;
         }
 
         /* Header chung */
@@ -63,6 +63,7 @@
             top: 0;
             left: 0;
             right: 0;
+            z-index: 100;
         }
 
         .header-container {
@@ -135,25 +136,27 @@
 
         /* Kanban Board Styles */
         .kanban-board {
-        display: flex;
-        gap: 8px;
-        overflow-x: auto;
-        padding-bottom: 16px;
-        width: 100%;
-    }
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 16px;
+            width: 100%;
+            height: calc(100vh - 150px);
+        }
 
     .kanban-column {
-        background: var(--card);
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        padding: 4px;
-        min-width: calc(20% - 6.4px);
-        max-width: calc(20% - 6.4px);
-        flex-shrink: 0;
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-    }
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 4px;
+            min-width: calc(20% - 6.4px);
+            max-width: calc(20% - 6.4px);
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            height: 100%;
+        }
     
     @media (max-width: 1200px) {
         .kanban-column {
@@ -201,6 +204,7 @@
             display: flex;
             flex-direction: column;
             gap: 8px;
+            max-height: calc(100% - 80px);
         }
 
         /* Task Card Styles */
@@ -331,8 +335,7 @@
             border: 1px solid var(--line);
             border-radius: 8px;
             width: 90%;
-            max-width: 800px;
-            max-height: 90vh;
+            height: 90%;
             overflow-y: auto;
         }
 
@@ -467,7 +470,7 @@
                 HIS
                 </div>
             </a>
-            
+
             <div class="stats-container">
                 <div class="stat-card">
                     <div class="stat-number stat-waiting">12</div>
