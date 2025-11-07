@@ -1,0 +1,2210 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HIS - xét nghiệm bệnh bác sĩ</title>
+    <style>
+        :root {
+            --bg: #f6f7f9;
+            --card: #fff;
+            --line: #e5e7eb;
+            --txt: #111827;
+            --muted: #6b7280;
+            --primary: #2563eb;
+            --secondary: #4b5563;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --sidebar-width: 300px;
+            --right-sidebar-width: 350px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            font: 14px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+            color: var(--txt);
+            background: var(--bg);
+        }
+
+        /* Layout tổng thể */
+        .container {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar trái - Danh sách bệnh nhân */
+        .sidebar-left {
+            width: var(--sidebar-width);
+            background: var(--card);
+            border-right: 1px solid var(--line);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Main content - Phần xét nghiệm bệnh */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0;
+            background: var(--bg);
+        }
+
+        /* Sidebar phải - Chỉ định, đơn thuốc */
+        .sidebar-right {
+            width: var(--right-sidebar-width);
+            background: var(--card);
+            border-left: 1px solid var(--line);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Header chung */
+        .header {
+            padding: 12px 16px;
+            background: var(--card);
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h2 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* Button styles */
+        .btn {
+            padding: 8px 12px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: #fff;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background: #f9fafb;
+        }
+
+        .btn.primary {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+
+        .btn.primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn.danger {
+            background: var(--danger);
+            color: #fff;
+            border-color: var(--danger);
+        }
+
+        .btn.danger:hover {
+            background: #dc2626;
+        }
+
+        .btn.success {
+            background: var(--success);
+            color: #fff;
+            border-color: var(--success);
+        }
+
+        .btn.success:hover {
+            background: #059669;
+        }
+
+        /* Input styles */
+        input[type="text"],
+        input[type="date"],
+        input[type="time"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: #fff;
+            outline: none;
+            font-size: 14px;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* Patient list */
+        .patient-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px;
+        }
+
+        .patient-item {
+            padding: 12px;
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .patient-item:hover {
+            border-color: var(--primary);
+            background: #f0f9ff;
+        }
+
+        .patient-item.active {
+            border-color: var(--primary);
+            background: #dbeafe;
+        }
+
+        .patient-info h3 {
+            margin: 0 0 4px 0;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .patient-info p {
+            margin: 0;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .patient-status {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+            margin-top: 6px;
+        }
+
+        .status-waiting {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-examining {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .status-completed {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        /* Card styles */
+        .card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            box-shadow: 0 1px 0 rgba(0, 0, 0, .02);
+        }
+
+        .card-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--line);
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .card-body {
+            padding: 16px;
+        }
+
+        /* Grid layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        /* Field styles */
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .field label {
+            font-size: 12px;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        /* Scrollable content */
+        .scrollable {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
+        /* Table styles */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th {
+            text-align: left;
+            padding: 10px;
+            background: #f9fafb;
+            border-bottom: 2px solid var(--line);
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .table td {
+            padding: 10px;
+            border-bottom: 1px solid var(--line);
+            font-size: 13px;
+        }
+
+        .table tbody tr:hover {
+            background: #f9fafb;
+        }
+
+        /* Diagnosis and prescription */
+        .prescription-list,
+        .diagnosis-list {
+            margin-top: 12px;
+        }
+
+        .prescription-item,
+        .diagnosis-item {
+            padding: 12px;
+            background: #f9fafb;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .prescription-info,
+        .diagnosis-info {
+            flex: 1;
+        }
+
+        .prescription-info h4,
+        .diagnosis-info h4 {
+            margin: 0 0 4px 0;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .prescription-info p,
+        .diagnosis-info p {
+            margin: 0;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        /* Footer actions */
+        .footer-actions {
+            padding: 12px 16px;
+            border-top: 1px solid var(--line);
+            background: #f9fafb;
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+
+        /* Detail info */
+        .detail-info {
+            background: #f9fafb;
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .detail-info h3 {
+            margin: 0 0 12px 0;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 13px;
+        }
+
+        .detail-label {
+            color: var(--muted);
+        }
+
+        .detail-value {
+            font-weight: 500;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1200px) {
+            :root {
+                --sidebar-width: 250px;
+                --right-sidebar-width: 300px;
+            }
+
+            .grid-4 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar-left,
+            .sidebar-right {
+                width: 100%;
+                height: 200px;
+            }
+
+            .grid-2,
+            .grid-3,
+            .grid-4 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Dashboard styles */
+        .dashboard-section {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            width: 100%;
+            margin: 0;
+            padding: 12px 20px;
+        }
+        
+        .dashboard-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            
+            margin: 0 auto;
+        }
+        
+        .dashboard-stats {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 8px;
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+        
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .stat-value.total {
+            color: #2c3e50;
+        }
+        
+        .stat-value.waiting {
+            color: #FF9800;
+        }
+        
+        .stat-value.sample {
+            color: #2196F3;
+        }
+        
+        .stat-value.result {
+            color: #4CAF50;
+        }
+        
+        .stat-value.cancelled {
+            color: #F44336;
+        }
+        
+        /* Logo styles */
+        .logo-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        
+        .logo {
+            width: 40px;
+            height: 40px;
+            background-color: #4CAF50;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .logo:hover {
+            background-color: #45a049;
+            transition: background-color 0.2s ease;
+        }
+
+
+        /* --- CSS MỚI CHO POPUP --- */
+        .modal-overlay {
+            /* Ẩn popup mặc định */
+            display: none; 
+            
+            /* Định vị cố định toàn màn hình */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6); /* Nền mờ */
+            z-index: 1000; /* Đảm bảo nằm trên mọi thứ */
+
+            /* Căn giữa nội dung bên trong */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content-container {
+            /* Đảm bảo nội dung popup có kích thước và background */
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            max-width: 700px;
+            width: 90%;
+            /* Sử dụng flex-direction column để header, body, footer xếp dọc */
+            display: flex;
+            flex-direction: column;
+            max-height: 90vh; /* Giới hạn chiều cao để không tràn màn hình */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Main content: Phần xét nghiệm bệnh -->
+        <div class="main-content">
+            <div class="section dashboard-section">
+                <div class="dashboard-container">
+                    <a href="home.html" class="logo-link">
+                        <div class="logo">HIS</div>
+                    </a>
+                    <div class="dashboard-stats">
+                        <div class="stat-item">
+                            <div class="stat-label">Tổng số bệnh nhân</div>
+                            <div class="stat-value total">43</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Chờ tiếp nhận</div>
+                            <div class="stat-value waiting">12</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Chờ lấy mẫu</div>
+                            <div class="stat-value sample">5</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Chờ kết quả</div>
+                            <div class="stat-value result">23</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Bỏ xét nghiệm</div>
+                            <div class="stat-value cancelled">3</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section card" style="margin: 12px; border-radius: 8px; overflow: hidden;">
+                <div class="card-header"
+                    style="display: flex; justify-content: space-between; align-items: center; background-color: #f8f9fa;">
+                    <div>
+                        <h3 style="margin: 0; font-size: 16px; color: #333;">Kết quả xét nghiệm - Kanban</h3>
+                        <div id="selected-patient-info" style="font-size: 12px; color: #666; margin-top: 4px;">Quản lý
+                            tiến trình xét nghiệm bệnh nhân</div>
+                    </div>
+                    <div>
+                        <input type="text" placeholder="Tìm kiếm phiếu xét nghiệm..."
+                            style="padding: 6px 10px; font-size: 12px; border: 1px solid #ddd; border-radius: 4px; margin-right: 8px;">
+                        <button class="btn small" style="font-size: 12px; padding: 6px 12px;">Lọc</button>
+                    </div>
+                </div>
+
+                <!-- Kết quả xét nghiệm dạng Kanban 4 cột -->
+                <div style="display: flex; height: 100%; width: 100%; background-color: #f5f5f5; overflow-x: auto;">
+                    <!-- Cột 1: Chờ tiếp nhận -->
+                    <div class="kanban-column"
+                        style="flex: 1; min-width: 200px; padding: 12px; border-right: 1px solid #e0e6ed; background-color: #f9f9f9; display: flex; flex-direction: column;">
+                        <div class="column-header"
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid #ff9800;">
+                            <h4 style="margin: 0; font-size: 14px; color: #ff9800; font-weight: 600;">Chờ tiếp nhận</h4>
+                            <span class="task-count"
+                                style="background-color: #ff9800; color: white; border-radius: 10px; padding: 2px 8px; font-size: 11px;">3</span>
+                        </div>
+
+                        <div class="kanban-tasks"
+                            style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;">
+                            <!-- Phiếu xét nghiệm 1 -->
+                            <div class="kanban-card" draggable="true" ondragover="allowDrop(event)"
+                                ondrop="dropTask(event, 'column2')" onclick="viewTestOrder('PT001')"
+                                style="background-color: white; border-radius: 6px; padding: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.2s ease; border: 2px solid transparent;">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
+                                    <div style="font-size: 12px; font-weight: 600; color: #333;">PT001 - Nguyễn Văn A
+                                    </div>
+                                    <div
+                                        style="background-color: #ffecb3; color: #ff8f00; font-size: 10px; padding: 2px 6px; border-radius: 3px;">
+                                        Chờ tiếp nhận</div>
+                                </div>
+                                <div style="font-size: 11px; color: #666; margin-bottom: 4px;">Xét nghiệm thường规 -
+                                    15/04/2023</div>
+                                <div style="font-size: 10px; color: #999; margin-bottom: 6px;">Tuổi: 35 - Nam</div>
+                                <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+                                    <span
+                                        style="background-color: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 9px;">HB</span>
+                                    <span
+                                        style="background-color: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 9px;">WBC</span>
+                                    <span
+                                        style="background-color: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 9px;">PLT</span>
+                                </div>
+                                <div style="display: flex; justify-content: flex-end; gap: 4px; margin-top: 8px;">
+                                    <button class="btn small" onclick="event.stopPropagation(); viewTestOrder('PT001')"
+                                        style="font-size: 10px; padding: 4px 8px;">Xem</button>
+                                    <button class="btn primary small"
+                                        onclick="event.stopPropagation(); moveToNextStage('PT001')"
+                                        style="font-size: 10px; padding: 4px 8px;">Tiếp nhận</button>
+                                </div>
+                            </div>
+
+                            <!-- Phiếu xét nghiệm 2 -->
+                            <div class="kanban-card" draggable="true" ondragover="allowDrop(event)"
+                                ondrop="dropTask(event, 'column2')" onclick="viewTestOrder('PT002')"
+                                style="background-color: white; border-radius: 6px; padding: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.2s ease; border: 2px solid transparent;">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
+                                    <div style="font-size: 12px; font-weight: 600; color: #333;">PT002 - Trần Thị B
+                                    </div>
+                                    <div
+                                        style="background-color: #ffecb3; color: #ff8f00; font-size: 10px; padding: 2px 6px; border-radius: 3px;">
+                                        Chờ tiếp nhận</div>
+                                </div>
+                                <div style="font-size: 11px; color: #666; margin-bottom: 4px;">Xét nghiệm chức năng thận
+                                    - 15/04/2023</div>
+                                <div style="font-size: 10px; color: #999; margin-bottom: 6px;">Tuổi: 42 - Nữ</div>
+                                <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+                                    <span
+                                        style="background-color: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 9px;">BUN</span>
+                                    <span
+                                        style="background-color: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 9px;">CREA</span>
+                                </div>
+                                <div style="display: flex; justify-content: flex-end; gap: 4px; margin-top: 8px;">
+                                    <button class="btn small" onclick="event.stopPropagation(); viewTestOrder('PT002')"
+                                        style="font-size: 10px; padding: 4px 8px;">Xem</button>
+                                    <button class="btn primary small"
+                                        onclick="event.stopPropagation(); moveToNextStage('PT002')"
+                                        style="font-size: 10px; padding: 4px 8px;">Tiếp nhận</button>
+                                </div>
+                            </div>
+
+                            <!-- Phiếu xét nghiệm 3 -->
+                            <div class="kanban-card" draggable="true" ondragover="allowDrop(event)"
+                                ondrop="dropTask(event, 'column2')" onclick="viewTestOrder('PT003')"
+                                style="background-color: white; border-radius: 6px; padding: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.2s ease; border: 2px solid transparent;">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
+                                    <div style="font-size: 12px; font-weight: 600; color: #333;">PT003 - Lê Văn C</div>
+                                    <div
+                                        style="background-color: #ffecb3; color: #ff8f00; font-size: 10px; padding: 2px 6px; border-radius: 3px;">
+                                        Chờ tiếp nhận</div>
+                                </div>
+                                <div style="font-size: 11px; color: #666; margin-bottom: 4px;">Xét nghiệm hóa sinh -
+                                    15/04/2023</div>
+                                <div style="font-size: 10px; color: #999; margin-bottom: 6px;">Tuổi: 50 - Nam</div>
+                                <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+                                    <span
+                                        style="background-color: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 9px;">GLU</span>
+                                    <span
+                                        style="background-color: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 9px;">CHO</span>
+                                    <span
+                                        style="background-color: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 9px;">TG</span>
+                                </div>
+                                <div style="display: flex; justify-content: flex-end; gap: 4px; margin-top: 8px;">
+                                    <button class="btn small" onclick="event.stopPropagation(); viewTestOrder('PT003')"
+                                        style="font-size: 10px; padding: 4px 8px;">Xem</button>
+                                    <button class="btn primary small"
+                                        onclick="event.stopPropagation(); moveToNextStage('PT003')"
+                                        style="font-size: 10px; padding: 4px 8px;">Tiếp nhận</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cột 2: Chờ lấy mẫu -->
+                    <div id="column2" class="kanban-column" ondragover="allowDrop(event)"
+                        ondrop="dropTask(event, 'column2')"
+                        style="flex: 1; min-width: 200px; padding: 12px; border-right: 1px solid #e0e6ed; background-color: #f5f7fa; display: flex; flex-direction: column;">
+                        <div class="column-header"
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid #2196f3;">
+                            <h4 style="margin: 0; font-size: 14px; color: #2196f3; font-weight: 600;">Chờ lấy mẫu</h4>
+                            <span class="task-count"
+                                style="background-color: #2196f3; color: white; border-radius: 10px; padding: 2px 8px; font-size: 11px;">2</span>
+                        </div>
+
+                        <div class="kanban-tasks"
+                            style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;">
+                            <!-- Phiếu xét nghiệm 4 -->
+                            <div class="kanban-card" draggable="true" ondragover="allowDrop(event)"
+                                ondrop="dropTask(event, 'column3')" onclick="viewTestOrder('PT004')"
+                                style="background-color: white; border-radius: 6px; padding: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.2s ease; border: 2px solid transparent;">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
+                                    <div style="font-size: 12px; font-weight: 600; color: #333;">PT004 - Phạm Thị D
+                                    </div>
+                                    <div
+                                        style="background-color: #bbdefb; color: #1976d2; font-size: 10px; padding: 2px 6px; border-radius: 3px;">
+                                        Chờ lấy mẫu</div>
+                                </div>
+                                <div style="font-size: 11px; color: #666; margin-bottom: 4px;">Xét nghiệm máu -
+                                    15/04/2023</div>
+                                <div style="font-size: 10px; color: #999; margin-bottom: 6px;">Tuổi: 28 - Nữ</div>
+                                <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+                                    <span
+                                        style="background-color: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 9px;">HB</span>
+                                    <span
+                                        style="background-color: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 9px;">WBC</span>
+                                    <span
+                                        style="background-color: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 9px;">GLU</span>
+                                </div>
+                                <div style="display: flex; justify-content: flex-end; gap: 4px; margin-top: 8px;">
+                                    <button class="btn small" onclick="event.stopPropagation(); viewTestOrder('PT004')"
+                                        style="font-size: 10px; padding: 4px 8px;">Xem</button>
+                                    <button class="btn primary small"
+                                        onclick="event.stopPropagation(); moveToNextStage('PT004')"
+                                        style="font-size: 10px; padding: 4px 8px;">Lấy mẫu</button>
+                                </div>
+                            </div>
+
+                            <!-- Phiếu xét nghiệm 5 -->
+                            <div class="kanban-card" draggable="true" ondragover="allowDrop(event)"
+                                ondrop="dropTask(event, 'column3')" onclick="viewTestOrder('PT005')"
+                                style="background-color: white; border-radius: 6px; padding: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.2s ease; border: 2px solid transparent;">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
+                                    <div style="font-size: 12px; font-weight: 600; color: #333;">PT005 - Hồ Văn E</div>
+                                    <div
+                                        style="background-color: #bbdefb; color: #1976d2; font-size: 10px; padding: 2px 6px; border-radius: 3px;">
+                                        Chờ lấy mẫu</div>
+                                </div>
+                                <div style="font-size: 11px; color: #666; margin-bottom: 4px;">Xét nghiệm điện giải -
+                                    15/04/2023</div>
+                                <div style="font-size: 10px; color: #999; margin-bottom: 6px;">Tuổi: 65 - Nam</div>
+                                <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+                                    <span
+                                        style="background-color: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 9px;">NA</span>
+                                    <span
+                                        style="background-color: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 9px;">K</span>
+                                    <span
+                                        style="background-color: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 9px;">CL</span>
+                                </div>
+                                <div style="display: flex; justify-content: flex-end; gap: 4px; margin-top: 8px;">
+                                    <button class="btn small" onclick="event.stopPropagation(); viewTestOrder('PT005')"
+                                        style="font-size: 10px; padding: 4px 8px;">Xem</button>
+                                    <button class="btn primary small"
+                                        onclick="event.stopPropagation(); moveToNextStage('PT005')"
+                                        style="font-size: 10px; padding: 4px 8px;">Lấy mẫu</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cột 3: Chờ kết quả -->
+                    <div id="column3" class="kanban-column" ondragover="allowDrop(event)"
+                        ondrop="dropTask(event, 'column3')"
+                        style="flex: 1; min-width: 200px; padding: 12px; border-right: 1px solid #e0e6ed; background-color: #fafafa; display: flex; flex-direction: column;">
+                        <div class="column-header"
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid #9c27b0;">
+                            <h4 style="margin: 0; font-size: 14px; color: #9c27b0; font-weight: 600;">Chờ kết quả</h4>
+                            <span class="task-count"
+                                style="background-color: #9c27b0; color: white; border-radius: 10px; padding: 2px 8px; font-size: 11px;">2</span>
+                        </div>
+
+                        <div class="kanban-tasks"
+                            style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;">
+                            <!-- Phiếu xét nghiệm 6 -->
+                            <div class="kanban-card" draggable="true" ondragover="allowDrop(event)"
+                                ondrop="dropTask(event, 'column4')" onclick="viewTestOrder('PT006')"
+                                style="background-color: white; border-radius: 6px; padding: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.2s ease; border: 2px solid transparent;">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
+                                    <div style="font-size: 12px; font-weight: 600; color: #333;">PT006 - Võ Thị F</div>
+                                    <div
+                                        style="background-color: #e1bee7; color: #6a1b9a; font-size: 10px; padding: 2px 6px; border-radius: 3px;">
+                                        Chờ kết quả</div>
+                                </div>
+                                <div style="font-size: 11px; color: #666; margin-bottom: 4px;">Xét nghiệm sinh hóa -
+                                    15/04/2023</div>
+                                <div style="font-size: 10px; color: #999; margin-bottom: 6px;">Tuổi: 38 - Nữ</div>
+                                <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+                                    <span
+                                        style="background-color: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 9px;">AST</span>
+                                    <span
+                                        style="background-color: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 9px;">ALT</span>
+                                    <span
+                                        style="background-color: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 9px;">BILI</span>
+                                </div>
+                                <div style="display: flex; justify-content: flex-end; gap: 4px; margin-top: 8px;">
+                                    <button class="btn small" onclick="enterTestResult('PT006')"
+                                        style="font-size: 10px; padding: 4px 8px;">Nhập kết quả</button>
+                                    <button class="btn primary small" onclick="moveToNextStage('PT006')"
+                                        style="font-size: 10px; padding: 4px 8px;">Hoàn thành</button>
+                                </div>
+                            </div>
+
+                            <!-- Phiếu xét nghiệm 7 -->
+                            <div class="kanban-card" draggable="true" ondragover="allowDrop(event)"
+                                ondrop="dropTask(event, 'column4')"
+                                style="background-color: white; border-radius: 6px; padding: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); cursor: grab;">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
+                                    <div style="font-size: 12px; font-weight: 600; color: #333;">PT007 - Đặng Văn G
+                                    </div>
+                                    <div
+                                        style="background-color: #e1bee7; color: #6a1b9a; font-size: 10px; padding: 2px 6px; border-radius: 3px;">
+                                        Chờ kết quả</div>
+                                </div>
+                                <div style="font-size: 11px; color: #666; margin-bottom: 4px;">Xét nghiệm máu toàn phần
+                                    - 15/04/2023</div>
+                                <div style="font-size: 10px; color: #999; margin-bottom: 6px;">Tuổi: 45 - Nam</div>
+                                <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+                                    <span
+                                        style="background-color: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 9px;">HB</span>
+                                    <span
+                                        style="background-color: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 9px;">WBC</span>
+                                    <span
+                                        style="background-color: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 9px;">PLT</span>
+                                    <span
+                                        style="background-color: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 9px;">HCT</span>
+                                </div>
+                                <div style="display: flex; justify-content: flex-end; gap: 4px; margin-top: 8px;">
+                                    <button class="btn small" onclick="enterTestResult('PT007')"
+                                        style="font-size: 10px; padding: 4px 8px;">Nhập kết quả</button>
+                                    <button class="btn primary small" onclick="moveToNextStage('PT007')"
+                                        style="font-size: 10px; padding: 4px 8px;">Hoàn thành</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cột 4: Hoàn thành -->
+                    <div id="column4" class="kanban-column" ondragover="allowDrop(event)"
+                        ondrop="dropTask(event, 'column4')"
+                        style="flex: 1; min-width: 200px; padding: 12px; background-color: #f1f8e9; display: flex; flex-direction: column;">
+                        <div class="column-header"
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid #4caf50;">
+                            <h4 style="margin: 0; font-size: 14px; color: #4caf50; font-weight: 600;">Hoàn thành</h4>
+                            <span class="task-count"
+                                style="background-color: #4caf50; color: white; border-radius: 10px; padding: 2px 8px; font-size: 11px;">2</span>
+                        </div>
+
+                        <div class="kanban-tasks"
+                            style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;">
+                            <!-- Phiếu xét nghiệm 8 -->
+                            <div class="kanban-card" draggable="true" ondragover="allowDrop(event)"
+                                ondrop="dropTask(event, 'column4')"
+                                style="background-color: white; border-radius: 6px; padding: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); cursor: grab;">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
+                                    <div style="font-size: 12px; font-weight: 600; color: #333;">PT008 - Lý Thị H</div>
+                                    <div
+                                        style="background-color: #c8e6c9; color: #2e7d32; font-size: 10px; padding: 2px 6px; border-radius: 3px;">
+                                        Hoàn thành</div>
+                                </div>
+                                <div style="font-size: 11px; color: #666; margin-bottom: 4px;">Xét nghiệm máu -
+                                    14/04/2023</div>
+                                <div style="font-size: 10px; color: #999; margin-bottom: 6px;">Tuổi: 25 - Nữ</div>
+                                <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+                                    <span
+                                        style="background-color: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 9px;">HB</span>
+                                    <span
+                                        style="background-color: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 9px;">WBC</span>
+                                </div>
+                                <div style="display: flex; justify-content: flex-end; gap: 4px; margin-top: 8px;">
+                                    <button class="btn small" onclick="viewTestResult('PT008')"
+                                        style="font-size: 10px; padding: 4px 8px;">Xem kết quả</button>
+                                    <button class="btn primary small" onclick="printTestResults('PT008')"
+                                        style="font-size: 10px; padding: 4px 8px;">In</button>
+                                </div>
+                            </div>
+
+                            <!-- Phiếu xét nghiệm 9 -->
+                            <div class="kanban-card" draggable="true" ondragover="allowDrop(event)"
+                                ondrop="dropTask(event, 'column4')"
+                                style="background-color: white; border-radius: 6px; padding: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); cursor: grab;">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
+                                    <div style="font-size: 12px; font-weight: 600; color: #333;">PT009 - Trần Văn I
+                                    </div>
+                                    <div
+                                        style="background-color: #c8e6c9; color: #2e7d32; font-size: 10px; padding: 2px 6px; border-radius: 3px;">
+                                        Hoàn thành</div>
+                                </div>
+                                <div style="font-size: 11px; color: #666; margin-bottom: 4px;">Xét nghiệm hóa sinh -
+                                    14/04/2023</div>
+                                <div style="font-size: 10px; color: #999; margin-bottom: 6px;">Tuổi: 55 - Nam</div>
+                                <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+                                    <span
+                                        style="background-color: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 9px;">GLU</span>
+                                    <span
+                                        style="background-color: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 9px;">CREA</span>
+                                </div>
+                                <div style="display: flex; justify-content: flex-end; gap: 4px; margin-top: 8px;">
+                                    <button class="btn small" onclick="viewTestResult('PT009')"
+                                        style="font-size: 10px; padding: 4px 8px;">Xem kết quả</button>
+                                    <button class="btn primary small" onclick="printTestResults('PT009')"
+                                        style="font-size: 10px; padding: 4px 8px;">In</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script>
+        // Toggles the visibility of test categories
+        function toggleCategory(element) {
+            const itemsContainer = element.nextElementSibling;
+            const arrow = element.querySelector('.category-arrow');
+
+            if (itemsContainer.style.display === 'none' || itemsContainer.style.display === '') {
+                itemsContainer.style.display = 'block';
+                arrow.textContent = '▼';
+            } else {
+                itemsContainer.style.display = 'none';
+                arrow.textContent = '▶';
+            }
+        }
+
+        // Selects a patient and displays their test orders
+        function selectPatient(element, patientId) {
+            // Remove selected style from all patients
+            const allPatients = document.querySelectorAll('.patient-item');
+            allPatients.forEach(patient => {
+                patient.style.backgroundColor = '';
+                patient.style.border = '';
+            });
+
+            // Add selected style to clicked patient
+            element.style.backgroundColor = '#e3f2fd';
+            element.style.border = '1px solid #1976d2';
+
+            // Get patient info
+            const patientName = element.querySelector('h3').textContent;
+            const patientDetails = element.querySelector('p').textContent;
+
+            // Update selected patient info display
+            document.getElementById('selected-patient-info').textContent =
+                `${patientName} - ${patientDetails}`;
+
+            // Hide empty message in history
+            document.getElementById('empty-history-message').style.display = 'none';
+
+            // Show test history items
+            const historyItems = document.querySelectorAll('.test-result-item');
+            historyItems.forEach(item => {
+                item.style.display = 'block';
+            });
+
+            // Show test orders based on patient ID
+            // For demo, we'll show different orders for different patients
+            const order1 = document.getElementById('test-order-1');
+            const order2 = document.getElementById('test-order-2');
+
+            if (patientId === 'patient1' || patientId === 'patient3') {
+                // Show both orders for patient 1 and 3
+                order1.style.display = 'block';
+                order2.style.display = 'block';
+            } else if (patientId === 'patient2') {
+                // Show only order 1 for patient 2
+                order1.style.display = 'block';
+                order2.style.display = 'none';
+            } else {
+                // Show only order 2 for patient 4
+                order1.style.display = 'none';
+                order2.style.display = 'block';
+            }
+        }
+
+        // Selects a test item
+        function selectTest(element) {
+            const testCode = element.getAttribute('data-code');
+            const testName = element.getAttribute('data-name');
+
+            // Set test details in the middle column
+            document.getElementById('test-code').textContent = testCode;
+            document.getElementById('test-name').textContent = testName;
+
+            // Set default unit and reference range based on test type
+            if (testCode === 'HB') {
+                document.getElementById('test-unit').textContent = 'g/dL';
+                document.getElementById('test-reference').textContent = '12.0 - 16.0 g/dL';
+            } else if (testCode === 'WBC') {
+                document.getElementById('test-unit').textContent = 'x 10^9/L';
+                document.getElementById('test-reference').textContent = '4.0 - 10.0 x 10^9/L';
+            } else if (testCode === 'GLU') {
+                document.getElementById('test-unit').textContent = 'mmol/L';
+                document.getElementById('test-reference').textContent = '3.9 - 5.6 mmol/L';
+            } else if (testCode === 'BUN') {
+                document.getElementById('test-unit').textContent = 'mmol/L';
+                document.getElementById('test-reference').textContent = '3.2 - 7.1 mmol/L';
+            } else if (testCode === 'CREA') {
+                document.getElementById('test-unit').textContent = 'μmol/L';
+                document.getElementById('test-reference').textContent = '53 - 106 μmol/L';
+            } else {
+                document.getElementById('test-unit').textContent = '-';
+                document.getElementById('test-reference').textContent = '-';
+            }
+
+            // Clear form fields
+            document.getElementById('test-result').value = '';
+            document.getElementById('test-note').value = '';
+            document.getElementById('test-date').value = new Date().toISOString().split('T')[0];
+        }
+
+        // Loads a test result from history
+        function loadTestResult(element) {
+            const testCode = element.getAttribute('data-code');
+            const testResult = element.querySelector('div:last-child div:last-child').textContent;
+
+            // Find and select the corresponding test item
+            const testItems = document.querySelectorAll('.test-item');
+            testItems.forEach(item => {
+                if (item.getAttribute('data-code') === testCode) {
+                    selectTest(item);
+                    // Set the result
+                    document.getElementById('test-result').value = testResult;
+                    return;
+                }
+            });
+        }
+
+        // Saves test result
+        function saveTestResult() {
+            alert('Kết quả xét nghiệm đã được lưu!');
+            // Here would be the actual save logic
+        }
+
+        // Clears test form
+        function clearTestForm() {
+            document.getElementById('test-result').value = '';
+            document.getElementById('test-note').value = '';
+        }
+
+        // Prints test results
+        function printTestResults() {
+            alert('In kết quả xét nghiệm!');
+            // Here would be the actual print logic
+        }
+    </script>
+    </div>
+    </div>
+
+     <div id="testOrderModal" class="modal-overlay">
+        <!-- Phần tử bao bọc nội dung popup -->
+        <div class="modal-content-container"> 
+
+            <!-- Header Modal -->
+            <div
+                style="padding: 16px; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center; background-color: #f8f9fa; border-radius: 8px 8px 0 0;">
+                <div>
+                    <h3 style="margin: 0; font-size: 16px; color: #333;">Chi tiết phiếu xét nghiệm</h3>
+                    <div id="modal-test-order-number" style="font-size: 12px; color: #666; margin-top: 4px;">#ORD12345</div>
+                </div>
+                <button onclick="closeTestOrderModal()"
+                    style="background: none; border: none; font-size: 24px; cursor: pointer; color: #666;">×</button>
+            </div>
+
+            <!-- Thông tin Bệnh nhân -->
+            <div style="padding: 12px 16px; background-color: #f5f5f5; border-bottom: 1px solid #ddd;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div id="modal-test-patient-name" style="font-weight: 600; color: #333;">Nguyễn Văn A</div>
+                    <div id="modal-test-patient-info" style="font-size: 12px; color: #666;">Nam, 35 tuổi</div>
+                </div>
+            </div>
+
+            <!-- Bảng chi tiết xét nghiệm -->
+            <!-- Thêm overflow-y: auto vào đây để bảng có thể cuộn nếu nội dung dài -->
+            <div style="padding: 16px; overflow-y: auto; flex: 1;"> 
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background-color: #e9ecef;">
+                            <th style="border: 1px solid #ddd; padding: 10px; text-align: left;">Mã xét nghiệm</th>
+                            <th style="border: 1px solid #ddd; padding: 10px; text-align: left;">Tên xét nghiệm</th>
+                            <th style="border: 1px solid #ddd; padding: 10px; text-align: center;">Đơn vị</th>
+                            <th style="border: 1px solid #ddd; padding: 10px; text-align: center;">Phạm vi tham khảo
+                            </th>
+                            <th style="border: 1px solid #ddd; padding: 10px; text-align: center;">Kết quả</th>
+                            <th style="border: 1px solid #ddd; padding: 10px; text-align: center;">Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modal-test-table-body">
+                        <!-- Dữ liệu mẫu -->
+                        <tr>
+                            <td style="border: 1px solid #ddd; padding: 10px;">GLU</td>
+                            <td style="border: 1px solid #ddd; padding: 10px;">Glucose</td>
+                            <td style="border: 1px solid #ddd; padding: 10px;">mmol/L</td>
+                            <td style="border: 1px solid #ddd; padding: 10px;">3.9 - 6.1</td>
+                            <td style="border: 1px solid #ddd; padding: 10px; font-weight: bold;">5.5</td>
+                            <td style="border: 1px solid #ddd; padding: 10px; color: green;">Bình thường</td>
+                        </tr>
+                        <!-- Thêm nhiều dòng khác nếu cần -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Footer Modal -->
+            <div
+                style="padding: 12px 16px; border-top: 1px solid #ddd; display: flex; justify-content: flex-end; gap: 8px; background-color: #f8f9fa; border-radius: 0 0 8px 8px;">
+                <button class="btn small" onclick="testOrderModal()" style="padding: 8px 16px;">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Lưu số xét nghiệm sinh hiệu
+        function saveVitalSigns() {
+            // Lấy dữ liệu từ các trường nhập
+            const temperature = document.querySelector('input[placeholder="VD: 36.5°C"]').value;
+            const bloodPressure = document.querySelector('input[placeholder="VD: 120/80 mmHg"]').value;
+            const heartRate = document.querySelector('input[placeholder="VD: 72 lần/phút"]').value;
+            const respirationRate = document.querySelector('input[placeholder="VD: 60 lần/phút"]').value;
+            const spo2 = document.querySelector('input[placeholder="VD: 98%"]').value;
+            const weight = document.querySelector('input[placeholder="VD: 65 kg"]').value;
+            const notes = document.querySelector('textarea[placeholder="Nhập ghi chú y tế..."]').value;
+
+            // Kiểm tra dữ liệu bắt buộc
+            if (!temperature || !bloodPressure || !heartRate) {
+                alert('Vui lòng nhập ít nhất nhiệt độ, huyết áp và nhịp tim');
+                return;
+            }
+
+            // Lưu dữ liệu vào bộ nhớ cục bộ (tạm thời)
+            const vitalSigns = {
+                temperature,
+                bloodPressure,
+                heartRate,
+                respirationRate,
+                spo2,
+                weight,
+                notes,
+                timestamp: new Date().toLocaleString('vi-VN')
+            };
+
+            // Lưu vào localStorage (thay thế bằng API thực tế trong ứng dụng thực)
+            localStorage.setItem('vitalSigns', JSON.stringify(vitalSigns));
+
+            // Thông báo thành công
+            alert('Lưu số xét nghiệm sinh hiệu thành công!');
+
+            // Cập nhật thời gian xét nghiệm vào giao diện
+            const vitalSection = document.querySelector('.section h2.section-title');
+            const timeSpan = document.createElement('span');
+            timeSpan.style.fontSize = '12px';
+            timeSpan.style.fontWeight = 'normal';
+            timeSpan.style.marginLeft = '10px';
+            timeSpan.style.color = '#666';
+            timeSpan.textContent = `(Đã xét nghiệm lúc: ${vitalSigns.timestamp})`;
+
+            // Xóa thời gian cũ nếu có
+            const oldTimeSpan = vitalSection.querySelector('span');
+            if (oldTimeSpan) {
+                vitalSection.removeChild(oldTimeSpan);
+            }
+
+            vitalSection.appendChild(timeSpan);
+        }
+    </script>
+    </div>
+
+    </div>
+
+    <script>
+        // KANBAN FUNCTIONS
+
+        // 存储当前拖动的任务元素
+        let draggedTask = null;
+
+        // 允许放置
+        function allowDrop(event) {
+            event.preventDefault();
+        }
+
+        // 开始拖动
+        document.querySelectorAll('.kanban-card').forEach(card => {
+            card.addEventListener('dragstart', function (event) {
+                draggedTask = this;
+                event.dataTransfer.effectAllowed = 'move';
+                this.style.opacity = '0.5';
+            });
+
+            card.addEventListener('dragend', function () {
+                draggedTask = null;
+                this.style.opacity = '1';
+            });
+
+            // 悬停效果
+            card.addEventListener('mouseenter', function () {
+                this.style.transform = 'translateY(-2px)';
+                this.style.boxShadow = '0 4px 8px rgba(0,0,0,0.15)';
+            });
+
+            card.addEventListener('mouseleave', function () {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+            });
+        });
+
+        // 放置任务
+        function dropTask(event, columnId) {
+            event.preventDefault();
+            if (draggedTask) {
+                const targetColumn = document.getElementById(columnId);
+                const tasksContainer = targetColumn.querySelector('.kanban-tasks');
+
+                // 更新卡片状态
+                updateTaskStatus(draggedTask, columnId);
+
+                // 添加到目标列
+                tasksContainer.appendChild(draggedTask);
+
+                // 更新计数
+                updateColumnCounts();
+
+                // 显示成功消息
+                showNotification('Phiếu xét nghiệm đã được chuyển đến trạng thái mới');
+            }
+        }
+
+        // 更新任务状态
+        function updateTaskStatus(taskElement, columnId) {
+            const statusBadge = taskElement.querySelector('.kanban-card > div:first-child > div:last-child');
+            const actionButtons = taskElement.querySelectorAll('.kanban-card > div:last-child > button');
+            const orderNumber = taskElement.querySelector('div:first-child > div:first-child').textContent.split(' - ')[0];
+
+            // 更新状态标签
+            switch (columnId) {
+                case 'column2':
+                    statusBadge.style.backgroundColor = '#bbdefb';
+                    statusBadge.style.color = '#1976d2';
+                    statusBadge.textContent = 'Chờ lấy mẫu';
+
+                    // 更新按钮
+                    actionButtons[0].textContent = 'Xem';
+                    actionButtons[0].onclick = function (event) { event.stopPropagation(); viewTestOrder(orderNumber); };
+                    actionButtons[1].textContent = 'Lấy mẫu';
+                    actionButtons[1].onclick = function (event) { event.stopPropagation(); moveToNextStage(orderNumber); };
+                    break;
+                case 'column3':
+                    statusBadge.style.backgroundColor = '#e1bee7';
+                    statusBadge.style.color = '#6a1b9a';
+                    statusBadge.textContent = 'Chờ kết quả';
+
+                    // 更新按钮
+                    actionButtons[0].textContent = 'Nhập kết quả';
+                    actionButtons[0].onclick = function (event) { event.stopPropagation(); enterTestResult(orderNumber); };
+                    actionButtons[1].textContent = 'Hoàn thành';
+                    actionButtons[1].onclick = function (event) { event.stopPropagation(); moveToNextStage(orderNumber); };
+                    break;
+                case 'column4':
+                    statusBadge.style.backgroundColor = '#c8e6c9';
+                    statusBadge.style.color = '#2e7d32';
+                    statusBadge.textContent = 'Hoàn thành';
+
+                    // 更新按钮
+                    actionButtons[0].textContent = 'Xem kết quả';
+                    actionButtons[0].onclick = function (event) { event.stopPropagation(); viewTestOrder(orderNumber); };
+                    actionButtons[1].textContent = 'In';
+                    actionButtons[1].onclick = function (event) { event.stopPropagation(); printTestResults(orderNumber); };
+                    break;
+            }
+
+            // 更新卡片的draggable属性和事件
+            taskElement.ondrop = function (event) { dropTask(event, columnId); };
+        }
+
+        // 移动到下一阶段
+        function moveToNextStage(orderNumber) {
+            // 找到对应的卡片
+            const allCards = document.querySelectorAll('.kanban-card');
+            let card = null;
+            for (const c of allCards) {
+                if (c.textContent.includes(orderNumber)) {
+                    card = c;
+                    break;
+                }
+            }
+
+            if (!card) return;
+
+            // 确定当前列和目标列
+            let targetColumn = null;
+            if (card.closest('#column1')) {
+                targetColumn = 'column2';
+            } else if (card.closest('#column2')) {
+                targetColumn = 'column3';
+            } else if (card.closest('#column3')) {
+                targetColumn = 'column4';
+            }
+
+            if (targetColumn) {
+                // 模拟拖动操作
+                draggedTask = card;
+                dropTask({ preventDefault: () => { } }, targetColumn);
+            }
+        }
+
+        // 更新列计数
+        function updateColumnCounts() {
+            document.querySelectorAll('.kanban-column').forEach((column, index) => {
+                const count = column.querySelectorAll('.kanban-card').length;
+                const countElement = column.querySelector('.task-count');
+                if (countElement) {
+                    countElement.textContent = count;
+                }
+            });
+        }
+
+        // 查看检验单
+        function viewTestOrder(orderNumber) {
+            // 获取患者信息
+            const patientData = getPatientData(orderNumber);
+
+            // 填充模态框数据
+            document.getElementById('modal-test-order-number').textContent = orderNumber;
+            document.getElementById('modal-test-patient-name').textContent = patientData.name;
+            document.getElementById('modal-test-patient-info').textContent = `Tuổi: ${patientData.age} - ${patientData.gender} | ${patientData.testType} | ${patientData.date}`;
+
+            // 生成检验项目表格
+            const testTableBody = document.getElementById('modal-test-table-body');
+            testTableBody.innerHTML = '';
+
+            patientData.tests.forEach(test => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${test.code}</td>
+                    <td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${test.name}</td>
+                    <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">${test.unit}</td>
+                    <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">${test.reference}</td>
+                    <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">${test.result || '-'}</td>
+                    <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">
+                        <span class="test-status" style="
+                            background-color: ${getStatusColor(test.status)};
+                            color: white;
+                            padding: 2px 8px;
+                            border-radius: 12px;
+                            font-size: 11px;
+                        ">${test.status}</span>
+                    </td>
+                `;
+                testTableBody.appendChild(row);
+            });
+
+            // 显示模态框并添加强制重排
+            const modal = document.getElementById('testOrderModal');
+            modal.style.display = 'block';
+            // 强制重新计算布局
+            modal.offsetHeight; // 触发重排
+        }
+
+        // 获取患者数据
+        function getPatientData(orderNumber) {
+            // 模拟数据 - 实际应用中应从API获取
+            const data = {
+                'PT001': {
+                    name: 'Nguyễn Văn A',
+                    age: 35,
+                    gender: 'Nam',
+                    testType: 'Xét nghiệm thường规',
+                    date: '15/04/2023',
+                    tests: [
+                        { code: 'HB', name: 'Hồng cầu (Hemoglobin)', unit: 'g/dL', reference: '12.0 - 16.0', result: '', status: 'Chưa thực hiện' },
+                        { code: 'WBC', name: 'Bạch cầu (White Blood Cell)', unit: 'x 10^9/L', reference: '4.0 - 10.0', result: '', status: 'Chưa thực hiện' },
+                        { code: 'PLT', name: 'Tiểu cầu (Platelet)', unit: 'x 10^9/L', reference: '150 - 450', result: '', status: 'Chưa thực hiện' }
+                    ]
+                },
+                'PT002': {
+                    name: 'Trần Thị B',
+                    age: 42,
+                    gender: 'Nữ',
+                    testType: 'Xét nghiệm chức năng thận',
+                    date: '15/04/2023',
+                    tests: [
+                        { code: 'BUN', name: 'Nitơ urê (Blood Urea Nitrogen)', unit: 'mmol/L', reference: '3.2 - 7.1', result: '', status: 'Chưa thực hiện' },
+                        { code: 'CREA', name: 'Creatinin', unit: 'μmol/L', reference: '53 - 106', result: '', status: 'Chưa thực hiện' }
+                    ]
+                },
+                'PT003': {
+                    name: 'Lê Văn C',
+                    age: 50,
+                    gender: 'Nam',
+                    testType: 'Xét nghiệm hóa sinh',
+                    date: '15/04/2023',
+                    tests: [
+                        { code: 'GLU', name: 'Glucose', unit: 'mmol/L', reference: '3.9 - 5.6', result: '', status: 'Chưa thực hiện' },
+                        { code: 'CHO', name: 'Cholesterol', unit: 'mmol/L', reference: '3.1 - 5.7', result: '', status: 'Chưa thực hiện' },
+                        { code: 'TG', name: 'Triglyceride', unit: 'mmol/L', reference: '0.56 - 1.70', result: '', status: 'Chưa thực hiện' }
+                    ]
+                },
+                'PT004': {
+                    name: 'Phạm Thị D',
+                    age: 28,
+                    gender: 'Nữ',
+                    testType: 'Xét nghiệm máu',
+                    date: '15/04/2023',
+                    tests: [
+                        { code: 'HB', name: 'Hồng cầu (Hemoglobin)', unit: 'g/dL', reference: '12.0 - 16.0', result: '', status: 'Chưa thực hiện' },
+                        { code: 'WBC', name: 'Bạch cầu (White Blood Cell)', unit: 'x 10^9/L', reference: '4.0 - 10.0', result: '', status: 'Chưa thực hiện' },
+                        { code: 'GLU', name: 'Glucose', unit: 'mmol/L', reference: '3.9 - 5.6', result: '', status: 'Chưa thực hiện' }
+                    ]
+                },
+                'PT005': {
+                    name: 'Hồ Văn E',
+                    age: 65,
+                    gender: 'Nam',
+                    testType: 'Xét nghiệm điện giải',
+                    date: '15/04/2023',
+                    tests: [
+                        { code: 'NA', name: 'Natri', unit: 'mmol/L', reference: '135 - 145', result: '', status: 'Chưa thực hiện' },
+                        { code: 'K', name: 'Kali', unit: 'mmol/L', reference: '3.5 - 5.1', result: '', status: 'Chưa thực hiện' },
+                        { code: 'CL', name: 'Clorua', unit: 'mmol/L', reference: '98 - 107', result: '', status: 'Chưa thực hiện' }
+                    ]
+                },
+                'PT006': {
+                    name: 'Võ Thị F',
+                    age: 38,
+                    gender: 'Nữ',
+                    testType: 'Xét nghiệm sinh hóa',
+                    date: '15/04/2023',
+                    tests: [
+                        { code: 'AST', name: 'AST (GOT)', unit: 'U/L', reference: '5-40', result: '', status: 'Chưa thực hiện' },
+                        { code: 'ALT', name: 'ALT (GPT)', unit: 'U/L', reference: '5-40', result: '', status: 'Chưa thực hiện' },
+                        { code: 'BILI', name: 'Bilirubin tổng', unit: 'μmol/L', reference: '5-17', result: '', status: 'Chưa thực hiện' }
+                    ]
+                }
+            };
+
+            return data[orderNumber] || {
+                name: 'Unknown Patient',
+                age: 0,
+                gender: '',
+                testType: '',
+                date: '',
+                tests: []
+            };
+        }
+
+        // 获取状态颜色
+        function getStatusColor(status) {
+            const colors = {
+                'Chưa thực hiện': '#ff9800',
+                'Đang thực hiện': '#2196f3',
+                'Hoàn thành': '#4caf50',
+                'Bị hoãn': '#f44336'
+            };
+
+            return colors[status] || '#999';
+        }
+
+        // 关闭检验单模态框
+        function closeTestOrderModal() {
+            document.getElementById('testOrderModal').style.display = 'none';
+        }
+
+        // 输入检验结果
+        function enterTestResult(orderNumber) {
+            // 模拟数据
+            const testData = {
+                orderNumber: orderNumber,
+                patientName: orderNumber === 'PT006' ? 'Võ Thị F' : 'Đặng Văn G',
+                tests: [
+                    { code: 'AST', name: 'AST (GOT)', unit: 'U/L', reference: '5-40' },
+                    { code: 'ALT', name: 'ALT (GPT)', unit: 'U/L', reference: '5-40' },
+                    { code: 'BILI', name: 'Bilirubin tổng', unit: 'μmol/L', reference: '5-17' }
+                ]
+            };
+
+            // 填充模态框数据
+            document.getElementById('modal-order-number').textContent = testData.orderNumber;
+            document.getElementById('modal-patient-name').textContent = testData.patientName;
+
+            // 生成检验项目列表
+            const testListContainer = document.getElementById('modal-test-list');
+            testListContainer.innerHTML = '';
+
+            testData.tests.forEach(test => {
+                const testItem = document.createElement('div');
+                testItem.className = 'test-item-form';
+                testItem.style.border = '1px solid #ddd';
+                testItem.style.borderRadius = '4px';
+                testItem.style.padding = '12px';
+                testItem.style.backgroundColor = '#fff';
+
+                testItem.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <div style="font-weight: 500; font-size: 13px;">${test.name}</div>
+                        <div style="font-size: 12px; color: #666;">Mã: ${test.code}</div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <label style="font-size: 12px; color: #666; min-width: 60px;">Kết quả:</label>
+                            <input type="text" data-code="${test.code}" placeholder="Nhập kết quả" style="flex: 1; padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px;">
+                            <span style="font-size: 12px; color: #666;">${test.unit}</span>
+                        </div>
+                        <div style="font-size: 11px; color: #888;">
+                            Phạm vi bình thường: ${test.reference} ${test.unit}
+                        </div>
+                        <div>
+                            <label style="font-size: 12px; color: #666; display: block; margin-bottom: 4px;">Ghi chú:</label>
+                            <textarea style="width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px; min-height: 40px;"></textarea>
+                        </div>
+                    </div>
+                `;
+
+                testListContainer.appendChild(testItem);
+            });
+
+            // 显示模态框
+            document.getElementById('testResultModal').style.display = 'block';
+        }
+
+        // 查看检验结果
+        function viewTestResult(orderNumber) {
+            alert(`Xem kết quả phiếu xét nghiệm: ${orderNumber}`);
+            // 这里可以实现打开结果详情的逻辑
+        }
+
+        // 打印检验结果
+        function printTestResults(orderNumber) {
+            if (orderNumber) {
+                alert(`In kết quả phiếu xét nghiệm: ${orderNumber}`);
+            } else {
+                alert('In tất cả kết quả xét nghiệm');
+            }
+            // 这里可以实现打印功能的逻辑
+        }
+
+        // 关闭模态框
+        function closeModal() {
+            document.getElementById('testResultModal').style.display = 'none';
+        }
+
+        // 保存所有检验结果
+        function saveAllTestResults() {
+            const testForms = document.querySelectorAll('.test-item-form');
+            const results = [];
+
+            testForms.forEach(form => {
+                const code = form.querySelector('input[type="text"]').getAttribute('data-code');
+                const result = form.querySelector('input[type="text"]').value;
+                const note = form.querySelector('textarea').value;
+
+                if (result) {
+                    results.push({
+                        code: code,
+                        result: result,
+                        note: note
+                    });
+                }
+            });
+
+            if (results.length > 0) {
+                // 这里可以实现保存到服务器的逻辑
+                console.log('保存检验结果:', results);
+                alert('Kết quả xét nghiệm đã được lưu thành công!');
+                closeModal();
+            } else {
+                alert('Vui lòng nhập ít nhất một kết quả xét nghiệm');
+            }
+        }
+
+        // 显示通知
+        function showNotification(message) {
+            // 创建通知元素
+            const notification = document.createElement('div');
+            notification.style.position = 'fixed';
+            notification.style.bottom = '20px';
+            notification.style.right = '20px';
+            notification.style.backgroundColor = '#4caf50';
+            notification.style.color = 'white';
+            notification.style.padding = '12px 20px';
+            notification.style.borderRadius = '4px';
+            notification.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
+            notification.style.zIndex = '10000';
+            notification.style.fontSize = '14px';
+            notification.textContent = message;
+
+            // 添加到页面
+            document.body.appendChild(notification);
+
+            // 3秒后移除
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transition = 'opacity 0.5s';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 500);
+            }, 3000);
+        }
+
+        // Chức năng chọn bệnh nhân trong danh sách
+        document.querySelectorAll('.patient-item').forEach(item => {
+            item.addEventListener('click', function () {
+                // Loại bỏ lớp active từ tất cả các items
+                document.querySelectorAll('.patient-item').forEach(p => p.classList.remove('active'));
+                // Thêm lớp active cho item được chọn
+                this.classList.add('active');
+                // Ở đây có thể load thông tin bệnh nhân tương ứng
+                loadPatientInfo(this.querySelector('.patient-info h3').textContent);
+            });
+        });
+
+        // Tải thông tin bệnh nhân
+        function loadPatientInfo(patientName) {
+            // Trong thực tế, đây sẽ là một yêu cầu AJAX để lấy dữ liệu bệnh nhân
+            console.log('Loading information for patient:', patientName);
+            // Cập nhật tên bệnh nhân trong phần chi tiết
+            document.querySelector('.detail-value').textContent = patientName;
+        }
+
+        // Chức năng quản lý xét nghiệm
+
+        // Toggle hiển thị/ẩn danh sách xét nghiệm theo nhóm
+        function toggleCategory(element) {
+            const items = element.nextElementSibling;
+            const arrow = element.querySelector('.category-arrow');
+
+            if (items.style.display === 'none' || !items.style.display) {
+                items.style.display = 'block';
+                arrow.textContent = '▼';
+            } else {
+                items.style.display = 'none';
+                arrow.textContent = '▶';
+            }
+        }
+
+        // Chọn một xét nghiệm
+        function selectTest(element) {
+            // Loại bỏ lớp active từ tất cả các test-item
+            document.querySelectorAll('.test-item').forEach(item => {
+                item.style.backgroundColor = '';
+                item.style.fontWeight = 'normal';
+            });
+
+            // Thêm lớp active cho test-item được chọn
+            element.style.backgroundColor = '#e3f2fd';
+            element.style.fontWeight = '500';
+
+            // Lấy thông tin xét nghiệm
+            const code = element.getAttribute('data-code');
+            const name = element.getAttribute('data-name');
+
+            // Hiển thị thông tin xét nghiệm
+            document.getElementById('test-code').textContent = code;
+            document.getElementById('test-name').textContent = name;
+
+            // Cập nhật đơn vị và phạm vi bình thường theo mã xét nghiệm
+            updateTestReferenceInfo(code);
+        }
+
+        // Cập nhật thông tin tham chiếu của xét nghiệm
+        function updateTestReferenceInfo(code) {
+            // Dữ liệu tham chiếu mẫu
+            const referenceData = {
+                'HB': { unit: 'g/dL', reference: '12.0 - 16.0' },
+                'RBC': { unit: 'x 10^12/L', reference: '4.0 - 5.5' },
+                'WBC': { unit: 'x 10^9/L', reference: '4.0 - 10.0' },
+                'PLT': { unit: 'x 10^9/L', reference: '150 - 450' },
+                'GLU': { unit: 'mmol/L', reference: '3.9 - 6.1' },
+                'CHOL': { unit: 'mmol/L', reference: '< 5.2' },
+                'BUN': { unit: 'mmol/L', reference: '2.5 - 7.1' },
+                'CREA': { unit: 'μmol/L', reference: '53 - 97' },
+                'PRO': { unit: '-', reference: 'Âm tính' },
+                'GLU_U': { unit: '-', reference: 'Âm tính' },
+                'ERY': { unit: '/HPF', reference: '< 3' }
+            };
+
+            // Lấy thông tin cho mã xét nghiệm hiện tại
+            const info = referenceData[code] || { unit: '-', reference: '-' };
+
+            // Hiển thị thông tin
+            document.getElementById('test-unit').textContent = info.unit;
+            document.getElementById('test-reference').textContent = info.reference;
+        }
+
+        // Lưu kết quả xét nghiệm
+        function saveTestResult() {
+            const code = document.getElementById('test-code').textContent;
+            const name = document.getElementById('test-name').textContent;
+            const result = document.getElementById('test-result').value;
+            const note = document.getElementById('test-note').value;
+            const date = document.getElementById('test-date').value;
+
+            // Kiểm tra xem đã chọn xét nghiệm và nhập kết quả chưa
+            if (code === '-' || !result || !date) {
+                alert('Vui lòng chọn xét nghiệm, nhập kết quả và chọn ngày thực hiện');
+                return;
+            }
+
+            // Thêm kết quả vào lịch sử
+            const historyContainer = document.getElementById('test-history');
+
+            // Tạo một div mới cho kết quả xét nghiệm
+            const newResult = document.createElement('div');
+            newResult.className = 'test-result-item';
+            newResult.setAttribute('onclick', 'loadTestResult(this)');
+            newResult.setAttribute('data-code', code);
+            newResult.style.border = '1px solid #ddd';
+            newResult.style.borderRadius = '4px';
+            newResult.style.padding = '8px';
+            newResult.style.cursor = 'pointer';
+            newResult.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;">
+                    <div style="font-size: 12px; font-weight: 500;">${name}</div>
+                    <div style="font-size: 10px; color: #999;">${date}</div>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <div style="font-size: 11px; color: #666;">Mã: ${code}</div>
+                    <div style="font-size: 11px; font-weight: 500; color: #2196F3;">${result} ${document.getElementById('test-unit').textContent}</div>
+                </div>
+            `;
+
+            // Thêm vào đầu danh sách
+            historyContainer.insertBefore(newResult, historyContainer.firstChild);
+
+            // Xóa các trường nhập
+            clearTestForm();
+
+            // Thông báo thành công
+            alert('Lưu kết quả xét nghiệm thành công!');
+        }
+
+        // Xóa thông tin trên form
+        function clearTestForm() {
+            document.getElementById('test-code').textContent = '-';
+            document.getElementById('test-name').textContent = '-';
+            document.getElementById('test-unit').textContent = '-';
+            document.getElementById('test-reference').textContent = '-';
+            document.getElementById('test-result').value = '';
+            document.getElementById('test-note').value = '';
+            document.getElementById('test-date').value = '';
+
+            // Bỏ chọn tất cả test-item
+            document.querySelectorAll('.test-item').forEach(item => {
+                item.style.backgroundColor = '';
+                item.style.fontWeight = 'normal';
+            });
+        }
+
+        // Tải một kết quả xét nghiệm từ lịch sử
+        function loadTestResult(element) {
+            const code = element.getAttribute('data-code');
+            const name = element.querySelector('div:first-child div:first-child').textContent;
+            const resultText = element.querySelector('div:last-child div:last-child').textContent;
+            const date = element.querySelector('div:first-child div:last-child').textContent;
+
+            // Lấy kết quả bỏ đơn vị
+            const resultParts = resultText.split(' ');
+            const result = resultParts[0];
+
+            // Hiển thị thông tin lên form
+            document.getElementById('test-code').textContent = code;
+            document.getElementById('test-name').textContent = name;
+            document.getElementById('test-result').value = result;
+            document.getElementById('test-date').value = date;
+
+            // Cập nhật đơn vị và phạm vi bình thường
+            updateTestReferenceInfo(code);
+
+            // Chọn test-item tương ứng
+            const testItems = document.querySelectorAll('.test-item');
+            for (const item of testItems) {
+                if (item.getAttribute('data-code') === code) {
+                    item.style.backgroundColor = '#e3f2fd';
+                    item.style.fontWeight = '500';
+                } else {
+                    item.style.backgroundColor = '';
+                    item.style.fontWeight = 'normal';
+                }
+            }
+        }
+
+        // In kết quả xét nghiệm
+        function printTestResults() {
+            alert('Đang chuẩn bị in kết quả xét nghiệm...');
+            // Trong thực tế, đây sẽ mở một cửa sổ in hoặc tạo một file PDF
+        }
+
+        // Thêm một xét nghiệm mới
+        function addNewTest() {
+            // Hiện tại chỉ làm mới form
+            clearTestForm();
+            alert('Vui lòng chọn một xét nghiệm từ danh sách bên trái');
+        }
+
+        // Hiển thị hồ sơ BHYT
+        function showHealthInsuranceForm() {
+            alert('Hiển thị hồ sơ bảo hiểm y tế');
+        }
+
+        // Hiển thị bệnh án điện tử
+        function showElectronicMedicalRecord() {
+            alert('Hiển thị bệnh án điện tử');
+        }
+
+        // Lưu kết quả xét nghiệm bệnh
+        function saveExamination() {
+            alert('✅ Kết quả xét nghiệm bệnh đã được lưu thành công!');
+        }
+
+        // Tạo và in đơn thuốc
+        function generatePrescription() {
+            alert('✅ Đơn thuốc đã được tạo. Đang chuẩn bị in...');
+            // Trong thực tế, đây sẽ mở một cửa sổ in hoặc tải tệp PDF
+        }
+
+        // Làm lại phiếu xét nghiệm
+        function resetForm() {
+            if (confirm('Bạn có chắc chắn muốn làm lại phiếu xét nghiệm? Tất cả dữ liệu chưa lưu sẽ bị mất.')) {
+                // Xóa tất cả dữ liệu trong form
+                document.querySelectorAll('input, textarea').forEach(el => el.value = '');
+                // Xóa danh sách chỉ định và thuốc
+                document.querySelectorAll('.diagnosis-list, .prescription-list').forEach(list => {
+                    list.innerHTML = '';
+                });
+            }
+        }
+
+        // Thêm sự kiện cho nút Thêm chỉ định
+        document.querySelector('.btn.primary').addEventListener('click', function () {
+            // Trong thực tế, đây sẽ xử lý việc thêm chỉ định vào danh sách
+            console.log('Adding new diagnosis...');
+        });
+
+        // Thêm dịch vụ vào danh sách dịch vụ đã chọn
+        function addServiceToSelected() {
+            // Lấy thông tin dịch vụ (trong thực tế sẽ lấy từ hàng được chọn trong bảng)
+            const serviceInfo = {
+                name: "Xét nghiệm huyết sugar", // Thông tin mẫu, sẽ lấy từ bảng dịch vụ
+                quantity: 1,
+                price: 150000
+            };
+
+            // Lấy bảng dịch vụ đã chọn
+            const selectedServicesHeader = Array.from(document.querySelectorAll('h4')).find(h4 => h4.textContent.trim() === 'Dịch vụ đã chọn');
+            const tableBody = selectedServicesHeader.nextElementSibling.querySelector('table tbody');
+
+            // Kiểm tra nếu bảng đang hiển thị thông báo "Chưa chọn dịch vụ nào"
+            const emptyRow = tableBody.querySelector('tr td[colspan="6"]');
+            if (emptyRow) {
+                // Xóa hàng trống
+                tableBody.innerHTML = '';
+            }
+
+            // Tạo STT dựa trên số hàng hiện tại
+            const stt = tableBody.children.length + 1;
+
+            // Tạo một hàng mới
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td style="padding: 8px; border-bottom: 1px solid #ddd;">${stt}</td>
+                <td style="padding: 8px; border-bottom: 1px solid #ddd;">${serviceInfo.name}</td>
+                <td style="padding: 8px; border-bottom: 1px solid #ddd;">
+                    <input type="number" value="${serviceInfo.quantity}" min="1" style="width: 60px; padding: 4px;">
+                </td>
+                <td style="padding: 8px; border-bottom: 1px solid #ddd;">${formatCurrency(serviceInfo.price)}</td>
+                <td style="padding: 8px; border-bottom: 1px solid #ddd;">${formatCurrency(serviceInfo.price * serviceInfo.quantity)}</td>
+                <td style="padding: 8px; border-bottom: 1px solid #ddd;">
+                    <button class="btn danger" onclick="removeSelectedService(this)" style="padding: 2px 8px; font-size: 10px;">Xóa</button>
+                </td>
+            `;
+
+            // Thêm hàng vào bảng
+            tableBody.appendChild(newRow);
+        }
+
+        // Xóa dịch vụ khỏi danh sách đã chọn
+        function removeSelectedService(button) {
+            const row = button.closest('tr');
+            row.remove();
+
+            // Cập nhật lại STT
+            const selectedServicesHeader = Array.from(document.querySelectorAll('h4')).find(h4 => h4.textContent.trim() === 'Dịch vụ đã chọn');
+            const tableBody = selectedServicesHeader.nextElementSibling.querySelector('table tbody');
+            const rows = tableBody.querySelectorAll('tr');
+
+            if (rows.length === 0) {
+                // Nếu không còn hàng nào, hiển thị thông báo trống
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="6"
+                            style="text-align: center; padding: 15px; color: #999; font-style: italic;">
+                            Chưa chọn dịch vụ nào
+                        </td>
+                    </tr>
+                `;
+            } else {
+                // Cập nhật STT cho các hàng còn lại
+                rows.forEach((row, index) => {
+                    row.querySelector('td:first-child').textContent = index + 1;
+                });
+            }
+        }
+
+        // Định dạng tiền tệ
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+        }
+
+        // File Upload Popup Functions
+        function openFileUploadPopup() {
+            document.getElementById('fileUploadPopup').style.display = 'block';
+            // Reset upload method to file by default
+            selectUploadMethod('file');
+            // Reset file input and preview
+            document.getElementById('fileInput').value = '';
+            document.getElementById('filePreview').style.display = 'none';
+        }
+
+        function closeFileUploadPopup() {
+            document.getElementById('fileUploadPopup').style.display = 'none';
+            stopCameraScan();
+        }
+
+        function selectUploadMethod(method) {
+            // Reset both options
+            document.getElementById('fileOption').style.borderColor = '#ddd';
+            document.getElementById('fileOption').style.backgroundColor = '#f5f5f5';
+            document.getElementById('cameraOption').style.borderColor = '#ddd';
+            document.getElementById('cameraOption').style.backgroundColor = '#f5f5f5';
+
+            // Show selected option
+            if (method === 'file') {
+                document.getElementById('fileOption').style.borderColor = '#2196F3';
+                document.getElementById('fileOption').style.backgroundColor = '#e3f2fd';
+                document.getElementById('fileUploadArea').style.display = 'block';
+                document.getElementById('cameraScanArea').style.display = 'none';
+                stopCameraScan();
+            } else if (method === 'camera') {
+                document.getElementById('cameraOption').style.borderColor = '#2196F3';
+                document.getElementById('cameraOption').style.backgroundColor = '#e3f2fd';
+                document.getElementById('fileUploadArea').style.display = 'none';
+                document.getElementById('cameraScanArea').style.display = 'block';
+            }
+        }
+
+        // Handle file selection
+        document.getElementById('fileInput').addEventListener('change', function (e) {
+            if (e.target.files && e.target.files[0]) {
+                const file = e.target.files[0];
+
+                // Validate file size (10MB limit)
+                if (file.size > 10 * 1024 * 1024) {
+                    alert('Tệp quá lớn. Vui lòng chọn tệp nhỏ hơn 10MB.');
+                    return;
+                }
+
+                // Validate file type
+                const validTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/jpg'];
+                if (!validTypes.includes(file.type)) {
+                    alert('Định dạng tệp không được hỗ trợ. Vui lòng chọn tệp PDF, JPG hoặc PNG.');
+                    return;
+                }
+
+                // Show file preview
+                showFilePreview(file);
+            }
+        });
+
+        function showFilePreview(file) {
+            const previewContainer = document.getElementById('filePreview');
+            const fileNameElement = document.getElementById('previewFileName');
+            const previewContent = document.getElementById('previewContent');
+
+            // Set file name
+            fileNameElement.textContent = file.name;
+
+            // Clear previous preview
+            previewContent.innerHTML = '';
+
+            if (file.type.startsWith('image/')) {
+                // Image preview
+                const img = document.createElement('img');
+                img.style.maxWidth = '100%';
+                img.style.maxHeight = '200px';
+                img.src = URL.createObjectURL(file);
+                previewContent.appendChild(img);
+            } else if (file.type === 'application/pdf') {
+                // PDF preview
+                const pdfIcon = document.createElement('div');
+                pdfIcon.style.fontSize = '64px';
+                pdfIcon.textContent = '📄';
+                previewContent.appendChild(pdfIcon);
+
+                const pdfName = document.createElement('div');
+                pdfName.style.marginTop = '10px';
+                pdfName.style.fontSize = '14px';
+                previewContent.appendChild(pdfName);
+            }
+
+            // Show preview
+            previewContainer.style.display = 'block';
+        }
+
+        function removeSelectedFile() {
+            document.getElementById('fileInput').value = '';
+            document.getElementById('filePreview').style.display = 'none';
+        }
+
+        // Camera scan functions
+        let stream = null;
+        let canvas = null;
+        let capturedImages = [];
+
+        function startCameraScan() {
+            document.getElementById('startCameraScan').style.display = 'none';
+            const cameraPreview = document.getElementById('cameraPreview');
+            const camera = document.getElementById('camera');
+            const cameraButtons = document.getElementById('cameraButtons');
+            const capturedPhotosSection = document.getElementById('capturedPhotosSection');
+
+            // Clear previously captured images
+            capturedImages = [];
+            updateCapturedPhotosDisplay();
+
+            // Create canvas for capturing
+            canvas = document.createElement('canvas');
+            canvas.width = 640;
+            canvas.height = 480;
+
+            // Request camera access
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+                .then(function (mediaStream) {
+                    stream = mediaStream;
+                    const video = document.createElement('video');
+                    video.style.width = '100%';
+                    video.style.height = '100%';
+                    video.srcObject = stream;
+                    video.autoplay = true;
+                    video.playsInline = true;
+
+                    cameraPreview.innerHTML = '';
+                    cameraPreview.appendChild(video);
+
+                    // Show all necessary elements with proper flex display
+                    camera.style.display = 'flex';
+                    cameraButtons.style.display = 'flex';
+                    cameraButtons.style.justifyContent = 'center';
+                    capturedPhotosSection.style.display = 'flex';
+                })
+                .catch(function (err) {
+                    alert('Không thể truy cập camera: ' + err.message);
+                });
+        }
+
+        function stopCameraScan() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+            }
+
+            const cameraPreview = document.getElementById('cameraPreview');
+            const cameraButtons = document.getElementById('cameraButtons');
+            const camera = document.getElementById('camera');
+            const capturedPhotosSection = document.getElementById('capturedPhotosSection');
+
+            cameraPreview.innerHTML = '';
+            cameraButtons.style.display = 'none';
+            camera.style.display = 'none';
+            capturedPhotosSection.style.display = 'none';
+            document.getElementById('startCameraScan').style.display = 'block';
+        }
+
+        function captureImage() {
+            if (!stream) return;
+
+            const video = document.querySelector('#cameraPreview video');
+            if (!video) return;
+
+            // Draw video frame to canvas
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // Convert canvas to blob
+            canvas.toBlob(function (blob) {
+                // Save image in array
+                capturedImages.push(blob);
+
+                // Update the display
+                updateCapturedPhotosDisplay();
+
+                // Show success feedback
+                //alert('Ảnh đã được chụp thành công!');
+            }, 'image/jpeg');
+        }
+
+        function updateCapturedPhotosDisplay() {
+            const photosCountElement = document.getElementById('photosCount');
+            const capturedPhotosContainer = document.getElementById('capturedPhotos');
+
+            // Update count
+            photosCountElement.textContent = capturedImages.length;
+
+            // Clear and rebuild thumbnails
+            capturedPhotosContainer.innerHTML = '';
+
+            if (capturedImages.length === 0) {
+                const emptyMessage = document.createElement('div');
+                emptyMessage.style.color = '#666';
+                emptyMessage.style.padding = '20px';
+                emptyMessage.style.fontSize = '14px';
+                emptyMessage.textContent = 'Chưa chụp ảnh nào';
+                capturedPhotosContainer.appendChild(emptyMessage);
+                return;
+            }
+
+            // Create thumbnails for each captured image
+            capturedImages.forEach((blob, index) => {
+                const thumbnailContainer = document.createElement('div');
+                thumbnailContainer.style.position = 'relative';
+                thumbnailContainer.style.width = '100px';
+                thumbnailContainer.style.height = '100px';
+                thumbnailContainer.style.border = '1px solid #ddd';
+                thumbnailContainer.style.borderRadius = '4px';
+                thumbnailContainer.style.overflow = 'hidden';
+                thumbnailContainer.style.backgroundColor = '#f0f0f0';
+
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(blob);
+                img.style.width = '100%';
+                img.style.height = '100%';
+                img.style.objectFit = 'cover';
+
+                const removeButton = document.createElement('button');
+                removeButton.innerHTML = '&times;';
+                removeButton.style.position = 'absolute';
+                removeButton.style.top = '2px';
+                removeButton.style.right = '2px';
+                removeButton.style.width = '20px';
+                removeButton.style.height = '20px';
+                removeButton.style.border = 'none';
+                removeButton.style.borderRadius = '50%';
+                removeButton.style.backgroundColor = 'rgba(244, 67, 54, 0.8)';
+                removeButton.style.color = 'white';
+                removeButton.style.cursor = 'pointer';
+                removeButton.style.fontSize = '12px';
+                removeButton.style.display = 'flex';
+                removeButton.style.justifyContent = 'center';
+                removeButton.style.alignItems = 'center';
+                removeButton.onclick = function () {
+                    // Remove this image
+                    capturedImages.splice(index, 1);
+                    updateCapturedPhotosDisplay();
+                };
+
+                thumbnailContainer.appendChild(img);
+                thumbnailContainer.appendChild(removeButton);
+                capturedPhotosContainer.appendChild(thumbnailContainer);
+            });
+        }
+
+        function generatePDF() {
+            if (capturedImages.length === 0) {
+                alert('Vui lòng chụp ít nhất một ảnh trước khi tạo PDF');
+                return;
+            }
+
+            // For demo purposes, we'll just convert the first image to a PDF-like file
+            // In a real application, you would use a library like jsPDF to merge images
+            const pdfBlob = new Blob([capturedImages[0]], { type: 'application/pdf' });
+            const file = new File([pdfBlob], 'merged_document.pdf', { type: 'application/pdf' });
+
+            // Show preview of the generated PDF
+            showFilePreview(file);
+
+            // Provide feedback
+            alert(`Đã tạo PDF từ ${capturedImages.length} ảnh thành công!`);
+        }
+
+        function uploadSelectedFile() {
+            // Here you would typically handle the file upload to your server
+            // For demo purposes, we'll just show a success message
+            alert('Tệp đã được tải lên thành công!');
+            closeFileUploadPopup();
+        }
+    </script>
+</body>
+
+</html>
