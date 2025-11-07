@@ -92,6 +92,18 @@
       border-color: var(--primary)
     }
 
+    .btn.secondary {
+      background: var(--secondary);
+      color: #2d29f4;
+      border-color: var(--secondary)
+    }
+
+    .btn.thirty {
+      background: var(--thirty);
+      color: #f14e02;
+      border-color: var(--thirty)
+    }
+
     .btn:active {
       transform: translateY(1px)
     }
@@ -587,8 +599,7 @@
       
       if (listButton) {
         listButton.addEventListener('click', function() {
-          // Hàm xử lý sự kiện click cho nút danh sách tiếp nhận
-          alert('Mở danh sách tiếp nhận bệnh nhân');
+          
         });
       }
     });
@@ -859,8 +870,15 @@
     
     // Popup danh sách bệnh nhân đã tiếp nhận
     function openPatientListPopup() {
-      document.getElementById('patientListPopup').style.display = 'flex';
-      loadPatientList();
+      console.log('正在打开弹出窗口');
+      const popup = document.getElementById('patientListPopup');
+      if (popup) {
+        console.log('找到弹出窗口元素');
+        popup.style.display = 'flex';
+        loadPatientList();
+      } else {
+        console.log('未找到弹出窗口元素');
+      }
     }
     
     function closePatientListPopup() {
@@ -870,10 +888,10 @@
     function loadPatientList() {
       // Dữ liệu mẫu bệnh nhân
       const patientData = [
-        { id: 'BN001', name: 'NGUYỄN VĂN A', dob: '01/01/1990', gender: 'Nam', time: '2024-01-15 08:30', type: 'BHYT', status: 'Hoàn tất' },
-        { id: 'BN002', name: 'TRẦN THỊ B', dob: '02/02/1985', gender: 'Nữ', time: '2024-01-15 09:15', type: 'Dịch vụ', status: 'Hoàn tất' },
-        { id: 'BN003', name: 'LÊ VĂN C', dob: '03/03/2000', gender: 'Nam', time: '2024-01-15 10:00', type: 'Cấp cứu', status: 'Hoàn tất' },
-        { id: 'BN004', name: 'PHẠM THỊ D', dob: '04/04/1975', gender: 'Nữ', time: '2024-01-15 10:45', type: 'Tái khám', status: 'Hoàn tất' },
+        { id: 'BN001', name: 'NGUYỄN VĂN A', dob: '01/01/1990', gender: 'Nam', time: '2024-01-15 08:30', type: 'BHYT', status: 'Chờ Thanh Toán' },
+        { id: 'BN002', name: 'TRẦN THỊ B', dob: '02/02/1985', gender: 'Nữ', time: '2024-01-15 09:15', type: 'Dịch vụ', status: 'Huỷ' },
+        { id: 'BN003', name: 'LÊ VĂN C', dob: '03/03/2000', gender: 'Nam', time: '2024-01-15 10:00', type: 'Cấp cứu', status: 'Đã thanh toán' },
+        { id: 'BN004', name: 'PHẠM THỊ D', dob: '04/04/1975', gender: 'Nữ', time: '2024-01-15 10:45', type: 'Tái khám', status: 'Danh khám' },
         { id: 'BN005', name: 'HOÀNG VĂN E', dob: '05/05/1995', gender: 'Nam', time: '2024-01-15 11:30', type: 'BHYT', status: 'Hoàn tất' }
       ];
       
@@ -895,6 +913,7 @@
           <td style="padding: 12px; border: 1px solid #ddd; text-align: center;">
             <button class="btn secondary" style="padding: 4px 8px; font-size: 12px;">Xem chi tiết</button>
             <button class="btn primary" style="padding: 4px 8px; font-size: 12px; margin-left: 5px;">In phiếu</button>
+            <button class="btn thirty" style="padding: 4px 8px; font-size: 12px;">Huỷ tiếp đón</button>
           </td>
         `;
         tableBody.appendChild(row);
@@ -903,9 +922,29 @@
     
     // Thêm sự kiện click cho nút "Danh sách tiếp nhận"
     document.addEventListener('DOMContentLoaded', function() {
-      const listButton = document.querySelector('button:contains("Danh sách tiếp nhận")');
+      // 直接为按钮添加ID来简化查找
+      const buttons = document.querySelectorAll('button');
+      let found = false;
+      
+      for (let i = 0; i < buttons.length; i++) {
+        if (buttons[i].textContent.trim() === 'Danh sách tiếp nhận') {
+          // 为了确保可维护性，为按钮添加ID
+          buttons[i].id = 'patientListButton';
+          found = true;
+          break;
+        }
+      }
+      
+      // 使用ID来绑定事件，这样更可靠
+      const listButton = document.getElementById('patientListButton');
       if (listButton) {
-        listButton.addEventListener('click', openPatientListPopup);
+        listButton.addEventListener('click', function() {
+          console.log('点击了"Danh sách tiếp nhận"按钮');
+          openPatientListPopup();
+        });
+        console.log('已成功绑定按钮点击事件');
+      } else if (!found) {
+        console.log('未找到文本为"Danh sách tiếp nhận"的按钮');
       }
       
       // Thêm sự kiện click cho nút đóng
@@ -924,44 +963,44 @@
         });
       }
     });
-    <!-- Popup danh sách bệnh nhân đã tiếp nhận -->
-    <div id="patientListPopup" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000; align-items: center; justify-content: center;">
-      <div style="background-color: white; border-radius: 8px; width: 90%; max-width: 1000px; max-height: 80vh; overflow-y: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
-        <div style="padding: 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;">
-          <h3>Danh sách bệnh nhân đã tiếp nhận</h3>
-          <button id="closePatientListPopup" class="btn danger" style="padding: 6px 12px;">Đóng</button>
+  </script>
+  
+  <!-- Popup danh sách bệnh nhân đã tiếp nhận -->
+  <div id="patientListPopup" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000; align-items: center; justify-content: center;">
+    <div style="background-color: white; border-radius: 8px; width: 90%; height: 90%; overflow-y: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+      <div style="padding: 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;">
+        <h3>Danh sách bệnh nhân đã tiếp nhận</h3>
+        <button id="closePatientListPopup" class="btn danger" style="padding: 6px 12px;">Đóng</button>
+      </div>
+      <div style="padding: 20px;">
+        <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+          <input type="text" id="patientListSearch" placeholder="Tìm kiếm bệnh nhân" style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px; min-width: 800px;">
+          <select id="patientListFilter" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+            <option value="all">Tất cả</option>
+            <option value="today">Hôm nay</option>
+            <option value="week">Tuần nay</option>
+            <option value="month">Tháng nay</option>
+          </select>
         </div>
-        <div style="padding: 20px;">
-          <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-            <input type="text" id="patientListSearch" placeholder="Tìm kiếm bệnh nhân" style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
-            <select id="patientListFilter" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
-              <option value="all">Tất cả</option>
-              <option value="today">Hôm nay</option>
-              <option value="week">Tuần nay</option>
-              <option value="month">Tháng nay</option>
-            </select>
-          </div>
-          <table style="width: 100%; border-collapse: collapse;">
-            <thead>
-              <tr style="background-color: #f5f5f5;">
-                <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Mã bệnh nhân</th>
-                <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Họ tên</th>
-                <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Ngày sinh</th>
-                <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Giới tính</th>
-                <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Thời gian tiếp nhận</th>
-                <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Loại tiếp nhận</th>
-                <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Trạng thái</th>
-                <th style="padding: 12px; border: 1px solid #ddd; text-align: center;">Thao tác</th>
-              </tr>
-            </thead>
-            <tbody id="patientListBody">
-              <!-- Dữ liệu bệnh nhân sẽ được hiển thị ở đây -->
-            </tbody>
-          </table>
-        </div>
+        <table style="width: 100%; border-collapse: collapse;">
+          <thead>
+            <tr style="background-color: #f5f5f5;">
+              <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Mã bệnh nhân</th>
+              <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Họ tên</th>
+              <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Ngày sinh</th>
+              <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Giới tính</th>
+              <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Thời gian tiếp nhận</th>
+              <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Loại tiếp nhận</th>
+              <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Trạng thái</th>
+              <th style="padding: 12px; border: 1px solid #ddd; text-align: center;">Thao tác</th>
+            </tr>
+          </thead>
+          <tbody id="patientListBody">
+            <!-- Dữ liệu bệnh nhân sẽ được hiển thị ở đây -->
+          </tbody>
+        </table>
       </div>
     </div>
-
-  </script>
+  </div>
 </body>
 </html>
