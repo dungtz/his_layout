@@ -66,7 +66,6 @@
       background: #fff;
       outline: none;
       font-family: var(--font-family);
-      width: auto; 
       border: none; border-bottom: 1px dashed #000; outline: none;
       margin-bottom: 10px;
     }
@@ -145,6 +144,12 @@
       gap: 12px
     }
 
+    .grid-4 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 12px
+    }
+
     .grid-auto {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -154,8 +159,8 @@
     .field {
       display: flex;
       flex-direction: column;
-      gap: 6px
-      padding: 5px 6px;
+      gap: 2px;
+      padding: 2px 3px;
     }
 
     .label {
@@ -271,7 +276,8 @@
       </a>
       <div class="search">
         <input type="text" placeholder="Tìm BN / CCCD / Mã hồ sơ" aria-label="Tìm bệnh nhân" />
-        <button class="btn" title="Quét CCCD">Tìm kiếm</button>
+        <button class="btn">Tìm kiếm</button>
+        <button class="btn">Danh sách tiếp nhận</button>
       </div>
       <div class="toolbar">
         <select id="counter">
@@ -373,15 +379,17 @@
           <div class="field"><label class="label">Ngưởi bảo lãnh/Liên hệ</label><input type="text" /></div>
           <div class="field"><label class="label">Quan hệ</label>
             <select>
-              <option>Vợ</option>
-              <option>Chồng</option>
-              <option>Con</option>
+              <option>Vợ/Chồng</option>
+              <option>Cha/Mẹ</option>
+              <option>Khác</option>
             </select>
           </div>
           <div class="field"><label class="label">SĐT liên hệ</label><input type="text" /></div>
       </div>
-
+      <div class="grid-2">
+        <div class="field"><label class="label">CCCD/Hộ Chiếu</label><input type="text" /></div>
         <div class="field"><label class="label">Địa chỉ</label><input type="text" /></div>
+      </div>
         <div class="inline" style="gap:12px; flex-wrap:wrap">
           <button class="btn">Chọn tệp…</button>
         </div>
@@ -391,8 +399,8 @@
     <section class="card tall" id="sec-visit">
       <h2>2) Hình thức khám chữa bệnh</h2>
       <div class="content">
-        <div class="grid-2">
-          <div class="field"><label class="label">Loại Hình KCB</label>
+        <div class="grid-1">
+          <div class="field" ><label class="label">Loại Hình KCB</label>
             <select>
               <option>01 Khám bệnh.</option>
               <option>02 Điều trị ngoại trú.</option>
@@ -420,7 +428,7 @@
         <div id="bhyt-block">
           <div class="grid-3">
             <div class="field"><label class="label">Mã thẻ BHYT</label><input type="text"
-                placeholder="HC4010123456789" /></div>
+                placeholder="HC40101234" /></div>
             <div class="field"><label class="label">Mức hưởng</label><input type="text" /></div>
             <div class="field"><label class="label">Nơi ĐK KCB ban đầu</label><input type="text" /></div>
           </div>
@@ -565,6 +573,25 @@
     function toggleChuyenTuyen(on) {
       document.getElementById('ct-block').style.display = on ? 'block' : 'none';
     }
+    // Thêm sự kiện click cho nút "Danh sách tiếp nhận"
+    document.addEventListener('DOMContentLoaded', function() {
+      // Tìm nút theo văn bản nội dung
+      const buttons = document.querySelectorAll('button');
+      let listButton = null;
+      for (let i = 0; i < buttons.length; i++) {
+        if (buttons[i].textContent.trim() === 'Danh sách tiếp nhận') {
+          listButton = buttons[i];
+          break;
+        }
+      }
+      
+      if (listButton) {
+        listButton.addEventListener('click', function() {
+          // Hàm xử lý sự kiện click cho nút danh sách tiếp nhận
+          alert('Mở danh sách tiếp nhận bệnh nhân');
+        });
+      }
+    });
     // init
     toggleBHYT(true);
     toggleChuyenTuyen(false);
@@ -829,6 +856,112 @@
       // Close the popup
       closeQRCodeScanPopup();
     }
+    
+    // Popup danh sách bệnh nhân đã tiếp nhận
+    function openPatientListPopup() {
+      document.getElementById('patientListPopup').style.display = 'flex';
+      loadPatientList();
+    }
+    
+    function closePatientListPopup() {
+      document.getElementById('patientListPopup').style.display = 'none';
+    }
+    
+    function loadPatientList() {
+      // Dữ liệu mẫu bệnh nhân
+      const patientData = [
+        { id: 'BN001', name: 'NGUYỄN VĂN A', dob: '01/01/1990', gender: 'Nam', time: '2024-01-15 08:30', type: 'BHYT', status: 'Hoàn tất' },
+        { id: 'BN002', name: 'TRẦN THỊ B', dob: '02/02/1985', gender: 'Nữ', time: '2024-01-15 09:15', type: 'Dịch vụ', status: 'Hoàn tất' },
+        { id: 'BN003', name: 'LÊ VĂN C', dob: '03/03/2000', gender: 'Nam', time: '2024-01-15 10:00', type: 'Cấp cứu', status: 'Hoàn tất' },
+        { id: 'BN004', name: 'PHẠM THỊ D', dob: '04/04/1975', gender: 'Nữ', time: '2024-01-15 10:45', type: 'Tái khám', status: 'Hoàn tất' },
+        { id: 'BN005', name: 'HOÀNG VĂN E', dob: '05/05/1995', gender: 'Nam', time: '2024-01-15 11:30', type: 'BHYT', status: 'Hoàn tất' }
+      ];
+      
+      const tableBody = document.getElementById('patientListBody');
+      tableBody.innerHTML = '';
+      
+      patientData.forEach(patient => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td style="padding: 12px; border: 1px solid #ddd;">${patient.id}</td>
+          <td style="padding: 12px; border: 1px solid #ddd;">${patient.name}</td>
+          <td style="padding: 12px; border: 1px solid #ddd;">${patient.dob}</td>
+          <td style="padding: 12px; border: 1px solid #ddd;">${patient.gender}</td>
+          <td style="padding: 12px; border: 1px solid #ddd;">${patient.time}</td>
+          <td style="padding: 12px; border: 1px solid #ddd;">${patient.type}</td>
+          <td style="padding: 12px; border: 1px solid #ddd;">
+            <span style="background-color: #4CAF50; color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px;">${patient.status}</span>
+          </td>
+          <td style="padding: 12px; border: 1px solid #ddd; text-align: center;">
+            <button class="btn secondary" style="padding: 4px 8px; font-size: 12px;">Xem chi tiết</button>
+            <button class="btn primary" style="padding: 4px 8px; font-size: 12px; margin-left: 5px;">In phiếu</button>
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+    
+    // Thêm sự kiện click cho nút "Danh sách tiếp nhận"
+    document.addEventListener('DOMContentLoaded', function() {
+      const listButton = document.querySelector('button:contains("Danh sách tiếp nhận")');
+      if (listButton) {
+        listButton.addEventListener('click', openPatientListPopup);
+      }
+      
+      // Thêm sự kiện click cho nút đóng
+      const closeButton = document.getElementById('closePatientListPopup');
+      if (closeButton) {
+        closeButton.addEventListener('click', closePatientListPopup);
+      }
+      
+      // Thêm sự kiện click ra ngoài popup để đóng
+      const popup = document.getElementById('patientListPopup');
+      if (popup) {
+        popup.addEventListener('click', function(event) {
+          if (event.target === popup) {
+            closePatientListPopup();
+          }
+        });
+      }
+    });
+    <!-- Popup danh sách bệnh nhân đã tiếp nhận -->
+    <div id="patientListPopup" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000; align-items: center; justify-content: center;">
+      <div style="background-color: white; border-radius: 8px; width: 90%; max-width: 1000px; max-height: 80vh; overflow-y: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+        <div style="padding: 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;">
+          <h3>Danh sách bệnh nhân đã tiếp nhận</h3>
+          <button id="closePatientListPopup" class="btn danger" style="padding: 6px 12px;">Đóng</button>
+        </div>
+        <div style="padding: 20px;">
+          <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+            <input type="text" id="patientListSearch" placeholder="Tìm kiếm bệnh nhân" style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+            <select id="patientListFilter" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+              <option value="all">Tất cả</option>
+              <option value="today">Hôm nay</option>
+              <option value="week">Tuần nay</option>
+              <option value="month">Tháng nay</option>
+            </select>
+          </div>
+          <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr style="background-color: #f5f5f5;">
+                <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Mã bệnh nhân</th>
+                <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Họ tên</th>
+                <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Ngày sinh</th>
+                <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Giới tính</th>
+                <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Thời gian tiếp nhận</th>
+                <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Loại tiếp nhận</th>
+                <th style="padding: 12px; border: 1px solid #ddd; text-align: left;">Trạng thái</th>
+                <th style="padding: 12px; border: 1px solid #ddd; text-align: center;">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="patientListBody">
+              <!-- Dữ liệu bệnh nhân sẽ được hiển thị ở đây -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
   </script>
 </body>
 </html>
