@@ -762,10 +762,35 @@
                 </div>
             </div>
 
-            <div class="scrollable">
+            <style>
+                    .badge {
+                        padding: 3px 8px;
+                        border-radius: 4px;
+                        font-size: 12px;
+                        font-weight: bold;
+                    }
+                    .badge-success {
+                        background-color: #28a745;
+                        color: white;
+                    }
+                    .badge-warning {
+                        background-color: #ffc107;
+                        color: #212529;
+                    }
+                    .badge-danger {
+                        background-color: #dc3545;
+                        color: white;
+                    }
+                    .btn-sm {
+                        padding: 2px 8px;
+                        font-size: 12px;
+                    }
+                </style>
+                <div class="scrollable">
                 <!-- Tab Navigation -->
                 <div class="tab-navigation">
-                    <button class="tab active" onclick="openTab(event, 'tab-bia')">Bìa bệnh án</button>
+                    <button class="tab active" onclick="openTab(event, 'tab-checklist')">Check list</button>
+                    <button class="tab" onclick="openTab(event, 'tab-bia')">Bìa bệnh án</button>
                     <button class="tab" onclick="openTab(event, 'tab-thongtin')">A. Bệnh án</button>
                     <button class="tab" onclick="openTab(event, 'tab-tongket')">B. Tổng kết bệnh án</button>
                     <button class="tab" onclick="openTab(event, 'tab-theodoi')">Theo dõi điều trị</button>
@@ -773,8 +798,179 @@
                     <button class="tab" onclick="openTab(event, 'tab-tailieu')">Tài liệu khác</button>
                 </div>
 
+                <!-- Tab Content - Check list -->
+                <div id="tab-checklist" class="tab-content active">
+                    <div class="card">
+                        <div class="card-header" style="background-color: #f5f5f5; padding: 10px; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between;">
+                            <span style="font-weight: bold;">Check list hồ sơ bệnh án</span>
+                            <div style="display: flex; gap: 5px;">
+                                <button class="btn" style="flex: 1;" onclick="generateReport()">Thêm biểu mẫu</button>
+                                <button class="btn" style="flex: 1;">Tải xuống</button>
+                            </div>
+                        </div>
+                        <div
+                            style="padding: 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                                <!-- Chờ thực hiện -->
+                                <div style="display: flex; align-items: center;">
+                                    <div
+                                        style="width: 10px; height: 10px; border-radius: 50%; background-color: #FFA500; margin-right: 5px;">
+                                    </div>
+                                    <span style="color: #333;">Chờ thực hiện: <strong>5</strong></span>
+                                </div>
+                                <!-- Đang thực hiện -->
+                                <div style="display: flex; align-items: center;">
+                                    <div
+                                        style="width: 10px; height: 10px; border-radius: 50%; background-color: #1E90FF; margin-right: 5px;">
+                                    </div>
+                                    <span style="color: #333;">Đang thực hiện: <strong>3</strong></span>
+                                </div>
+                                <!-- Hoàn tất -->
+                                <div style="display: flex; align-items: center;">
+                                    <div
+                                        style="width: 10px; height: 10px; border-radius: 50%; background-color: #32CD32; margin-right: 5px;">
+                                    </div>
+                                    <span style="color: #333;">Hoàn tất: <strong>12</strong></span>
+                                </div>
+                                <!-- Bỏ qua -->
+                                <div style="display: flex; align-items: center;">
+                                    <div
+                                        style="width: 10px; height: 10px; border-radius: 50%; background-color: #FF6347; margin-right: 5px;">
+                                    </div>
+                                    <span style="color: #333;">Bỏ qua: <strong>2</strong></span>
+                                </div>
+                                <!-- Đã ký số -->
+                                <div style="display: flex; align-items: center;">
+                                    <div
+                                        style="width: 10px; height: 10px; border-radius: 50%; background-color: #800080; margin-right: 5px;">
+                                    </div>
+                                    <span style="color: #333;">Ký số: <strong>8/12</strong></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body" style="padding: 20px;">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr style="background-color: #f8f9fa;">
+                                        <th>STT</th>
+                                        <th>Tên hồ sơ</th>
+                                        <th>Trạng thái</th>
+                                        <th>Người tạo</th>
+                                        <th>Ngày tạo</th>
+                                        <th>Người ký</th>
+                                        <th>Ngày ký</th>
+                                        <th>Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Danh sách hồ sơ cần hoàn tất theo yêu cầu bộ y tế -->
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Bìa bệnh án</td>
+                                        <td><span class="badge badge-success">Hoàn thành</span></td>
+                                        <td>BS. Nguyễn Văn A</td>
+                                        <td>20/04/2023</td>
+                                        <td>BS. Nguyễn Văn A</td>
+                                        <td>20/04/2023</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-info">Xem</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>Thông tin bệnh án</td>
+                                        <td><span class="badge badge-warning">Chưa hoàn tất</span></td>
+                                        <td>BS. Nguyễn Văn A</td>
+                                        <td>20/04/2023</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-info">Xem</button>
+                                            <button class="btn btn-sm btn-warning">Sửa</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>Tổng kết bệnh án</td>
+                                        <td><span class="badge badge-warning">Chưa hoàn tất</span></td>
+                                        <td>BS. Nguyễn Văn A</td>
+                                        <td>20/04/2023</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-info">Xem</button>
+                                            <button class="btn btn-sm btn-warning">Sửa</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>Phiếu khám bệnh</td>
+                                        <td><span class="badge badge-success">Hoàn thành</span></td>
+                                        <td>BS. Nguyễn Văn A</td>
+                                        <td>20/04/2023</td>
+                                        <td>BS. Nguyễn Văn A</td>
+                                        <td>20/04/2023</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-info">Xem</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td>Phiếu yêu cầu xét nghiệm</td>
+                                        <td><span class="badge badge-success">Hoàn thành</span></td>
+                                        <td>BS. Nguyễn Văn A</td>
+                                        <td>20/04/2023</td>
+                                        <td>BS. Nguyễn Văn A</td>
+                                        <td>20/04/2023</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-info">Xem</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>6</td>
+                                        <td>Phiếu yêu cầu hình ảnh</td>
+                                        <td><span class="badge badge-danger">Chưa tạo</span></td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-success">Tạo</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>7</td>
+                                        <td>Nhật ký điều trị</td>
+                                        <td><span class="badge badge-warning">Chưa hoàn tất</span></td>
+                                        <td>BS. Nguyễn Văn A</td>
+                                        <td>20/04/2023</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-info">Xem</button>
+                                            <button class="btn btn-sm btn-warning">Sửa</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>8</td>
+                                        <td>Đơn thuốc</td>
+                                        <td><span class="badge badge-success">Hoàn thành</span></td>
+                                        <td>BS. Nguyễn Văn A</td>
+                                        <td>20/04/2023</td>
+                                        <td>BS. Nguyễn Văn A</td>
+                                        <td>20/04/2023</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-info">Xem</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Tab Content - Bìa bệnh án -->
-                <div id="tab-bia" class="tab-content active">
+                <div id="tab-bia" class="tab-content">
                     <div class="card">
                         <div class="card-body" style="padding: 0;">
                             <!-- Biểu mẫu bệnh án điện tử -->
@@ -2208,112 +2404,6 @@
                 </div>
             </div>
         </div>
-
-            <!-- Sidebar phải: Lịch sử bệnh án -->
-    <div class="sidebar-right" style="display: flex; flex-direction: column;">
-        <div
-            style="padding: 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;">
-            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                <!-- Chờ thực hiện -->
-                <div style="display: flex; align-items: center;">
-                    <div
-                        style="width: 10px; height: 10px; border-radius: 50%; background-color: #FFA500; margin-right: 5px;">
-                    </div>
-                    <span style="color: #333;">Chờ thực hiện: <strong>5</strong></span>
-                </div>
-                <!-- Đang thực hiện -->
-                <div style="display: flex; align-items: center;">
-                    <div
-                        style="width: 10px; height: 10px; border-radius: 50%; background-color: #1E90FF; margin-right: 5px;">
-                    </div>
-                    <span style="color: #333;">Đang thực hiện: <strong>3</strong></span>
-                </div>
-                <!-- Hoàn tất -->
-                <div style="display: flex; align-items: center;">
-                    <div
-                        style="width: 10px; height: 10px; border-radius: 50%; background-color: #32CD32; margin-right: 5px;">
-                    </div>
-                    <span style="color: #333;">Hoàn tất: <strong>12</strong></span>
-                </div>
-                <!-- Bỏ qua -->
-                <div style="display: flex; align-items: center;">
-                    <div
-                        style="width: 10px; height: 10px; border-radius: 50%; background-color: #FF6347; margin-right: 5px;">
-                    </div>
-                    <span style="color: #333;">Bỏ qua: <strong>2</strong></span>
-                </div>
-                <!-- Đã ký số -->
-                <div style="display: flex; align-items: center;">
-                    <div
-                        style="width: 10px; height: 10px; border-radius: 50%; background-color: #800080; margin-right: 5px;">
-                    </div>
-                    <span style="color: #333;">Ký số: <strong>8/12</strong></span>
-                </div>
-            </div>
-        </div>
-
-
-        <!-- Phần 1: Lịch sử bệnh án -->
-        <div class="card" style="flex: 1; border: 1px solid #ddd; overflow: hidden;">
-            <div class="card-header"
-                style="background-color: #f5f5f5; padding: 10px; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between;">
-                <span style="font-weight: bold;">Danh sách phiếu</span>
-                <div style="display: flex; gap: 5px;">
-                    <select style="padding: 3px; font-size: 12px;">
-                        <option value="all">Tất cả</option>
-                        <option value="year">Trong năm</option>
-                        <option value="month">Trong tháng</option>
-                        <option value="week">Trong tuần</option>
-                    </select>
-                    <button class="btn btn-small" onclick="filterRecords()">Lọc</button>
-                </div>
-            </div>
-            <div class="card-body" style="margin: 10px; overflow-y: auto;"> 
-                <div class="timeline" style="display: flex; flex-direction: column;">
-                    <div style="background-color: white;">
-                        <div style="font-weight: bold; margin-bottom: 5px;">20/04/2023 - 10:30: Thăm khám nội khoa</div>
-                        <div style="font-size: 12px; margin-bottom: 2px;">Bác sĩ: Nguyễn Văn Hùng</div>
-                        <div style="display: flex; justify-content: space-between;">
-                            <button class="btn btn-small">Xem chi tiết</button>
-                            <span style="font-size: 10px; background-color: green; color: white; padding: 4px 4px; border-radius: 4px;">Đã
-                                ký</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card-body" style="margin: 10px; overflow-y: auto;">
-                <div class="timeline" style="display: flex; flex-direction: column;">
-                    <div style="background-color: white;">
-                        <div style="font-weight: bold; margin-bottom: 5px;">15/04/2023 - 09:15: Siêu âm bụng</div>
-                        <div style="font-size: 12px; margin-bottom: 2px;">Bác sĩ: Đặng Thị Lan</div>
-                        <div style="display: flex; justify-content: space-between;">
-                            <button class="btn btn-small">Xem chi tiết</button>
-                            <span style="font-size: 10px; background-color: red; color: white; padding: 4px 4px; border-radius: 4px;">Chưa
-                                ký</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card-body" style="margin: 10px; overflow-y: auto;">
-                <div class="timeline" style="display: flex; flex-direction: column;">
-                    <div style="background-color: white;">
-                        <div style="font-weight: bold; margin-bottom: 5px;">10/04/2023 - 14:45: Xét nghiệm máu</div>
-                        <div style="font-size: 12px; margin-bottom: 2px;">Bác sĩ: Trần Văn Minh</div>
-                        <div style="display: flex; justify-content: space-between;">
-                            <button class="btn btn-small">Xem chi tiết</button>
-                            <span style="font-size: 10px; background-color: green; color: white; padding: 1px 5px;">Đã
-                                ký</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div style="display: flex; gap: 5px; padding: 10px;">
-            <button class="btn" style="flex: 1;" onclick="generateReport()">Thêm biểu mẫu</button>
-            <button class="btn" style="flex: 1;" onclick="exportToPDF()">Xuất PDF</button>
-        </div>
-    </div>
     </div>
 
     <script>
