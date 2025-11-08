@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>HIS - Phân hệ Phẫu thuật / Thủ thuật</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg: #f3f4f6;
+      --sidebar-bg: #0f172a;
+      --sidebar-bg-soft: #111827;
+      --sidebar-border: #1f2937;
+      --sidebar-text: #e5e7eb;
+      --sidebar-muted: #9ca3af;
+      --sidebar-active: #22c55e;
+      --sidebar-hover: #1f2937;
+      --content-bg: #ffffff;
+      --content-border: #e5e7eb;
+      --accent: #22c55e;
+      --accent-soft: rgba(34, 197, 94, 0.12);
+      --text-main: #111827;
+      --text-muted: #6b7280;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text-main);
+      height: 100vh;
+      display: flex;
+    }
+
+    .app-shell {
+      display: flex;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* SIDEBAR */
+
+    .sidebar {
+      width: 280px;
+      background: var(--sidebar-bg);
+      color: var(--sidebar-text);
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--sidebar-border);
+    }
+
+    .sidebar-header {
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--sidebar-border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sidebar-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 12px;
+      background: radial-gradient(circle at 20% 20%, #22c55e, #16a34a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #ecfdf5;
+      font-weight: 700;
+    }
+
+    .sidebar-title {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .sidebar-title .main {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .sidebar-title .sub {
+      font-size: 11px;
+      color: var(--sidebar-muted);
+    }
+
+    .sidebar-section-label {
+      padding: 10px 18px 4px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--sidebar-muted);
+    }
+
+    .menu {
+      flex: 1;
+      overflow-y: auto;
+      padding-bottom: 16px;
+    }
+
+    .menu-group {
+      margin-bottom: 6px;
+    }
+
+    .menu-group-header {
+      padding: 8px 18px;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      width: 100%;
+      color: var(--sidebar-text);
+    }
+
+    .menu-group-header:hover {
+      background: var(--sidebar-bg-soft);
+    }
+
+    .menu-group-header-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .menu-group-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+    }
+
+    .menu-group-title {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .menu-group-chevron {
+      font-size: 11px;
+      color: var(--sidebar-muted);
+      transition: transform 0.15s ease;
+    }
+
+    .menu-group.open .menu-group-chevron {
+      transform: rotate(90deg);
+    }
+
+    .submenu {
+      list-style: none;
+      padding: 0 8px 4px 40px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.2s ease;
+    }
+
+    .menu-group.open .submenu {
+      max-height: 400px;
+    }
+
+    .submenu-item {
+      margin: 2px 0;
+    }
+
+    .submenu-link {
+      display: block;
+      padding: 6px 8px;
+      border-radius: 6px;
+      font-size: 13px;
+      color: var(--sidebar-muted);
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .submenu-link:hover {
+      background: var(--sidebar-hover);
+      color: var(--sidebar-text);
+    }
+
+    .submenu-link.active {
+      background: var(--accent-soft);
+      color: var(--sidebar-active);
+      font-weight: 500;
+    }
+
+    .sidebar-footer {
+      padding: 10px 18px 14px;
+      border-top: 1px solid var(--sidebar-border);
+      font-size: 11px;
+      color: var(--sidebar-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .tag {
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* MAIN CONTENT */
+
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg);
+    }
+
+    .main-header {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--content-border);
+      background: rgba(249, 250, 251, 0.9);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .main-header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .main-title {
+      font-size: 18px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: #166534;
+      border: 1px solid rgba(22, 163, 74, 0.2);
+    }
+
+    .main-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .main-header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      border: 1px solid var(--content-border);
+      background: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-primary {
+      background: #22c55e;
+      color: white;
+      border-color: #16a34a;
+    }
+
+    .btn:hover {
+      filter: brightness(0.97);
+    }
+
+    .main-body {
+      flex: 1;
+      padding: 16px 20px;
+      overflow-y: auto;
+    }
+
+    .card {
+      background: var(--content-bg);
+      border-radius: 12px;
+      border: 1px solid var(--content-border);
+      padding: 16px 18px;
+      margin-bottom: 12px;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-title span.icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+    }
+
+    .card-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      color: #4b5563;
+    }
+
+    .hint {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    @media (max-width: 900px) {
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">PT</div>
+        <div class="sidebar-title">
+          <div class="main">Phẫu thuật / Thủ thuật</div>
+          <div class="sub">Phân hệ quản lý phòng mổ – thủ thuật</div>
+        </div>
+      </div>
+
+      <div class="sidebar-section-label">Menu chức năng</div>
+
+      <nav class="menu">
+
+        <!-- I. Tiếp nhận & Chỉ định -->
+        <div class="menu-group open" data-group="tiepnnhan">
+          <button class="menu-group-header">
+            <div class="menu-group-header-left">
+              <div class="menu-group-icon">📋</div>
+              <span class="menu-group-title">Tiếp nhận & Chỉ định</span>
+            </div>
+            <span class="menu-group-chevron">▶</span>
+          </button>
+          <ul class="submenu">
+            <li class="submenu-item">
+              <a class="submenu-link active" data-page="list-orders">
+                Danh sách chỉ định PTTT
+              </a>
+            </li>
+            <li class="submenu-item">
+              <a class="submenu-link" data-page="create-order">
+                Tạo chỉ định mới
+              </a>
+            </li>
+            <li class="submenu-item">
+              <a class="submenu-link" data-page="approve-order">
+                Duyệt chỉ định
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- II. Lịch mổ – Kế hoạch -->
+        <div class="menu-group" data-group="lichmo">
+          <button class="menu-group-header">
+            <div class="menu-group-header-left">
+              <div class="menu-group-icon">🗓️</div>
+              <span class="menu-group-title">Lịch mổ – Kế hoạch</span>
+            </div>
+            <span class="menu-group-chevron">▶</span>
+          </button>
+          <ul class="submenu">
+            <li class="submenu-item">
+              <a class="submenu-link" data-page="schedule-plan">
+                Lập kế hoạch mổ
+              </a>
+            </li>
+            <li class="submenu-item">
+              <a class="submenu-link" data-page="or-calendar">
+                Lịch phòng mổ
+              </a>
+            </li>
+            <li class="submenu-item">
+              <a class="submenu-link" data-page="preop-consult">
+                Hội chẩn trước mổ
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- III. Chuẩn bị trước mổ -->
+        <div class="menu-group" data-group="preop">
+          <button class="menu-group-header">
+            <div class="menu-group-header-left">
+              <div class="menu-group-icon">🧪</div>
+              <span class="menu-group-title">Chuẩn bị trước mổ</span>
+            </div>
+            <span class="menu-group-chevron">▶</span>
+          </button>
+          <ul class="submenu">
+            <li class="submenu-item">
+              <a class="submenu-link" data-page="preop-assessment">
+                Phiếu tiền mê / tiền phẫu
+              </a>
+            </li>
+            <li class="submenu-item">
+              <a class="submenu-link" data-page="safety-checklist">
+                Phiếu an toàn phẫu thuật
+              </a>
+            </li>
+            <li class="submenu-item">
+              <a class="submenu-link" data-page="preop-materials">
+                Chuẩn bị vật tư – dụng cụ
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- IV. Trong mổ -->
+        <div class="menu-group" data-group="intraop">
+          <button class="menu-group-header">
+            <div class="menu-group-header-left">
+              <div class="menu-group-icon">🏥</div>
+              <span class="menu-group-title">Quản lý trong mổ</span>
+            </div>
+            <span class="menu-group-chevron">▶</span>
+          </button>
+          <ul class="submenu">
+            <li class="submenu-item">
+              <a class="submenu-link" data-page="op-case">
+                Ghi nhận ca mổ
+              </a>
+            </li>
+            <li class="submenu-item">
+              <a class="submenu-link" data-page="anesthesia">
+                Phiếu gây mê – hồi sức
+              </a>
+            </li>
+            <li class="submenu-item">
+              <a class="submenu-link" data-page="intraop-materials">
+                Vật tư – dụng cụ sử dụng
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- V. Sau mổ -->
+        <div class="menu-group" data-group="postop">
+          <button class="menu-group-header">
+            <div class="menu-group-header-left">
+              <div class="menu-group-icon">❤️</div>
+              <span class="menu-group-title">Theo dõi sau mổ</span>
+            </div>
+            <span class="menu-group-chevron">▶</span>
+          </button>
+          <ul class="submenu">
+            <li class="submenu-item">
+              <a class="submenu-link" data-page="postop-monitor">
+                Phiếu theo dõi sau mổ
+              </a>
+            </li>
+            <li class="submenu-item">
+              <a class="submenu-link" data-page="handover">
+                Biên bản bàn giao – chuyển khoa
+              </a>
+            </li>
+            <li class="submenu-item">
+              <a class="submenu-link" data-page="postop-progress">
+                Phiếu diễn biến sau mổ
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- VI. Hồ sơ & Báo cáo -->
+        <div class="menu-group" data-group="reports">
+          <button class="menu-group-header">
+            <div class="menu-group-header-left">
+              <div class="menu-group-icon">📊</div>
+              <span class="menu-group-title">Hồ sơ & Báo cáo</span>
+            </div>
+            <span class="menu-group-chevron">▶</span>
+          </button>
+          <ul class="submenu">
+            <li class="submenu-item">
+              <a class="submenu-link" data-page="op-report">
+                Biên bản phẫu thuật/thủ thuật
+              </a>
+            </li>
+            <li class="submenu-item">
+              <a class="submenu-link" data-page="stats-report">
+                Báo cáo thống kê PTTT
+              </a>
+            </li>
+            <li class="submenu-item">
+              <a class="submenu-link" data-page="op-logbook">
+                Sổ phẫu thuật – thủ thuật
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- VII. Vật tư – Dụng cụ -->
+        <div class="menu-group" data-group="supplies">
+          <button class="menu-group-header">
+            <div class="menu-group-header-left">
+              <div class="menu-group-icon">💊</div>
+              <span class="menu-group-title">Vật tư – Dụng cụ</span>
+            </div>
+            <span class="menu-group-chevron">▶</span>
+          </button>
+          <ul class="submenu">
+            <li class="submenu-item">
+              <a class="submenu-link" data-page="supplies-master">
+                Danh mục vật tư – thiết bị
+              </a>
+            </li>
+            <li class="submenu-item">
+              <a class="submenu-link" data-page="supplies-usage">
+                Sử dụng vật tư theo ca
+              </a>
+            </li>
+            <li class="submenu-item">
+              <a class="submenu-link" data-page="supplies-stocktake">
+                Kiểm kê phòng mổ
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- VIII. Tài chính – BHYT -->
+        <div class="menu-group" data-group="billing">
+          <button class="menu-group-header">
+            <div class="menu-group-header-left">
+              <div class="menu-group-icon">💰</div>
+              <span class="menu-group-title">Tài chính – BHYT</span>
+            </div>
+            <span class="menu-group-chevron">▶</span>
+          </button>
+          <ul class="submenu">
+            <li class="submenu-item">
+              <a class="submenu-link" data-page="billing-link">
+                Liên kết chi phí phẫu thuật
+              </a>
+            </li>
+            <li class="submenu-item">
+              <a class="submenu-link" data-page="bhyt-xml">
+                Xuất XML3 / XML4 (BHYT)
+              </a>
+            </li>
+            <li class="submenu-item">
+              <a class="submenu-link" data-page="bhyt-report">
+                Báo cáo quyết toán mổ BHYT
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- IX. Cấu hình -->
+        <div class="menu-group" data-group="settings">
+          <button class="menu-group-header">
+            <div class="menu-group-header-left">
+              <div class="menu-group-icon">🔐</div>
+              <span class="menu-group-title">Cấu hình – Quản trị</span>
+            </div>
+            <span class="menu-group-chevron">▶</span>
+          </button>
+          <ul class="submenu">
+            <li class="submenu-item">
+              <a class="submenu-link" data-page="catalog-pttt">
+                Danh mục phẫu thuật – thủ thuật
+              </a>
+            </li>
+            <li class="submenu-item">
+              <a class="submenu-link" data-page="or-rooms">
+                Phòng mổ – kíp mổ
+              </a>
+            </li>
+            <li class="submenu-item">
+              <a class="submenu-link" data-page="permissions">
+                Phân quyền người dùng
+              </a>
+            </li>
+            <li class="submenu-item">
+              <a class="submenu-link" data-page="templates-sign">
+                Mẫu in – chữ ký số
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <div class="sidebar-footer">
+        <span>HIS · PTTT</span>
+        <span class="tag">Module</span>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+      <header class="main-header">
+        <div class="main-header-left">
+          <div class="main-title">
+            <span id="page-title">Danh sách chỉ định PTTT</span>
+            <span class="badge">Demo giao diện menu</span>
+          </div>
+          <div class="main-subtitle" id="page-subtitle">
+            Chọn mục ở sidebar để điều hướng đến chức năng tương ứng trong phân hệ phẫu thuật – thủ thuật.
+          </div>
+        </div>
+        <div class="main-header-right">
+          <button class="btn">
+            🔄 Làm mới
+          </button>
+          <button class="btn btn-primary">
+            ➕ Tạo chỉ định mới
+          </button>
+        </div>
+      </header>
+
+      <section class="main-body" id="page-content">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">📋</span>
+              <span>Danh sách chỉ định phẫu thuật/thủ thuật</span>
+            </div>
+          </div>
+          <p class="card-subtitle">
+            Đây là màn hình ví dụ cho nội dung khi chọn menu <strong>“Danh sách chỉ định PTTT”</strong>.
+            Khi bạn tích hợp vào HIS thật, vùng này sẽ hiển thị lưới dữ liệu (table) danh sách chỉ định.
+          </p>
+          <div class="pill-list">
+            <span class="pill">Lọc theo khoa</span>
+            <span class="pill">Lọc theo bác sĩ</span>
+            <span class="pill">Lọc theo trạng thái</span>
+            <span class="pill">Tìm kiếm theo tên BN / Mã HS</span>
+          </div>
+          <p class="hint">
+            Bạn có thể thay vùng này bằng component thực tế (DataTable, Form, Filament Resource, Livewire, v.v.).
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span class="icon">💡</span>
+            <span>Hướng dẫn tích hợp</span>
+          </div>
+          <p class="card-subtitle">
+            - Giữ nguyên cấu trúc sidebar, chỉ cần thay đổi liên kết (<code>data-page</code>) để route sang các màn hình thực tế.<br>
+            - Có thể dùng layout này làm <strong>layout base</strong> cho module PTTT trong HIS.
+          </p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // Toggle group open/close
+    document.querySelectorAll(".menu-group-header").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        const group = this.parentElement;
+        group.classList.toggle("open");
+      });
+    });
+
+    // Fake page change (demo): đổi tiêu đề & highlight active
+    const pageInfo = {
+      "list-orders": {
+        title: "Danh sách chỉ định PTTT",
+        subtitle: "Quản lý toàn bộ chỉ định phẫu thuật/thủ thuật theo ngày, khoa, bác sĩ."
+      },
+      "create-order": {
+        title: "Tạo chỉ định phẫu thuật/thủ thuật",
+        subtitle: "Tạo mới chỉ định từ bệnh án điện tử, gắn ICD-9-CM, loại mổ, phẫu thuật viên."
+      },
+      "approve-order": {
+        title: "Duyệt chỉ định PTTT",
+        subtitle: "Trưởng khoa / Hội đồng phẫu thuật duyệt, chỉnh sửa, hoặc từ chối chỉ định."
+      },
+      "schedule-plan": {
+        title: "Lập kế hoạch mổ",
+        subtitle: "Xếp lịch phòng mổ, kíp mổ, ưu tiên theo mức độ và thời gian chỉ định."
+      },
+      "or-calendar": {
+        title: "Lịch phòng mổ",
+        subtitle: "Xem lịch sử dụng tất cả phòng mổ theo dạng calendar."
+      },
+      "preop-consult": {
+        title: "Hội chẩn trước mổ",
+        subtitle: "Quản lý biên bản hội chẩn trước mổ, kết luận và phê duyệt."
+      },
+      "preop-assessment": {
+        title: "Phiếu tiền mê / tiền phẫu",
+        subtitle: "Đánh giá trước gây mê, tiền sử, thuốc dùng, nguy cơ gây mê."
+      },
+      "safety-checklist": {
+        title: "Phiếu an toàn phẫu thuật",
+        subtitle: "Checklist WHO 3 giai đoạn: trước gây mê, trước rạch da, trước rời phòng mổ."
+      },
+      "preop-materials": {
+        title: "Chuẩn bị vật tư – dụng cụ",
+        subtitle: "Dự trù, chuẩn bị đầy đủ dụng cụ, vật tư, implant cho ca mổ."
+      },
+      "op-case": {
+        title: "Ghi nhận ca mổ",
+        subtitle: "Lưu trữ chi tiết diễn biến trong mổ, thời gian, biến chứng, xử trí."
+      },
+      "anesthesia": {
+        title: "Phiếu gây mê – hồi sức",
+        subtitle: "Theo dõi thuốc mê, dịch truyền, sinh hiệu trong và sau mổ."
+      },
+      "intraop-materials": {
+        title: "Vật tư – dụng cụ sử dụng",
+        subtitle: "Ghi nhận vật tư thực dùng, trừ kho, tính chi phí."
+      },
+      "postop-monitor": {
+        title: "Theo dõi sau mổ",
+        subtitle: "Theo dõi tình trạng bệnh nhân tại phòng hồi tỉnh hoặc khoa điều trị."
+      },
+      "handover": {
+        title: "Biên bản bàn giao – chuyển khoa",
+        subtitle: "Bàn giao bệnh nhân sau mổ từ phòng mổ sang khoa hồi sức / điều trị."
+      },
+      "postop-progress": {
+        title: "Diễn biến sau mổ",
+        subtitle: "Ghi nhận diễn biến, biến chứng, điều trị bổ sung sau phẫu thuật."
+      },
+      "op-report": {
+        title: "Biên bản phẫu thuật/thủ thuật",
+        subtitle: "Tổng hợp dữ liệu ca mổ thành biên bản chuẩn BYT, hỗ trợ ký số."
+      },
+      "stats-report": {
+        title: "Báo cáo thống kê PTTT",
+        subtitle: "Thống kê số ca, loại mổ, biến chứng, bác sĩ thực hiện, theo thời gian."
+      },
+      "op-logbook": {
+        title: "Sổ phẫu thuật – thủ thuật",
+        subtitle: "Sổ điện tử thay cho sổ giấy, đáp ứng quy định BYT."
+      },
+      "supplies-master": {
+        title: "Danh mục vật tư – thiết bị",
+        subtitle: "Danh sách dụng cụ phòng mổ, máy móc, implant, cấu hình sử dụng."
+      },
+      "supplies-usage": {
+        title: "Sử dụng vật tư theo ca",
+        subtitle: "Theo dõi vật tư dùng trên từng bệnh nhân, từng ca mổ."
+      },
+      "supplies-stocktake": {
+        title: "Kiểm kê phòng mổ",
+        subtitle: "Kiểm kê định kỳ dụng cụ, vật tư tại khu vực phòng mổ."
+      },
+      "billing-link": {
+        title: "Liên kết chi phí phẫu thuật",
+        subtitle: "Gắn mã DVKT, thuốc, vật tư vào hồ sơ thanh toán."
+      },
+      "bhyt-xml": {
+        title: "Xuất XML3 / XML4 (BHYT)",
+        subtitle: "Sinh dữ liệu XML thanh toán BHYT cho các ca phẫu thuật."
+      },
+      "bhyt-report": {
+        title: "Báo cáo quyết toán mổ BHYT",
+        subtitle: "Tổng hợp chi phí phẫu thuật gửi cơ quan BHYT."
+      },
+      "catalog-pttt": {
+        title: "Danh mục phẫu thuật – thủ thuật",
+        subtitle: "Quản lý danh mục PTTT theo BYT và danh mục riêng của bệnh viện."
+      },
+      "or-rooms": {
+        title: "Phòng mổ – kíp mổ",
+        subtitle: "Cấu hình phòng mổ, kíp mổ, vai trò và phân quyền."
+      },
+      "permissions": {
+        title: "Phân quyền người dùng",
+        subtitle: "Quy định ai được xem, sửa, duyệt các chức năng trong module PTTT."
+      },
+      "templates-sign": {
+        title: "Mẫu in – chữ ký số",
+        subtitle: "Cấu hình template in phiếu, biên bản và luồng ký số."
+      }
+    };
+
+    document.querySelectorAll(".submenu-link").forEach(function (link) {
+      link.addEventListener("click", function () {
+        // Active trạng thái
+        document.querySelectorAll(".submenu-link").forEach(function (l) {
+          l.classList.remove("active");
+        });
+        this.classList.add("active");
+
+        const page = this.getAttribute("data-page");
+        const info = pageInfo[page] || pageInfo["list-orders"];
+
+        document.getElementById("page-title").textContent = info.title;
+        document.getElementById("page-subtitle").textContent = info.subtitle;
+
+        // (Demo) thay nội dung card đầu cho phù hợp
+        const content = document.getElementById("page-content");
+        content.innerHTML = `
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <span class="icon">📂</span>
+                <span>${info.title}</span>
+              </div>
+            </div>
+            <p class="card-subtitle">
+              Đây là vùng nội dung demo cho chức năng: <strong>${info.title}</strong>.<br>
+              Khi triển khai thật, bạn thay vùng này bằng form, bảng dữ liệu hoặc component tương ứng trong HIS.
+            </p>
+            <p class="hint">
+              Gợi ý: gắn route của framework (Laravel/Filament, React, Vue, v.v.) vào các item menu để điều hướng.
+            </p>
+          </div>
+        `;
+      });
+    });
+  </script>
+</body>
+</html>

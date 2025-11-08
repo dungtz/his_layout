@@ -71,30 +71,31 @@
         input[type="time"],
         select,
         textarea {
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid var(--line);
-            border-radius: var(--radius-md);
-            background: #fff;
-            outline: none;
-            font-family: var(--font-family);
-            margin-bottom: 10px;
+        width: 100%;
+        padding: 2px 4px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+        outline: none;
+        font-family: var(--font-family);
+        border: none; border-bottom: 1px dashed #000; outline: none;
+        margin-bottom: 10px;
         }
 
         textarea {
-            min-height: 84px;
-            resize: vertical;
+        min-height: 84px;
+        resize: vertical;
+
         }
 
         .btn {
-            padding: 8px 12px;
-            border: 1px solid var(--line);
-            border-radius: var(--radius-md);
-            background: #fff;
-            cursor: pointer;
-            font-size: 13px;
-            transition: all 0.2s;
-            font-family: var(--font-family);
+        appearance: none;
+        border: 1px solid var(--line);
+        background: #fff;
+        padding: 10px 14px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-family: var(--font-family);
         }
 
 
@@ -350,7 +351,7 @@
 
         /* Modal Styles */
         .modal-overlay {
-            display: none;
+            display: flex;
             position: fixed;
             top: 0;
             left: 0;
@@ -493,7 +494,6 @@
         }
         
         .search {
-            flex: 1;
             display: flex;
             gap: 8px;
         }
@@ -615,8 +615,8 @@
         <div class="kanban-board">
             <!-- Column: Tìm bệnh nhân -->
             <div class="kanban-column">
-                <div class="bar" style="display: flex; gap: 8px; margin-bottom: 10px;">
-                    <select style="flex: 1; padding: 8px 12px; border: 1px solid var(--line); border-radius: 4px; background: #fff; font-family: var(--font-family);">
+                <div class="bar" style="display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap;">
+                    <select style="flex: 1; min-width: 120px; padding: 8px 12px; border: 1px solid var(--line); border-radius: var(--radius-md); background: #fff; font-family: var(--font-family);">
                         <option value="all">Tất cả phương tiện</option>
                         <option value="x-ray">X-Quang</option>
                         <option value="ct">CT Scanner</option>
@@ -630,7 +630,7 @@
                     <input type="text" style="flex: 1; padding: 10px 14px;" placeholder="Tìm BN / CCCD / Mã hồ sơ" aria-label="Tìm bệnh nhân" />
                     <button class="btn" style="white-space: nowrap;" onclick="showSearchResults()">Tìm kiếm</button>
                 </div>
-
+                
                 <div class="column-header">
                     <div class="column-title">Tìm bệnh nhân</div>
                     <div class="task-count">8</div>
@@ -961,15 +961,6 @@
                             <div><strong>Bác sĩ yêu cầu:</strong> BS. Trần Văn B</div>
                         </div>
                     </div>
-
-                    <!-- Image Preview Section -->
-                    <h3 style="margin-bottom: 12px;">Hình ảnh chẩn đoán</h3>
-                    <div class="image-preview">
-                        <div class="image-placeholder">
-                            Chưa có hình ảnh. Kết nối thiết bị chụp ảnh để tải lên.
-                        </div>
-                    </div>
-
                     <!-- Radiology Type Selection -->
                     <h3 style="margin-bottom: 12px;">Phương pháp chẩn đoán</h3>
                     <div class="radiology-type">
@@ -985,47 +976,62 @@
                         <label for="other">Khác</label>
                     </div>
 
-                    <!-- Diagnosis Form -->
-                    <h3 style="margin-bottom: 12px;">Thông tin chẩn đoán</h3>
-                    <div class="diagnosis-form">
-                        <div class="form-group">
-                            <label for="findings">Tìm thấy:</label>
-                            <textarea id="findings" placeholder="Nhập phát hiện hình ảnh..."></textarea>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="impression">Đánh giá:</label>
-                            <textarea id="impression" placeholder="Nhập đánh giá chẩn đoán..."></textarea>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="recommendations">Khuyến nghị:</label>
-                            <textarea id="recommendations" placeholder="Nhập khuyến nghị thêm..."></textarea>
-                        </div>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="diagnosing-doctor">Bác sĩ chẩn đoán:</label>
-                                <input type="text" id="diagnosing-doctor" placeholder="Tên bác sĩ">
+                    <!-- Two Column Layout -->
+                    <div style="display: flex; gap: 20px; align-items: flex-start;">
+                        <!-- Image Preview Section (Left Column) -->
+                        <div style="flex: 1; max-height: 500px; overflow: hidden;">
+                            <h3 style="margin-bottom: 12px;">Hình ảnh chẩn đoán</h3>
+                            <div class="image-preview" style="height: calc(100% - 40px);">
+                                <div class="image-placeholder">
+                                    Chưa có hình ảnh. Kết nối thiết bị chụp ảnh để tải lên.
+                                </div>
                             </div>
-                            
-                            <div class="form-group">
-                                <label for="diagnosis-date">Ngày chẩn đoán:</label>
-                                <input type="date" id="diagnosis-date">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="diagnosis-time">Thời gian:</label>
-                                <input type="time" id="diagnosis-time">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="status">Trạng thái:</label>
-                                <select id="status">
-                                    <option value="pending">Đang chẩn đoán</option>
-                                    <option value="review">Chờ kiểm duyệt</option>
-                                    <option value="completed">Hoàn thành</option>
-                                </select>
+                        </div>
+
+                        <!-- Diagnosis Form (Right Column) -->
+                        <div style="flex: 1; max-height: 500px; overflow: hidden;">
+                            <h3 style="margin-bottom: 12px;">Thông tin chẩn đoán</h3>
+                            <div class="diagnosis-form" style="display: flex; flex-direction: column; height: calc(100% - 40px);">
+                                <div class="form-group" style="flex: 1; margin-bottom: 10px;">
+                                    <label for="findings" style="display: block; margin-bottom: 5px;">Tìm thấy:</label>
+                                    <textarea id="findings" placeholder="Nhập phát hiện hình ảnh..." style="height: 80px;"></textarea>
+                                </div>
+                                
+                                <div class="form-group" style="flex: 1; margin-bottom: 10px;">
+                                    <label for="impression" style="display: block; margin-bottom: 5px;">Đánh giá:</label>
+                                    <textarea id="impression" placeholder="Nhập đánh giá chẩn đoán..." style="height: 80px;"></textarea>
+                                </div>
+                                
+                                <div class="form-group" style="flex: 1; margin-bottom: 10px;">
+                                    <label for="recommendations" style="display: block; margin-bottom: 5px;">Khuyến nghị:</label>
+                                    <textarea id="recommendations" placeholder="Nhập khuyến nghị thêm..." style="height: 80px;"></textarea>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="diagnosing-doctor">Bác sĩ chẩn đoán:</label>
+                                        <input type="text" id="diagnosing-doctor" placeholder="Tên bác sĩ">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="diagnosis-date">Ngày chẩn đoán:</label>
+                                        <input type="date" id="diagnosis-date">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="diagnosis-time">Thời gian:</label>
+                                        <input type="time" id="diagnosis-time">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="status">Trạng thái:</label>
+                                        <select id="status">
+                                            <option value="pending">Đang chẩn đoán</option>
+                                            <option value="review">Chờ kiểm duyệt</option>
+                                            <option value="completed">Hoàn thành</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1042,7 +1048,7 @@
     </div>
 
     <!-- Modal for Search Results -->
-    <div id="searchResultsModal" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); display: flex; justify-content: center; align-items: center;">
+    <div id="searchResultsModal" class="modal-overlay" style="display: none;">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="modal-title">Kết quả tìm kiếm</h2>
