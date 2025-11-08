@@ -743,57 +743,324 @@
                 </div>
             </div>
 
+            <!-- Sinh hiện -->
+            <div class="section">
+                <h2 class="section-title">Sinh hiệu</h2>
+                <div class="vital-signs-matrix">
+                    <!-- Controls -->
+                    <div class="matrix-controls" style="margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
+                        <button class="btn btn-primary btn-sm" style="white-space: nowrap;">Thêm chỉ số sinh hiệu</button>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <label for="timeInterval">Khoảng thời gian:</label>
+                            <select id="timeInterval" class="form-select form-select-sm">
+                                <option value="hour">Theo giờ</option>
+                                <option value="day">Theo ngày</option>
+                                <option value="week">Theo tuần</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Matrix Table -->
+                    <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+                        <table class="table table-bordered table-sm">
+                            <thead>
+                                <tr>
+                                    <th style="min-width: 150px; position: sticky; left: 0; background-color: #f8f9fa; z-index: 1; vertical-align: middle;">Chỉ số sinh hiệu</th>
+                                    <th style="min-width: 100px;">7:00</th>
+                                    <th style="min-width: 100px;">8:00</th>
+                                    <th style="min-width: 100px;">9:00</th>
+                                    <th style="min-width: 100px;">10:00</th>
+                                    <th style="min-width: 100px;">11:00</th>
+                                    <th style="min-width: 100px;">12:00</th>
+                                    <th style="min-width: 100px;">13:00</th>
+                                    <th style="min-width: 100px;">14:00</th>
+                                    <th style="min-width: 100px;">15:00</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Nhịp tim -->
+                                <tr>
+                                    <td style="position: sticky; left: 0; background-color: #fff; z-index: 1; font-weight: bold;">Nhịp tim (nhịp/phút)</td>
+                                    <td contenteditable="true">72</td>
+                                    <td contenteditable="true">74</td>
+                                    <td contenteditable="true">76</td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                </tr>
+                                <!-- Huyết áp -->
+                                <tr>
+                                    <td style="position: sticky; left: 0; background-color: #fff; z-index: 1; font-weight: bold;">Huyết áp (mmHg)</td>
+                                    <td contenteditable="true">120/80</td>
+                                    <td contenteditable="true">118/78</td>
+                                    <td contenteditable="true">122/82</td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                </tr>
+                                <!-- Nhịp thở -->
+                                <tr>
+                                    <td style="position: sticky; left: 0; background-color: #fff; z-index: 1; font-weight: bold;">Nhịp thở (lần/phút)</td>
+                                    <td contenteditable="true">16</td>
+                                    <td contenteditable="true">15</td>
+                                    <td contenteditable="true">17</td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                </tr>
+                                <!-- Nhiệt độ -->
+                                <tr>
+                                    <td style="position: sticky; left: 0; background-color: #fff; z-index: 1; font-weight: bold;">Nhiệt độ (°C)</td>
+                                    <td contenteditable="true">36.8</td>
+                                    <td contenteditable="true">36.9</td>
+                                    <td contenteditable="true">37.0</td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                </tr>
+                                <!-- Đường huyết -->
+                                <tr>
+                                    <td style="position: sticky; left: 0; background-color: #fff; z-index: 1; font-weight: bold;">Đường huyết (mmol/L)</td>
+                                    <td contenteditable="true">5.2</td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                </tr>
+                                <!-- SpO2 -->
+                                <tr>
+                                    <td style="position: sticky; left: 0; background-color: #fff; z-index: 1; font-weight: bold;">SpO2 (%)</td>
+                                    <td contenteditable="true">98</td>
+                                    <td contenteditable="true">98</td>
+                                    <td contenteditable="true">99</td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                </tr>
+                                <!-- Cân nặng -->
+                                <tr>
+                                    <td style="position: sticky; left: 0; background-color: #fff; z-index: 1; font-weight: bold;">Cân nặng (kg)</td>
+                                    <td contenteditable="true">65.5</td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
             <!-- Tình hình điều trị -->
             <div class="section">
                 <h2 class="section-title">Theo dõi điều trị</h2>
-                <table class="timeline-table">
-                    <thead>
-                        <tr>
-                            <th>Ngày giờ</th>
-                            <th>Hoạt động</th>
-                            <th>Thực hiện bởi</th>
-                            <th>Trạng thái</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>15/11/2023 10:30</td>
-                            <td>Nhập viện, khám đầu tiên</td>
-                            <td>BS. Nguyễn Văn Minh</td>
-                            <td>Hoàn thành</td>
-                        </tr>
-                        <tr>
-                            <td>15/11/2023 11:00</td>
-                            <td>Xét nghiệm máu</td>
-                            <td>YS. Trần Thị Hoa</td>
-                            <td>Hoàn thành</td>
-                        </tr>
-                        <tr>
-                            <td>15/11/2023 14:00</td>
-                            <td>Xquang ngực</td>
-                            <td>YS. Phạm Văn Sơn</td>
-                            <td>Hoàn thành</td>
-                        </tr>
-                        <tr>
-                            <td>15/11/2023 18:00</td>
-                            <td>Điều trị kháng sinh</td>
-                            <td>YT. Lê Thị Ngọc</td>
-                            <td>Hoàn thành</td>
-                        </tr>
-                        <tr>
-                            <td>16/11/2023 08:00</td>
-                            <td>Nhập hồ sơ sức khỏe</td>
-                            <td>YT. Nguyễn Thị Mai</td>
-                            <td>Hoàn thành</td>
-                        </tr>
-                        <tr>
-                            <td>16/11/2023 10:00</td>
-                            <td>Khám lại</td>
-                            <td>BS. Nguyễn Văn Minh</td>
-                            <td>Hoàn thành</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-sm">
+                        <thead>
+                            <tr>
+                                <th>Ngày giờ thực hiện</th>
+                                <th>Ngày y lệnh</th>
+                                <th>Số y lệnh</th>
+                                <th>Thời gian yêu cầu</th>
+                                <th>Hoạt động</th>
+                                <th>Thực hiện bởi</th>
+                                <th>Trạng thái</th>
+                                <th>Xem kết quả</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>15/11/2023 10:30</td>
+                                <td>15/11/2023</td>
+                                <td>YL20231115001</td>
+                                <td>15/11/2023 10:00</td>
+                                <td>Nhập viện, khám đầu tiên</td>
+                                <td>BS. Nguyễn Văn Minh</td>
+                                <td><span class="badge bg-success">Hoàn thành</span></td>
+                                <td><a href="#" class="text-primary">Xem chi tiết</a></td>
+                            </tr>
+                            <tr>
+                                <td>15/11/2023 11:00</td>
+                                <td>15/11/2023</td>
+                                <td>YL20231115002</td>
+                                <td>15/11/2023 10:45</td>
+                                <td>Xét nghiệm máu</td>
+                                <td>YS. Trần Thị Hoa</td>
+                                <td><span class="badge bg-success">Hoàn thành</span></td>
+                                <td><a href="#" class="text-primary">Xem kết quả xét nghiệm</a></td>
+                            </tr>
+                            <tr>
+                                <td>15/11/2023 14:00</td>
+                                <td>15/11/2023</td>
+                                <td>YL20231115003</td>
+                                <td>15/11/2023 10:45</td>
+                                <td>Xquang ngực</td>
+                                <td>YS. Phạm Văn Sơn</td>
+                                <td><span class="badge bg-success">Hoàn thành</span></td>
+                                <td><a href="#" class="text-primary">Xem ảnh Xquang</a></td>
+                            </tr>
+                            <tr>
+                                <td>15/11/2023 18:00</td>
+                                <td>15/11/2023</td>
+                                <td>YL20231115004</td>
+                                <td>15/11/2023 11:00</td>
+                                <td>Điều trị kháng sinh</td>
+                                <td>YT. Lê Thị Ngọc</td>
+                                <td><span class="badge bg-success">Hoàn thành</span></td>
+                                <td><a href="#" class="text-primary">Xem ghi chú</a></td>
+                            </tr>
+                            <tr>
+                                <td>16/11/2023 08:00</td>
+                                <td>16/11/2023</td>
+                                <td>YL20231116001</td>
+                                <td>16/11/2023 07:30</td>
+                                <td>Nhập hồ sơ sức khỏe</td>
+                                <td>YT. Nguyễn Thị Mai</td>
+                                <td><span class="badge bg-success">Hoàn thành</span></td>
+                                <td><a href="#" class="text-primary">Xem hồ sơ</a></td>
+                            </tr>
+                            <tr>
+                                <td>16/11/2023 10:00</td>
+                                <td>16/11/2023</td>
+                                <td>YL20231116002</td>
+                                <td>16/11/2023 09:30</td>
+                                <td>Khám lại</td>
+                                <td>BS. Nguyễn Văn Minh</td>
+                                <td><span class="badge bg-success">Hoàn thành</span></td>
+                                <td><a href="#" class="text-primary">Xem kết quả khám</a></td>
+                            </tr>
+                            <tr>
+                                <td>16/11/2023 14:00</td>
+                                <td>16/11/2023</td>
+                                <td>YL20231116003</td>
+                                <td>16/11/2023 10:15</td>
+                                <td>Siêu âm bụng</td>
+                                <td>YS. Đặng Văn Hùng</td>
+                                <td><span class="badge bg-warning text-dark">Đang thực hiện</span></td>
+                                <td><a href="#" class="text-gray-500" disabled>Chưa có kết quả</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Phòng giường -->
+            <div class="section">
+                <h2 class="section-title">Phòng giường</h2>
+                <div class="room-bed-section">
+                    <!-- Thông tin phòng giường hiện tại -->
+                    <div class="mb-4">
+                        <h4 class="mb-2">Thông tin phòng giường hiện tại</h4>
+                        <div class="detail-row" style="display: flex; gap: 20px; margin-bottom: 10px;">
+                            <div style="flex: 1;">
+                                <span style="font-weight: bold;">Phòng:</span> Phòng 101B
+                            </div>
+                            <div style="flex: 1;">
+                                <span style="font-weight: bold;">Giường:</span> Giường 03
+                            </div>
+                            <div style="flex: 1;">
+                                <span style="font-weight: bold;">Loại giường:</span> Thường
+                            </div>
+                            <div style="flex: 1;">
+                                <span style="font-weight: bold;">Thời gian nhập:</span> 2024-10-15 08:30
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Nút chức năng -->
+                    <div class="mb-4" style="display: flex; gap: 10px;">
+                        <button class="btn btn-primary btn-sm">Chuyển giường</button>
+                        <button class="btn btn-success btn-sm">Xuất viện</button>
+                        <button class="btn btn-info btn-sm">Lịch sử sử dụng</button>
+                    </div>
+                    
+                    <!-- Bảng liệt kê thông tin giường -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-sm">
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Mã giường</th>
+                                    <th>Tên phòng</th>
+                                    <th>Loại giường</th>
+                                    <th>Thời gian nhập</th>
+                                    <th>Thời gian xuất</th>
+                                    <th>Lý do chuyển</th>
+                                    <th>Nhân viên thực hiện</th>
+                                    <th>Ghi chú</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dòng hiện tại -->
+                                <tr style="background-color: #e6f7ff;">
+                                    <td>1</td>
+                                    <td>G101B03</td>
+                                    <td>Phòng 101B</td>
+                                    <td>Thường</td>
+                                    <td>2024-10-15 08:30</td>
+                                    <td><span class="text-primary">Còn ở</span></td>
+                                    <td>Nhập viện</td>
+                                    <td>BS. Nguyễn Văn A</td>
+                                    <td>-</td>
+                                </tr>
+                                <!-- Dữ liệu lịch sử -->
+                                <tr>
+                                    <td>2</td>
+                                    <td>GICU05</td>
+                                    <td>Phòng ICU</td>
+                                    <td>Cấp cứu</td>
+                                    <td>2024-10-10 14:20</td>
+                                    <td>2024-10-15 08:20</td>
+                                    <td>Chuyển xuống phòng thường</td>
+                                    <td>BS. Trần Thị B</td>
+                                    <td>Chuyển sau khi ổn định tình trạng</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>G203A01</td>
+                                    <td>Phòng 203A</td>
+                                    <td>Thường</td>
+                                    <td>2024-10-05 10:15</td>
+                                    <td>2024-10-10 14:10</td>
+                                    <td>Nhập viện cấp cứu</td>
+                                    <td>BS. Lý Văn C</td>
+                                    <td>Tình trạng xấu đi đột ngột</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hồ sơ, giấy phiếu -->
+            <div class="section">
+                <h2 class="section-title">Hồ sơ, giấy phiếu</h2>
+                <div>
+                </div>
             </div>
 
             <div class="footer-actions" style="margin: 12px;">
