@@ -18,7 +18,7 @@
             --warning: #f59e0b;
             --danger: #ef4444;
             --sidebar-width: 250px;
-            --right-sidebar-width: 250px;
+            --right-sidebar-width: 400px;
             --font-family: 'Times New Roman';
         }
 
@@ -285,7 +285,6 @@
             font-size: 18px;
             font-weight: 600;
             padding-bottom: 4px;
-            border-bottom: 1px solid var(--line);
         }
 
         /* Scrollable content */
@@ -488,6 +487,7 @@
         }
 
         .sidebar-section {
+            height: 50%;
             border-bottom: 1px solid var(--line);
         }
 
@@ -503,8 +503,8 @@
 
         .sidebar-section-content {
             padding: 12px;
-            max-height: 300px;
             overflow-y: auto;
+            max-height: 100%;
         }
 
         /* Thẻ yêu cầu */
@@ -567,6 +567,10 @@
         .status-discharged {
             background: #d1fae5;
             color: #065f46;
+        }
+
+        .section{
+            margin-bottom: 20px; border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; background-color: #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
 
@@ -745,13 +749,12 @@
 
             <!-- Sinh hiện -->
             <div class="section">
-                <h2 class="section-title">Sinh hiệu</h2>
-                <div class="vital-signs-matrix">
-                    <!-- Controls -->
-                    <div class="matrix-controls" style="margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
-                        <button class="btn btn-primary btn-sm" style="white-space: nowrap;">Thêm chỉ số sinh hiệu</button>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid var(--line);">
+                    <h2 class="section-title mb-0">Sinh hiệu</h2>
+                    <div style="display: flex; gap: 15px; align-items: center;">
+                        <button class="btn btn-primary btn-sm" style="white-space: nowrap;">Thêm sinh hiệu</button>
                         <div style="display: flex; gap: 10px; align-items: center;">
-                            <label for="timeInterval">Khoảng thời gian:</label>
+                            <label for="timeInterval" style="white-space: nowrap; margin: 0;">Khoảng thời gian:</label>
                             <select id="timeInterval" class="form-select form-select-sm">
                                 <option value="hour">Theo giờ</option>
                                 <option value="day">Theo ngày</option>
@@ -759,7 +762,8 @@
                             </select>
                         </div>
                     </div>
-                    
+                </div>
+                <div class="vital-signs-matrix">
                     <!-- Matrix Table -->
                     <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
                         <table class="table table-bordered table-sm">
@@ -778,6 +782,34 @@
                                 </tr>
                             </thead>
                             <tbody>
+                            <style>
+                                .table tbody tr:nth-child(even) {
+                                    background-color: #f8f9fa;
+                                }
+                                .table tbody tr:hover {
+                                    background-color: #e9ecef;
+                                }
+                                .badge {
+                                    padding: 5px 10px;
+                                    border-radius: 3px;
+                                    font-size: 12px;
+                                    font-weight: bold;
+                                }
+                                .badge-primary { background-color: #007bff; }
+                                .badge-success { background-color: #28a745; }
+                                .badge-warning { background-color: #ffc107; color: #212529; }
+                                .badge-danger { background-color: #dc3545; }
+                                .btn-group-sm .btn {
+                                    padding: 4px 8px;
+                                    font-size: 12px;
+                                    border-radius: 3px;
+                                    transition: all 0.2s;
+                                }
+                                .btn-group-sm .btn:hover {
+                                    transform: translateY(-1px);
+                                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                                }
+                            </style>
                                 <!-- Nhịp tim -->
                                 <tr>
                                     <td style="position: sticky; left: 0; background-color: #fff; z-index: 1; font-weight: bold;">Nhịp tim (nhịp/phút)</td>
@@ -877,91 +909,905 @@
 
             <!-- Tình hình điều trị -->
             <div class="section">
-                <h2 class="section-title">Theo dõi điều trị</h2>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid var(--line);">
+                    <h2 class="section-title">Theo dõi điều trị</h2>
+                </div>
                 <div class="table-responsive">
                     <table class="table table-bordered table-sm">
                         <thead>
-                            <tr>
-                                <th>Ngày giờ thực hiện</th>
-                                <th>Ngày y lệnh</th>
+                            <tr style="background-color: #3498db; color: white; font-weight: bold;">
                                 <th>Số y lệnh</th>
                                 <th>Thời gian yêu cầu</th>
+                                <th>Thời gian thực hiện</th>
                                 <th>Hoạt động</th>
                                 <th>Thực hiện bởi</th>
                                 <th>Trạng thái</th>
                                 <th>Xem kết quả</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>15/11/2023 10:30</td>
-                                <td>15/11/2023</td>
-                                <td>YL20231115001</td>
-                                <td>15/11/2023 10:00</td>
-                                <td>Nhập viện, khám đầu tiên</td>
-                                <td>BS. Nguyễn Văn Minh</td>
-                                <td><span class="badge bg-success">Hoàn thành</span></td>
-                                <td><a href="#" class="text-primary">Xem chi tiết</a></td>
+                        <tbody id="taskTableBody">
+                            <!-- 任务将通过JavaScript按优先级排序 -->
+                            <tr class="urgent-task" style="background-color: #ffebee; border-left: 4px solid #f44336;">
+                                <td>YL20231116004</td>
+                                <td>16/11/2023 09:00</td>
+                                <td></td>
+                                <td><b style="color: #d32f2f;">Tiêm thuốc</b></td>
+                                <td>BS. Phạm Minh Hải</td>
+                                <td><span class="badge bg-danger text-white">Quá hạn - CẦN XỬ LÝ NGAY</span></td>
+                                <td><a href="#" class="text-danger font-bold"></a></td>
                             </tr>
-                            <tr>
-                                <td>15/11/2023 11:00</td>
-                                <td>15/11/2023</td>
-                                <td>YL20231115002</td>
-                                <td>15/11/2023 10:45</td>
-                                <td>Xét nghiệm máu</td>
-                                <td>YS. Trần Thị Hoa</td>
-                                <td><span class="badge bg-success">Hoàn thành</span></td>
-                                <td><a href="#" class="text-primary">Xem kết quả xét nghiệm</a></td>
+                            <tr class="high-priority-task" style="background-color: #fff8e1; border-left: 4px solid #ff9800;">
+                                <td>YL20231116005</td>
+                                <td>16/11/2023 10:15</td>
+                                <td></td>
+                                <td><b style="color: #f57c00;">Xét nghiệm huyết thanh</b></td>
+                                <td>YS. Đặng Văn Hùng</td>
+                                <td><span class="badge bg-warning text-dark">Gần hạn - Chờ xử lý</span></td>
+                                <td><a href="#" class="text-warning font-bold"></a></td>
                             </tr>
-                            <tr>
-                                <td>15/11/2023 14:00</td>
-                                <td>15/11/2023</td>
-                                <td>YL20231115003</td>
-                                <td>15/11/2023 10:45</td>
-                                <td>Xquang ngực</td>
-                                <td>YS. Phạm Văn Sơn</td>
-                                <td><span class="badge bg-success">Hoàn thành</span></td>
-                                <td><a href="#" class="text-primary">Xem ảnh Xquang</a></td>
+                            <tr class="current-task">
+                                <td>YL20231116003</td>
+                                <td>16/11/2023 10:15</td>
+                                <td>16/11/2023 14:00</td>
+                                <td>Siêu âm bụng</td>
+                                <td>YS. Đặng Văn Hùng</td>
+                                <td><span class="badge bg-info text-white">Đang thực hiện</span></td>
+                                <td><a href="#" class="text-info"></a></td>
                             </tr>
-                            <tr>
-                                <td>15/11/2023 18:00</td>
-                                <td>15/11/2023</td>
-                                <td>YL20231115004</td>
-                                <td>15/11/2023 11:00</td>
-                                <td>Điều trị kháng sinh</td>
-                                <td>YT. Lê Thị Ngọc</td>
-                                <td><span class="badge bg-success">Hoàn thành</span></td>
-                                <td><a href="#" class="text-primary">Xem ghi chú</a></td>
-                            </tr>
-                            <tr>
-                                <td>16/11/2023 08:00</td>
-                                <td>16/11/2023</td>
-                                <td>YL20231116001</td>
-                                <td>16/11/2023 07:30</td>
-                                <td>Nhập hồ sơ sức khỏe</td>
-                                <td>YT. Nguyễn Thị Mai</td>
-                                <td><span class="badge bg-success">Hoàn thành</span></td>
-                                <td><a href="#" class="text-primary">Xem hồ sơ</a></td>
-                            </tr>
-                            <tr>
-                                <td>16/11/2023 10:00</td>
-                                <td>16/11/2023</td>
+                            <tr class="completed-task">
                                 <td>YL20231116002</td>
                                 <td>16/11/2023 09:30</td>
+                                <td>16/11/2023 10:00</td>
                                 <td>Khám lại</td>
                                 <td>BS. Nguyễn Văn Minh</td>
                                 <td><span class="badge bg-success">Hoàn thành</span></td>
-                                <td><a href="#" class="text-primary">Xem kết quả khám</a></td>
+                                <td><a href="#" class="text-success">Xem kết quả khám</a></td>
                             </tr>
+                            <tr class="completed-task">
+                                <td>YL20231116001</td>
+                                <td>16/11/2023 07:30</td>
+                                <td>16/11/2023 08:00</td>
+                                <td>Nhập hồ sơ sức khỏe</td>
+                                <td>YT. Nguyễn Thị Mai</td>
+                                <td><span class="badge bg-success">Hoàn thành</span></td>
+                                <td><a href="#" class="text-success">Xem hồ sơ</a></td>
+                            </tr>
+                            <tr class="completed-task">
+                                <td>YL20231115004</td>
+                                <td>15/11/2023 11:00</td>
+                                <td>15/11/2023 18:00</td>
+                                <td>Điều trị kháng sinh</td>
+                                <td>YT. Lê Thị Ngọc</td>
+                                <td><span class="badge bg-success">Hoàn thành</span></td>
+                                <td><a href="#" class="text-success">Xem ghi chú</a></td>
+                            </tr>
+                            <tr class="completed-task">
+                                <td>YL20231115003</td>
+                                <td>15/11/2023 10:45</td>
+                                <td>15/11/2023 14:00</td>
+                                <td>Xquang ngực</td>
+                                <td>YS. Phạm Văn Sơn</td>
+                                <td><span class="badge bg-success">Hoàn thành</span></td>
+                                <td><a href="#" class="text-success">Xem ảnh Xquang</a></td>
+                            </tr>
+                            <tr class="completed-task">
+                                <td>YL20231115002</td>
+                                <td>15/11/2023 10:45</td>
+                                <td>15/11/2023 11:00</td>
+                                <td>Xét nghiệm máu</td>
+                                <td>YS. Trần Thị Hoa</td>
+                                <td><span class="badge bg-success">Hoàn thành</span></td>
+                                <td><a href="#" class="text-success">Xem kết quả xét nghiệm</a></td>
+                            </tr>
+                            <tr class="completed-task">
+                                <td>YL20231115001</td>
+                                <td>15/11/2023 10:00</td>
+                                <td>15/11/2023 10:30</td>
+                                <td>Nhập viện, khám đầu tiên</td>
+                                <td>BS. Nguyễn Văn Minh</td>
+                                <td><span class="badge bg-success">Hoàn thành</span></td>
+                                <td><a href="#" class="text-success">Xem chi tiết</a></td>
+                            </tr>
+                        </tbody>
+                        <script>
+                        // 自动刷新排序和警告系统
+                        document.addEventListener('DOMContentLoaded', function() {
+                            // 这里可以添加动态排序的逻辑，如果数据是动态加载的
+                            console.log('Bảng任務已按優先順序排序：');
+                            console.log('- Quá hạn任務：顯示為紅色背景，需要立即處理');
+                            console.log('- Gần hạn任務：顯示為黃色背景，需要準備處理');
+                            console.log('- Đang thực hiện：顯示為藍色標籤，正在處理中');
+                            console.log('- Hoàn thành：顯示為綠色標籤，已完成的任務');
+                        });
+                        </script>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Y lệnh-->
+            <div class="section">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid var(--line);">
+                    <h2 class="section-title" style="color: #2c3e50; font-size: 18px;">Y lệnh bác sĩ</h2>
+                    <div class="button-group" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button id="createPrescriptionBtn" class="btn btn-primary" style="padding: 8px 16px; border-radius: 4px; transition: background-color 0.3s;">Tạo Y lệnh</button>
+                    </div>
+                </div>
+                
+                <!-- Modal tạo Y lệnh -->
+                <div id="prescriptionModal" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
+                    <div class="modal-dialog" style="margin: 2% auto; width: 95%; max-width: 95vw; background-color: #fff; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+                        <div class="modal-content" style="border-radius: 8px; overflow: hidden;">
+                            <!-- Modal Header -->
+                            <div class="modal-header" style="padding: 16px 20px; background-color: #f8f9fa; border-bottom: 1px solid #e9ecef; display: flex; justify-content: space-between; align-items: center;">
+                                <h4 class="modal-title" style="margin: 0; font-size: 18px; color: #333;">Tạo Y lệnh</h4>
+                                <button id="closePrescriptionModal" type="button" class="close" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #666;">&times;</button>
+                            </div>
+                            
+                            <!-- Modal Body -->
+                            <div class="modal-body" style="padding: 20px;">
+                                <!-- Thông tin cơ bản - 4 cột -->
+                                <div class="form-section" style="margin-bottom: 24px;">
+                                    <h2 style="margin-bottom: 16px; margin-top:0px; color: #495057; font-size: 16px; font-weight: 600;">Thông tin cơ bản</h5>
+                                    <div class="four-column-layout" style="display: grid; grid-template-columns: repeat(8, 1fr); gap: 16px;">
+                                        <div class="form-group">
+                                            <label for="prescriptionDate" style="display: block; margin-bottom: 4px; font-weight: 500; font-size: 14px;">Ngày điều trị:</label>
+                                            <input type="datetime-local" id="prescriptionDate" class="form-control" style="width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px;">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="prescriptionDate" style="display: block; margin-bottom: 4px; font-weight: 500; font-size: 14px;">Ngày khám:</label>
+                                            <input type="datetime-local" id="prescriptionDate" class="form-control" style="width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px;">
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="medicalHistoryNumber" style="display: block; margin-bottom: 4px; font-weight: 500; font-size: 14px;">Số hồ sơ:</label>
+                                            <input type="text" id="medicalHistoryNumber" class="form-control" readonly style="width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px; background-color: #f8f9fa;">
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="department" style="display: block; margin-bottom: 4px; font-weight: 500; font-size: 14px;">Chẩn đoán bệnh:</label>
+                                            <select id="department" class="form-control" style="width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px;">
+                                                <option value="">Chọn chẩn đoán bệnh</option>
+                                                <option value="internal">Viêm họng</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="diagnosisLevel" style="display: block; margin-bottom: 4px; font-weight: 500; font-size: 14px;">Chế độ áp:</label>
+                                            <select id="diagnosisLevel" class="form-control" style="width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px;">
+                                                <option value="">Chẩn đoán kèm theo</option>
+                                                <option value="level1">Cấp 1</option>
+                                                <option value="level2">Cấp 2</option>
+                                                <option value="level3">Cấp 3</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="diseaseStage" style="display: block; margin-bottom: 4px; font-weight: 500; font-size: 14px;">Chi tiết:</label><div style="position: relative;">
+                                                <input type="text" id="drugName" class="form-control" placeholder="Nhập tên thuốc/chỉ định" style="width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px;">
+                                                <div class="drug-suggestions" id="drugSuggestions" style="position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #ced4da; border-top: none; border-radius: 0 0 4px 4px; max-height: 200px; overflow-y: auto; z-index: 100; display: none;">
+                                                    <!-- Gợi ý thuốc sẽ được hiển thị ở đây -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        
+                                        <div class="form-group">
+                                            <label for="prescribingDoctor" style="display: block; margin-bottom: 4px; font-weight: 500; font-size: 14px;">Bác sĩ điều trị:</label>
+                                            <select id="prescribingDoctor" class="form-control" style="width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px;">
+                                                <option value="">Chọn bác sĩ</option>
+                                                <option value="phamvanminh" selected>PHẠM VĂN MINH</option>
+                                                <option value="other">Khác...</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="specialistDoctor" style="display: block; margin-bottom: 4px; font-weight: 500; font-size: 14px;">Bác sĩ trực:</label>
+                                            <select id="specialistDoctor" class="form-control" style="width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px;">
+                                                <option value="">Chọn bác sĩ chuyên khoa</option>
+                                                <option value="phamminh" selected>PHẠM MINH</option>
+                                                <option value="other">Khác...</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Chỉ định bệnh lý - 4 cột -->
+                                <div class="form-section" style="margin-bottom: 24px;">
+                                    <h5 style="margin-bottom: 16px; color: #495057; font-size: 16px; font-weight: 600;">Chỉ định bệnh lý</h5>
+                                    <div class="four-column-layout" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
+                                        <div class="form-group" style="grid-column: span 2;">
+                                            <label for="prescriptionDetails" style="display: block; margin-bottom: 4px; font-weight: 500; font-size: 14px;">Diễn biến bệnh:</label>
+                                            <textarea id="prescriptionDetails" class="form-control" rows="3" style="width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px;"></textarea>
+                                        </div>
+                                        
+                                        <div class="form-group" style="grid-column: span 2;">
+                                            <label for="additionalInfo" style="display: block; margin-bottom: 4px; font-weight: 500; font-size: 14px;">Tóm tắt y lệnh:</label>
+                                            <textarea id="additionalInfo" class="form-control" rows="3" style="width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px;"></textarea>
+                                        </div>
+                                        
+                                        <div class="form-group" style="grid-column: span 2;">
+                                            <label for="notes" style="display: block; margin-bottom: 4px; font-weight: 500; font-size: 14px;">Gia đoạn bệnh:</label>
+                                            <textarea id="notes" class="form-control" rows="2" style="width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px;"></textarea>
+                                        </div>
+
+                                        <div class="form-group" style="grid-column: span 2;">
+                                            <label for="notes" style="display: block; margin-bottom: 4px; font-weight: 500; font-size: 14px;">Ghi chú:</label>
+                                            <textarea id="notes" class="form-control" rows="2" style="width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px;"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Chỉ định cận lâm sàng -->
+                                <div class="form-section" style="margin-bottom: 24px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                                        <h5 style="color: #495057; font-size: 16px; font-weight: 600; margin: 0;">Chỉ định cận lâm sàng</h5>
+                                        <button id="addClinicalExamBtn" type="button" class="btn btn-sm btn-success" style="padding: 6px 12px; border-radius: 4px; background-color: #28a745; color: white; border: none; cursor: pointer; transition: background-color 0.3s;">
+                                            + Thêm chỉ định
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="table-responsive" style="border: 1px solid #dee2e6; border-radius: 4px; overflow: hidden;">
+                                        <table class="table table-striped" style="margin-bottom: 0; width: 100%; border-collapse: collapse;">
+                                            <thead style="background-color: #f8f9fa;">
+                                                <tr>
+                                                    <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left; font-weight: 600; width: 5%;">STT</th>
+                                                    <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left; font-weight: 600; width: 30%;">Tên chỉ định</th>
+                                                    <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left; font-weight: 600; width: 25%;">Mục đích</th>
+                                                    <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left; font-weight: 600; width: 25%;">Lưu ý</th>
+                                                    <th style="padding: 12px; border: 1px solid #dee2e6; text-align: center; font-weight: 600; width: 15%;">Hành động</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="clinicalExamsTable">
+                                                <!-- Dòng mẫu -->
+                                                <tr>
+                                                    <td style="padding: 12px; border: 1px solid #dee2e6;">1</td>
+                                                    <td style="padding: 12px; border: 1px solid #dee2e6;">
+                                                        <select class="form-control" style="width: 100%; padding: 6px 8px; border: 1px solid #ced4da; border-radius: 4px;">
+                                                            <option value="blood_test">Xét nghiệm máu</option>
+                                                            <option value="urine_test">Xét nghiệm nước tiểu</option>
+                                                            <option value="xray">Chụp X-quang</option>
+                                                            <option value="ultrasound">Siêu âm</option>
+                                                        </select>
+                                                    </td>
+                                                    <td style="padding: 12px; border: 1px solid #dee2e6;">
+                                                        <input type="text" class="form-control" placeholder="Nhập mục đích" style="width: 100%; padding: 6px 8px; border: 1px solid #ced4da; border-radius: 4px;">
+                                                    </td>
+                                                    <td style="padding: 12px; border: 1px solid #dee2e6;">
+                                                        <input type="text" class="form-control" placeholder="Nhập lưu ý" style="width: 100%; padding: 6px 8px; border: 1px solid #ced4da; border-radius: 4px;">
+                                                    </td>
+                                                    <td style="padding: 12px; border: 1px solid #dee2e6; text-align: center;">
+                                                        <button type="button" class="btn btn-sm btn-danger" style="padding: 4px 8px; border-radius: 4px; background-color: #dc3545; color: white; border: none; cursor: pointer; transition: background-color 0.3s;">
+                                                            Xóa
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                                <!-- Kê thuốc -->
+                                <div class="form-section" style="margin-bottom: 24px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                                        <h5 style="color: #495057; font-size: 16px; font-weight: 600; margin: 0;">Kê thuốc</h5>
+                                        <button id="addMedicineBtn" type="button" class="btn btn-sm btn-success" style="padding: 6px 12px; border-radius: 4px; background-color: #28a745; color: white; border: none; cursor: pointer; transition: background-color 0.3s;">
+                                            + Thêm thuốc
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="table-responsive" style="border: 1px solid #dee2e6; border-radius: 4px; overflow: hidden;">
+                                        <table class="table table-striped" style="margin-bottom: 0; width: 100%; border-collapse: collapse;">
+                                            <thead style="background-color: #f8f9fa;">
+                                                <tr>
+                                                    <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left; font-weight: 600; width: 5%;">STT</th>
+                                                    <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left; font-weight: 600; width: 25%;">Tên thuốc</th>
+                                                    <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left; font-weight: 600; width: 10%;">Đơn vị</th>
+                                                    <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left; font-weight: 600; width: 10%;">Số lượng</th>
+                                                    <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left; font-weight: 600; width: 20%;">Cách dùng</th>
+                                                    <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left; font-weight: 600; width: 15%;">Liều dùng</th>
+                                                    <th style="padding: 12px; border: 1px solid #dee2e6; text-align: center; font-weight: 600; width: 15%;">Hành động</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="medicinesTable">
+                                                <!-- Dòng mẫu -->
+                                                <tr>
+                                                    <td style="padding: 12px; border: 1px solid #dee2e6;">1</td>
+                                                    <td style="padding: 12px; border: 1px solid #dee2e6;">
+                                                        <div style="position: relative;">
+                                                            <input type="text" class="form-control" placeholder="Nhập tên thuốc" style="width: 100%; padding: 6px 8px; border: 1px solid #ced4da; border-radius: 4px;">
+                                                        </div>
+                                                    </td>
+                                                    <td style="padding: 12px; border: 1px solid #dee2e6;">
+                                                        <select class="form-control" style="width: 100%; padding: 6px 8px; border: 1px solid #ced4da; border-radius: 4px;">
+                                                            <option value="vien">Viên</option>
+                                                            <option value="ml">ml</option>
+                                                            <option value="g">g</option>
+                                                            <option value="mg">mg</option>
+                                                        </select>
+                                                    </td>
+                                                    <td style="padding: 12px; border: 1px solid #dee2e6;">
+                                                        <input type="number" class="form-control" min="1" style="width: 100%; padding: 6px 8px; border: 1px solid #ced4da; border-radius: 4px;">
+                                                    </td>
+                                                    <td style="padding: 12px; border: 1px solid #dee2e6;">
+                                                        <input type="text" class="form-control" placeholder="Nhập cách dùng" style="width: 100%; padding: 6px 8px; border: 1px solid #ced4da; border-radius: 4px;">
+                                                    </td>
+                                                    <td style="padding: 12px; border: 1px solid #dee2e6;">
+                                                        <input type="text" class="form-control" placeholder="Nhập liều dùng" style="width: 100%; padding: 6px 8px; border: 1px solid #ced4da; border-radius: 4px;">
+                                                    </td>
+                                                    <td style="padding: 12px; border: 1px solid #dee2e6; text-align: center;">
+                                                        <button type="button" class="btn btn-sm btn-danger" style="padding: 4px 8px; border-radius: 4px; background-color: #dc3545; color: white; border: none; cursor: pointer; transition: background-color 0.3s;">
+                                                            Xóa
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                                <!-- Kê máu -->
+                                <div class="form-section">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                                        <h5 style="color: #495057; font-size: 16px; font-weight: 600; margin: 0;">Kê máu</h5>
+                                        <button id="addBloodProductBtn" type="button" class="btn btn-sm btn-success" style="padding: 6px 12px; border-radius: 4px; background-color: #28a745; color: white; border: none; cursor: pointer; transition: background-color 0.3s;">
+                                            + Thêm sản phẩm máu
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="table-responsive" style="border: 1px solid #dee2e6; border-radius: 4px; overflow: hidden;">
+                                        <table class="table table-striped" style="margin-bottom: 0; width: 100%; border-collapse: collapse;">
+                                            <thead style="background-color: #f8f9fa;">
+                                                <tr>
+                                                    <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left; font-weight: 600; width: 5%;">STT</th>
+                                                    <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left; font-weight: 600; width: 25%;">Loại máu</th>
+                                                    <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left; font-weight: 600; width: 10%;">Nhóm máu</th>
+                                                    <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left; font-weight: 600; width: 10%;">Rh</th>
+                                                    <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left; font-weight: 600; width: 10%;">Số đơn vị</th>
+                                                    <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left; font-weight: 600; width: 20%;">Lý do sử dụng</th>
+                                                    <th style="padding: 12px; border: 1px solid #dee2e6; text-align: center; font-weight: 600; width: 15%;">Hành động</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="bloodProductsTable">
+                                                <!-- Dòng mẫu -->
+                                                <tr>
+                                                    <td style="padding: 12px; border: 1px solid #dee2e6;">1</td>
+                                                    <td style="padding: 12px; border: 1px solid #dee2e6;">
+                                                        <select class="form-control" style="width: 100%; padding: 6px 8px; border: 1px solid #ced4da; border-radius: 4px;">
+                                                            <option value="whole_blood">Máu nguyên</option>
+                                                            <option value="red_cells">Hồng cầu</option>
+                                                            <option value="platelets">Tiểu cầu</option>
+                                                            <option value="plasma">Huyết tương</option>
+                                                        </select>
+                                                    </td>
+                                                    <td style="padding: 12px; border: 1px solid #dee2e6;">
+                                                        <select class="form-control" style="width: 100%; padding: 6px 8px; border: 1px solid #ced4da; border-radius: 4px;">
+                                                            <option value="a">A</option>
+                                                            <option value="b">B</option>
+                                                            <option value="ab">AB</option>
+                                                            <option value="o">O</option>
+                                                        </select>
+                                                    </td>
+                                                    <td style="padding: 12px; border: 1px solid #dee2e6;">
+                                                        <select class="form-control" style="width: 100%; padding: 6px 8px; border: 1px solid #ced4da; border-radius: 4px;">
+                                                            <option value="positive">Dương (+)</option>
+                                                            <option value="negative">Âm (-)</option>
+                                                        </select>
+                                                    </td>
+                                                    <td style="padding: 12px; border: 1px solid #dee2e6;">
+                                                        <input type="number" class="form-control" min="1" style="width: 100%; padding: 6px 8px; border: 1px solid #ced4da; border-radius: 4px;">
+                                                    </td>
+                                                    <td style="padding: 12px; border: 1px solid #dee2e6;">
+                                                        <input type="text" class="form-control" placeholder="Nhập lý do" style="width: 100%; padding: 6px 8px; border: 1px solid #ced4da; border-radius: 4px;">
+                                                    </td>
+                                                    <td style="padding: 12px; border: 1px solid #dee2e6; text-align: center;">
+                                                        <button type="button" class="btn btn-sm btn-danger" style="padding: 4px 8px; border-radius: 4px; background-color: #dc3545; color: white; border: none; cursor: pointer; transition: background-color 0.3s;">
+                                                            Xóa
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Modal Footer -->
+                            <div class="modal-footer" style="padding: 16px 20px; background-color: #f8f9fa; border-top: 1px solid #e9ecef; display: flex; justify-content: flex-end; gap: 10px;">
+                                <button id="cancelPrescriptionBtn" type="button" class="btn btn-secondary" style="padding: 8px 16px; border-radius: 4px; background-color: #6c757d; color: white; border: none; cursor: pointer; transition: background-color 0.3s;">Huỷ</button>
+                                <button id="savePrescriptionBtn" type="button" class="btn btn-primary" style="padding: 8px 16px; border-radius: 4px; background-color: #007bff; color: white; border: none; cursor: pointer; transition: background-color 0.3s;">Lưu Y lệnh</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <script>
+                    // Thêm sự kiện cho nút mở modal
+                    document.getElementById('createPrescriptionBtn')?.addEventListener('click', function() {
+                        document.getElementById('prescriptionModal').style.display = 'block';
+                        // Đặt ngày giờ hiện tại cho trường ngày điều trị
+                        const now = new Date();
+                        const formattedDate = now.toISOString().slice(0, 16);
+                        document.getElementById('prescriptionDate').value = formattedDate;
+                    });
+                    
+                    // Thêm sự kiện cho nút đóng modal
+                    document.getElementById('closePrescriptionModal')?.addEventListener('click', function() {
+                        document.getElementById('prescriptionModal').style.display = 'none';
+                    });
+                    
+                    document.getElementById('cancelPrescriptionBtn')?.addEventListener('click', function() {
+                        document.getElementById('prescriptionModal').style.display = 'none';
+                    });
+                    
+                    // Đóng modal khi nhấp ra ngoài
+                    window.addEventListener('click', function(event) {
+                        const modal = document.getElementById('prescriptionModal');
+                        if (event.target === modal) {
+                            modal.style.display = 'none';
+                        }
+                    });
+                    
+                    // Thêm sự kiện cho ô tìm kiếm thuốc
+                    document.getElementById('drugName')?.addEventListener('input', function() {
+                        const suggestions = document.getElementById('drugSuggestions');
+                        // Hiển thị gợi ý (thực tế sẽ lấy từ API)
+                        if (this.value.length > 1) {
+                            suggestions.innerHTML = '<div style="padding: 8px 12px; cursor: pointer; hover: background-color: #f8f9fa;">Thuốc A</div>';
+                            suggestions.style.display = 'block';
+                        } else {
+                            suggestions.style.display = 'none';
+                        }
+                    });
+                    
+                    // Thêm sự kiện cho nút Lưu
+                    document.getElementById('savePrescriptionBtn')?.addEventListener('click', function() {
+                        // Kiểm tra trường bắt buộc
+                        const drugName = document.getElementById('drugName').value;
+                        if (!drugName) {
+                            alert('Vui lòng nhập chỉ định bệnh lý');
+                            return;
+                        }
+                        
+                        // Lưu thông tin (thực tế sẽ gửi tới API)
+                        alert('Y lệnh đã được lưu thành công');
+                        document.getElementById('prescriptionModal').style.display = 'none';
+                    });
+                    
+                    // Thêm chỉ định cận lâm sàng
+                    document.getElementById('addClinicalExamBtn')?.addEventListener('click', function() {
+                        const tableBody = document.getElementById('clinicalExamsTable');
+                        const rowCount = tableBody.rows.length;
+                        const newRow = tableBody.insertRow();
+                        
+                        newRow.innerHTML = `
+                            <td style="padding: 12px; border: 1px solid #dee2e6;">${rowCount + 1}</td>
+                            <td style="padding: 12px; border: 1px solid #dee2e6;">
+                                <select class="form-control" style="width: 100%; padding: 6px 8px; border: 1px solid #ced4da; border-radius: 4px;">
+                                    <option value="blood_test">Xét nghiệm máu</option>
+                                    <option value="urine_test">Xét nghiệm nước tiểu</option>
+                                    <option value="xray">Chụp X-quang</option>
+                                    <option value="ultrasound">Siêu âm</option>
+                                </select>
+                            </td>
+                            <td style="padding: 12px; border: 1px solid #dee2e6;">
+                                <input type="text" class="form-control" placeholder="Nhập mục đích" style="width: 100%; padding: 6px 8px; border: 1px solid #ced4da; border-radius: 4px;">
+                            </td>
+                            <td style="padding: 12px; border: 1px solid #dee2e6;">
+                                <input type="text" class="form-control" placeholder="Nhập lưu ý" style="width: 100%; padding: 6px 8px; border: 1px solid #ced4da; border-radius: 4px;">
+                            </td>
+                            <td style="padding: 12px; border: 1px solid #dee2e6; text-align: center;">
+                                <button type="button" class="btn btn-sm btn-danger delete-clinical-exam" style="padding: 4px 8px; border-radius: 4px; background-color: #dc3545; color: white; border: none; cursor: pointer; transition: background-color 0.3s;">
+                                    Xóa
+                                </button>
+                            </td>
+                        `;
+                        
+                        // Thêm sự kiện xóa cho nút mới
+                        newRow.querySelector('.delete-clinical-exam').addEventListener('click', function() {
+                            newRow.remove();
+                            // Cập nhật số thứ tự
+                            updateRowNumbers('clinicalExamsTable');
+                        });
+                    });
+                    
+                    // Thêm thuốc
+                    document.getElementById('addMedicineBtn')?.addEventListener('click', function() {
+                        const tableBody = document.getElementById('medicinesTable');
+                        const rowCount = tableBody.rows.length;
+                        const newRow = tableBody.insertRow();
+                        
+                        newRow.innerHTML = `
+                            <td style="padding: 12px; border: 1px solid #dee2e6;">${rowCount + 1}</td>
+                            <td style="padding: 12px; border: 1px solid #dee2e6;">
+                                <div style="position: relative;">
+                                    <input type="text" class="form-control" placeholder="Nhập tên thuốc" style="width: 100%; padding: 6px 8px; border: 1px solid #ced4da; border-radius: 4px;">
+                                </div>
+                            </td>
+                            <td style="padding: 12px; border: 1px solid #dee2e6;">
+                                <select class="form-control" style="width: 100%; padding: 6px 8px; border: 1px solid #ced4da; border-radius: 4px;">
+                                    <option value="vien">Viên</option>
+                                    <option value="ml">ml</option>
+                                    <option value="g">g</option>
+                                    <option value="mg">mg</option>
+                                </select>
+                            </td>
+                            <td style="padding: 12px; border: 1px solid #dee2e6;">
+                                <input type="number" class="form-control" min="1" style="width: 100%; padding: 6px 8px; border: 1px solid #ced4da; border-radius: 4px;">
+                            </td>
+                            <td style="padding: 12px; border: 1px solid #dee2e6;">
+                                <input type="text" class="form-control" placeholder="Nhập cách dùng" style="width: 100%; padding: 6px 8px; border: 1px solid #ced4da; border-radius: 4px;">
+                            </td>
+                            <td style="padding: 12px; border: 1px solid #dee2e6;">
+                                <input type="text" class="form-control" placeholder="Nhập liều dùng" style="width: 100%; padding: 6px 8px; border: 1px solid #ced4da; border-radius: 4px;">
+                            </td>
+                            <td style="padding: 12px; border: 1px solid #dee2e6; text-align: center;">
+                                <button type="button" class="btn btn-sm btn-danger delete-medicine" style="padding: 4px 8px; border-radius: 4px; background-color: #dc3545; color: white; border: none; cursor: pointer; transition: background-color 0.3s;">
+                                    Xóa
+                                </button>
+                            </td>
+                        `;
+                        
+                        // Thêm sự kiện xóa cho nút mới
+                        newRow.querySelector('.delete-medicine').addEventListener('click', function() {
+                            newRow.remove();
+                            // Cập nhật số thứ tự
+                            updateRowNumbers('medicinesTable');
+                        });
+                    });
+                    
+                    // Thêm sản phẩm máu
+                    document.getElementById('addBloodProductBtn')?.addEventListener('click', function() {
+                        const tableBody = document.getElementById('bloodProductsTable');
+                        const rowCount = tableBody.rows.length;
+                        const newRow = tableBody.insertRow();
+                        
+                        newRow.innerHTML = `
+                            <td style="padding: 12px; border: 1px solid #dee2e6;">${rowCount + 1}</td>
+                            <td style="padding: 12px; border: 1px solid #dee2e6;">
+                                <select class="form-control" style="width: 100%; padding: 6px 8px; border: 1px solid #ced4da; border-radius: 4px;">
+                                    <option value="whole_blood">Máu nguyên</option>
+                                    <option value="red_cells">Hồng cầu</option>
+                                    <option value="platelets">Tiểu cầu</option>
+                                    <option value="plasma">Huyết tương</option>
+                                </select>
+                            </td>
+                            <td style="padding: 12px; border: 1px solid #dee2e6;">
+                                <select class="form-control" style="width: 100%; padding: 6px 8px; border: 1px solid #ced4da; border-radius: 4px;">
+                                    <option value="a">A</option>
+                                    <option value="b">B</option>
+                                    <option value="ab">AB</option>
+                                    <option value="o">O</option>
+                                </select>
+                            </td>
+                            <td style="padding: 12px; border: 1px solid #dee2e6;">
+                                <select class="form-control" style="width: 100%; padding: 6px 8px; border: 1px solid #ced4da; border-radius: 4px;">
+                                    <option value="positive">Dương (+)</option>
+                                    <option value="negative">Âm (-)</option>
+                                </select>
+                            </td>
+                            <td style="padding: 12px; border: 1px solid #dee2e6;">
+                                <input type="number" class="form-control" min="1" style="width: 100%; padding: 6px 8px; border: 1px solid #ced4da; border-radius: 4px;">
+                            </td>
+                            <td style="padding: 12px; border: 1px solid #dee2e6;">
+                                <input type="text" class="form-control" placeholder="Nhập lý do" style="width: 100%; padding: 6px 8px; border: 1px solid #ced4da; border-radius: 4px;">
+                            </td>
+                            <td style="padding: 12px; border: 1px solid #dee2e6; text-align: center;">
+                                <button type="button" class="btn btn-sm btn-danger delete-blood-product" style="padding: 4px 8px; border-radius: 4px; background-color: #dc3545; color: white; border: none; cursor: pointer; transition: background-color 0.3s;">
+                                    Xóa
+                                </button>
+                            </td>
+                        `;
+                        
+                        // Thêm sự kiện xóa cho nút mới
+                        newRow.querySelector('.delete-blood-product').addEventListener('click', function() {
+                            newRow.remove();
+                            // Cập nhật số thứ tự
+                            updateRowNumbers('bloodProductsTable');
+                        });
+                    });
+                    
+                    // Hàm cập nhật số thứ tự
+                    function updateRowNumbers(tableId) {
+                        const tableBody = document.getElementById(tableId);
+                        for (let i = 0; i < tableBody.rows.length; i++) {
+                            tableBody.rows[i].cells[0].textContent = i + 1;
+                        }
+                    }
+                    
+                    // Thêm sự kiện xóa cho các dòng mẫu ban đầu
+                    document.querySelectorAll('.delete-clinical-exam, .delete-medicine, .delete-blood-product').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            const row = this.closest('tr');
+                            row.remove();
+                            // Cập nhật số thứ tự
+                            const tableId = row.closest('tbody').id;
+                            updateRowNumbers(tableId);
+                        });
+                    });
+                </script>
+                
+                <!-- Script for modal functionality -->
+                <script>
+                    // Get modal elements
+                    const prescriptionModal = document.getElementById('prescriptionModal');
+                    const createPrescriptionBtn = document.getElementById('createPrescriptionBtn');
+                    const closePrescriptionModal = document.getElementById('closePrescriptionModal');
+                    const cancelPrescriptionBtn = document.getElementById('cancelPrescriptionBtn');
+                    const savePrescriptionBtn = document.getElementById('savePrescriptionBtn');
+                    const drugNameInput = document.getElementById('drugName');
+                    const drugSuggestions = document.getElementById('drugSuggestions');
+                    
+                    // Set current date for prescription date field
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const now = new Date();
+                        const formattedDate = now.toISOString().slice(0, 16);
+                        document.getElementById('prescriptionDate').value = formattedDate;
+                    });
+                    
+                    // Open modal when clicking the button
+                    createPrescriptionBtn.addEventListener('click', function() {
+                        prescriptionModal.style.display = 'block';
+                    });
+                    
+                    // Close modal functions
+                    function closeModal() {
+                        prescriptionModal.style.display = 'none';
+                    }
+                    
+                    closePrescriptionModal.addEventListener('click', closeModal);
+                    cancelPrescriptionBtn.addEventListener('click', closeModal);
+                    
+                    // Close modal when clicking outside of it
+                    window.addEventListener('click', function(event) {
+                        if (event.target === prescriptionModal) {
+                            closeModal();
+                        }
+                    });
+                    
+                    // Simulated drug search functionality
+                    drugNameInput.addEventListener('input', function() {
+                        const input = this.value.toLowerCase();
+                        if (input.length > 1) {
+                            // Simulate drug suggestions
+                            const suggestions = [
+                                { name: 'Acid valproic 200mg', code: '140.5' },
+                                { name: 'Amoxicillin 500mg', code: '250.1' },
+                                { name: 'Paracetamol 500mg', code: '300.2' },
+                                { name: 'Ibuprofen 400mg', code: '320.5' }
+                            ];
+                            
+                            // Filter suggestions based on input
+                            const filteredSuggestions = suggestions.filter(med => 
+                                med.name.toLowerCase().includes(input)
+                            );
+                            
+                            // Display suggestions
+                            drugSuggestions.innerHTML = '';
+                            if (filteredSuggestions.length > 0) {
+                                filteredSuggestions.forEach(med => {
+                                    const suggestionItem = document.createElement('div');
+                                    suggestionItem.style.padding = '8px 12px';
+                                    suggestionItem.style.cursor = 'pointer';
+                                    suggestionItem.style.borderBottom = '1px solid #f1f1f1';
+                                    suggestionItem.innerHTML = `
+                                        <div style="font-weight: 500;">${med.name}</div>
+                                        <div style="font-size: 12px; color: #666;">Mã: ${med.code}</div>
+                                    `;
+                                    
+                                    // Highlight on hover
+                                    suggestionItem.addEventListener('mouseover', function() {
+                                        this.style.backgroundColor = '#f8f9fa';
+                                    });
+                                    
+                                    suggestionItem.addEventListener('mouseout', function() {
+                                        this.style.backgroundColor = 'transparent';
+                                    });
+                                    
+                                    // Select suggestion
+                                    suggestionItem.addEventListener('click', function() {
+                                        drugNameInput.value = med.name;
+                                        // Update drug code display
+                                        const drugCodeElement = this.parentElement.previousElementSibling;
+                                        drugCodeElement.textContent = `Mã bệnh: ${med.code} - ${med.name}`;
+                                        drugSuggestions.style.display = 'none';
+                                    });
+                                    
+                                    drugSuggestions.appendChild(suggestionItem);
+                                });
+                                drugSuggestions.style.display = 'block';
+                            } else {
+                                drugSuggestions.innerHTML = '<div style="padding: 8px 12px; color: #666;">Không tìm thấy thuốc</div>';
+                                drugSuggestions.style.display = 'block';
+                            }
+                        } else {
+                            drugSuggestions.style.display = 'none';
+                        }
+                    });
+                    
+                    // Close suggestions when clicking elsewhere
+                    document.addEventListener('click', function(event) {
+                        if (!drugNameInput.contains(event.target) && !drugSuggestions.contains(event.target)) {
+                            drugSuggestions.style.display = 'none';
+                        }
+                    });
+                    
+                    // Save prescription functionality
+                    savePrescriptionBtn.addEventListener('click', function() {
+                        // Validate form (simplified example)
+                        const drugName = drugNameInput.value.trim();
+                        const diagnosisDetails = document.getElementById('prescriptionDetails').value.trim();
+                        
+                        if (!drugName) {
+                            alert('Vui lòng chọn thuốc/chỉ định');
+                            drugNameInput.focus();
+                            return;
+                        }
+                        
+                        if (!diagnosisDetails) {
+                            alert('Vui lòng nhập chỉ định mô tả chi tiết');
+                            document.getElementById('prescriptionDetails').focus();
+                            return;
+                        }
+                        
+                        // Here you would normally send data to server
+                        alert('Y lệnh đã được lưu thành công!');
+                        closeModal();
+                        
+                        // Reset form (optional)
+                        document.getElementById('prescriptionDetails').value = '';
+                        document.getElementById('additionalInfo').value = '';
+                        document.getElementById('notes').value = '';
+                    });
+                </script>
+                <div class="search-box" style="background-color: #f8f9fa; padding: 15px; border-radius: 6px; border: 1px solid #dee2e6;">
+                    <div style="display: flex; align-items: center; gap: 12px; width: 100%;">
+                        <div style="flex: 4; min-width: 0;">
+                            <input type="text" class="form-control w-100" placeholder="Tìm kiếm theo nội dung Y lệnh" style="border-radius: 4px; border: 1px solid #ced4da; padding: 8px 12px; margin: 0;">
+                        </div>
+                        <div style="flex: 3; min-width: 0;">
+                            <select class="form-control w-100" style="border-radius: 4px; border: 1px solid #ced4da; padding: 8px 12px; margin: 0;">
+                                <option value="">Tất cả loại Y lệnh</option>
+                                <option value="thuoc">Thuốc</option>
+                                <option value="xetnghiem">Xét nghiệm</option>
+                                <option value="sieuam">Siêu âm</option>
+                                <option value="ct">CT</option>
+                                <option value="mri">MRI</option>
+                                <option value="dichvu">Dịch vụ khác</option>
+                            </select>
+                        </div>
+                        <div style="flex: 3; min-width: 0;">
+                            <select class="form-control w-100" style="border-radius: 4px; border: 1px solid #ced4da; padding: 8px 12px; margin: 0;">
+                                <option value="">Tất cả trạng thái</option>
+                                <option value="moi">Mới</option>
+                                <option value="dangthucHien">Đang thực hiện</option>
+                                <option value="hoanthanh">Hoàn tất</option>
+                                <option value="huydoibacsi">Hủy bởi bác sĩ</option>
+                                <option value="huydoibenhnhan">Hủy bởi bệnh nhân</option>
+                            </select>
+                        </div>
+                        <div style="flex: 2; min-width: 0;">
+                            <button class="btn btn-primary btn-block" style="border-radius: 4px; padding: 8px 16px; transition: background-color 0.3s; margin: 0;">Tìm kiếm</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Lưới hiển thị Y lệnh -->
+                <div class="table-responsive" style="border-radius: 6px; overflow: hidden; border: 1px solid #dee2e6;">
+                    <table class="table table-bordered table-hover" style="margin-bottom: 0; font-size: 14px;">
+                        <thead>
                             <tr>
-                                <td>16/11/2023 14:00</td>
-                                <td>16/11/2023</td>
-                                <td>YL20231116003</td>
-                                <td>16/11/2023 10:15</td>
-                                <td>Siêu âm bụng</td>
-                                <td>YS. Đặng Văn Hùng</td>
-                                <td><span class="badge bg-warning text-dark">Đang thực hiện</span></td>
-                                <td><a href="#" class="text-gray-500" disabled>Chưa có kết quả</a></td>
+                                <th style="padding: 10px; text-align: center; border-right: 1px solid #2980b9; min-width: 60px;">STT</th>
+                                <th style="padding: 10px; text-align: center; border-right: 1px solid #2980b9; min-width: 120px;">Mã Y lệnh</th>
+                                <th style="padding: 10px; text-align: center; border-right: 1px solid #2980b9; min-width: 140px;">Ngày lập</th>
+                                <th style="padding: 10px; text-align: center; border-right: 1px solid #2980b9; min-width: 200px;">Nội dung</th>
+                                <th style="padding: 10px; text-align: center; border-right: 1px solid #2980b9; min-width: 120px;">Người lập</th>
+                                <th style="padding: 10px; text-align: center; border-right: 1px solid #2980b9; min-width: 100px;">Trạng thái</th>
+                                <th style="padding: 10px; text-align: center; border-right: 1px solid #2980b9; min-width: 150px;">Ghi chú</th>
+                                <th style="padding: 10px; text-align: center; min-width: 100px;">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Y lệnh thuốc -->
+                            <tr style="border-bottom: 1px solid #dee2e6;">
+                                <td style="padding: 10px; text-align: center; vertical-align: middle;">1</td>
+                                <td style="padding: 10px; vertical-align: middle; font-weight: 500;">YL20241115001</td>
+                                <td style="padding: 10px; vertical-align: middle;">2024-11-15 08:30</td>
+                                <td style="padding: 10px; vertical-align: middle;">
+                                    <div><strong>Paracetamol 500mg</strong></div>
+                                    <div style="font-size: 13px; color: #666;">Qúa đường uống, mỗi 6 giờ một lần</div>
+                                    <div style="font-size: 13px; color: #666;">Số lần: 4 lần/ngày</div>
+                                </td>
+                                <td style="padding: 10px; vertical-align: middle;">BS. Nguyễn Văn A</td>
+                                <td style="padding: 10px; vertical-align: middle; text-align: center;"><span class="badge badge-warning">Đang thực hiện</span></td>
+                                <td style="padding: 10px; vertical-align: middle;">Đã uống đúng giờ</td>
+                                <td style="padding: 10px; vertical-align: middle; text-align: center;">
+                                    <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-info">Xem</button>
+                                        <button class="btn btn-warning">Sửa</button>
+                                        <button class="btn btn-danger">Hủy</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <!-- Y lệnh xét nghiệm -->
+                            <tr style="border-bottom: 1px solid #dee2e6;">
+                                <td style="padding: 10px; text-align: center; vertical-align: middle;">2</td>
+                                <td style="padding: 10px; vertical-align: middle; font-weight: 500;">YL20241115002</td>
+                                <td style="padding: 10px; vertical-align: middle;">2024-11-15 09:15</td>
+                                <td style="padding: 10px; vertical-align: middle;">
+                                    <div><strong>Xét nghiệm máu thường</strong></div>
+                                    <div style="font-size: 13px; color: #666;">Xét nghiệm glucose</div>
+                                    <div style="font-size: 13px; color: #666;">Xét nghiệm chức năng gan</div>
+                                </td>
+                                <td style="padding: 10px; vertical-align: middle;">BS. Lê Văn C</td>
+                                <td style="padding: 10px; vertical-align: middle; text-align: center;"><span class="badge badge-success">Hoàn tất</span></td>
+                                <td style="padding: 10px; vertical-align: middle;">2024-11-15 10:00</td>
+                                <td style="padding: 10px; vertical-align: middle; text-align: center;">
+                                    <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-info">Xem</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <!-- Y lệnh siêu âm -->
+                            <tr style="border-bottom: 1px solid #dee2e6;">
+                                <td style="padding: 10px; text-align: center; vertical-align: middle;">3</td>
+                                <td style="padding: 10px; vertical-align: middle; font-weight: 500;">YL20241115003</td>
+                                <td style="padding: 10px; vertical-align: middle;">2024-11-15 11:30</td>
+                                <td style="padding: 10px; vertical-align: middle;">
+                                    <div><strong>Siêu âm bụng toàn thân</strong></div>
+                                    <div style="font-size: 13px; color: #666;">Chẩn đoán ổ bụng</div>
+                                </td>
+                                <td style="padding: 10px; vertical-align: middle;">BS. Nguyễn Văn A</td>
+                                <td style="padding: 10px; vertical-align: middle; text-align: center;"><span class="badge badge-primary">Mới</span></td>
+                                <td style="padding: 10px; vertical-align: middle;">Đặt lịch ngày 2024-11-16</td>
+                                <td style="padding: 10px; vertical-align: middle; text-align: center;">
+                                    <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-info">Xem</button>
+                                        <button class="btn btn-warning">Sửa</button>
+                                        <button class="btn btn-danger">Hủy</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <!-- Y lệnh CT -->
+                            <tr style="border-bottom: 1px solid #dee2e6;">
+                                <td style="padding: 10px; text-align: center; vertical-align: middle;">4</td>
+                                <td style="padding: 10px; vertical-align: middle; font-weight: 500;">YL20241114001</td>
+                                <td style="padding: 10px; vertical-align: middle;">2024-11-14 14:20</td>
+                                <td style="padding: 10px; vertical-align: middle;">
+                                    <div><strong>CT脑部增强</strong></div>
+                                    <div style="font-size: 13px; color: #666;">Chẩn đoán疑似肿瘤</div>
+                                </td>
+                                <td style="padding: 10px; vertical-align: middle;">BS. Trần Thị E</td>
+                                <td style="padding: 10px; vertical-align: middle; text-align: center;"><span class="badge badge-danger">Hủy bởi bác sĩ</span></td>
+                                <td style="padding: 10px; vertical-align: middle;">Thay đổi phương pháp chẩn đoán</td>
+                                <td style="padding: 10px; vertical-align: middle; text-align: center;">
+                                    <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-info">Xem</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <!-- Y lệnh dịch vụ khác -->
+                            <tr style="border-bottom: 1px solid #dee2e6;">
+                                <td style="padding: 10px; text-align: center; vertical-align: middle;">5</td>
+                                <td style="padding: 10px; vertical-align: middle; font-weight: 500;">YL20241113001</td>
+                                <td style="padding: 10px; vertical-align: middle;">2024-11-13 16:45</td>
+                                <td style="padding: 10px; vertical-align: middle;">
+                                    <div><strong>Xông hơi</strong></div>
+                                    <div style="font-size: 13px; color: #666;">Điều trị viêm phổi</div>
+                                    <div style="font-size: 13px; color: #666;">Thời gian: 15 phút/lần, 3 lần/ngày</div>
+                                </td>
+                                <td style="padding: 10px; vertical-align: middle;">BS. Hoàng Văn F</td>
+                                <td style="padding: 10px; vertical-align: middle; text-align: center;"><span class="badge badge-success">Hoàn tất</span></td>
+                                <td style="padding: 10px; vertical-align: middle;">Thành công, bệnh nhân phản hồi tích cực</td>
+                                <td style="padding: 10px; vertical-align: middle; text-align: center;">
+                                    <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-info">Xem</button>
+                                    </div>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -970,7 +1816,276 @@
 
             <!-- Phòng giường -->
             <div class="section">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid var(--line);">
                 <h2 class="section-title">Phòng giường</h2>
+
+                    <!-- Nút chức năng -->
+                    <div class="mb-0" style="display: flex; gap: 10px;">
+                        <button class="btn btn-primary btn-sm" id="openBedAssignmentModal">Kê giường</button>
+                        <button class="btn btn-primary btn-sm">Chuyển giường</button>
+                        <button class="btn btn-success btn-sm">Xuất viện</button>
+                    </div>
+                </div>
+                
+                <!-- Modal for bed assignment with visual interface -->
+                <div id="bedAssignmentModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; font-family: Arial, sans-serif;">
+                    <div class="modal-content" style="background-color: white; border-radius: 8px; width: 95%; max-width: 1200px; height: 90vh; max-height: 700px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); display: flex; flex-direction: column; overflow: hidden;">
+                        <!-- Modal Header -->
+                        <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid #e0e0e0; background-color: #f8f9fa;">
+                            <h3 style="margin: 0; font-size: 18px; color: #333; font-weight: 600;">KÊ GIƯỜNG CHO BỆNH NHÂN</h3>
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <div style="display: flex; gap: 5px; font-size: 14px;">
+                                    <span>Ngày bắt đầu:</span>
+                                    <input type="date" id="startDate" value="2023-09-17" style="padding: 4px 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px;">
+                                </div>
+                                <button id="closeBedModal" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #999; padding: 0; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">&times;</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Modal Body with Split Layout -->
+                        <div class="modal-body" style="display: flex; flex: 1; overflow: hidden;">
+                            <!-- Left Side: Room List -->
+                            <div class="room-list-container" style="width: 250px; border-right: 1px solid #e0e0e0; background-color: #f8f9fa; overflow-y: auto;">
+                                <div style="padding: 12px;">
+                                    <select id="departmentSelect" style="width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px;">
+                                        <option value="internal">Khoa Nội tổng hợp</option>
+                                        <option value="surgery">Khoa Phẫu thuật</option>
+                                        <option value="pediatrics">Khoa Nhi</option>
+                                    </select>
+                                    <div style="display: flex; gap: 5px; margin-bottom: 15px;">
+                                        <input type="checkbox" id="availableOnly" checked style="margin-top: 2px;">
+                                        <label for="availableOnly" style="font-size: 14px;">Giường trống</label>
+                                    </div>
+                                </div>
+                                
+                                <!-- Room List -->
+                                <div id="roomList" style="padding: 0 12px 12px;">
+                                    <div class="room-item" data-room="2B01" style="padding: 8px; margin-bottom: 4px; background-color: #fff; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; font-size: 14px;">
+                                        <div style="font-weight: 600;">2B01 Robot</div>
+                                        <div style="font-size: 12px; color: #666;">(0/1 giường, 0 rỗng)</div>
+                                    </div>
+                                    <div class="room-item" data-room="2B02" style="padding: 8px; margin-bottom: 4px; background-color: #fff; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; font-size: 14px;">
+                                        <div style="font-weight: 600;">2B02</div>
+                                        <div style="font-size: 12px; color: #666;">(9/9 giường, 0 rỗng)</div>
+                                    </div>
+                                    <div class="room-item selected" data-room="2B06" style="padding: 8px; margin-bottom: 4px; background-color: #e7f3ff; border: 1px solid #007bff; border-radius: 4px; cursor: pointer; font-size: 14px;">
+                                        <div style="font-weight: 600;">2B06 Đểm</div>
+                                        <div style="font-size: 12px; color: #007bff;">(2/5 giường, 3 rỗng)</div>
+                                    </div>
+                                    <div class="room-item" data-room="2B03" style="padding: 8px; margin-bottom: 4px; background-color: #fff; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; font-size: 14px;">
+                                        <div style="font-weight: 600;">2B03</div>
+                                        <div style="font-size: 12px; color: #666;">(14/14 giường, 0 rỗng)</div>
+                                    </div>
+                                    <div class="room-item" data-room="2B05" style="padding: 8px; margin-bottom: 4px; background-color: #fff; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; font-size: 14px;">
+                                        <div style="font-weight: 600;">2B05</div>
+                                        <div style="font-size: 12px; color: #666;">(7/7 giường, 0 rỗng)</div>
+                                    </div>
+                                    <div class="room-item" data-room="2BC1" style="padding: 8px; margin-bottom: 4px; background-color: #fff; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; font-size: 14px;">
+                                        <div style="font-weight: 600;">2BC1</div>
+                                        <div style="font-size: 12px; color: #666;">(8/8 giường, 0 rỗng)</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Right Side: Bed Status and Details -->
+                            <div class="bed-status-container" style="flex: 1; display: flex; flex-direction: column; overflow: hidden;">
+                                <!-- Room Info Header -->
+                                <div style="padding: 15px 20px; border-bottom: 1px solid #e0e0e0; background-color: #f8f9fa;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <div>
+                                            <h4 style="margin: 0; font-size: 16px; color: #333;">2B06 Đểm</h4>
+                                            <div style="font-size: 12px; color: #666; margin-top: 4px;">25 giường trong, 3 giường rỗng</div>
+                                        </div>
+                                        <div style="display: flex; gap: 10px; align-items: center;">
+                                            <div style="display: flex; align-items: center; gap: 5px; font-size: 14px;">
+                                                <span style="display: inline-block; width: 12px; height: 12px; background-color: #28a745; border-radius: 2px;"></span>
+                                                <span>Trống</span>
+                                            </div>
+                                            <div style="display: flex; align-items: center; gap: 5px; font-size: 14px;">
+                                                <span style="display: inline-block; width: 12px; height: 12px; background-color: #6c757d; border-radius: 2px;"></span>
+                                                <span>Đã sử dụng</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Bed Status Grid -->
+                                <div id="bedStatusGrid" style="flex: 1; padding: 15px; overflow-y: auto; background-color: #fafafa;">
+                                    <!-- Date Tabs -->
+                                    <div class="date-tabs" style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid #e0e0e0;">
+                                        <div class="date-tab active" data-date="2023-09-17" style="padding: 8px 15px; border-bottom: 2px solid #007bff; font-weight: 600; color: #007bff; cursor: pointer;">
+                                            Chủ nhật, 17/09/2023
+                                        </div>
+                                        <div class="date-tab" data-date="2023-09-18" style="padding: 8px 15px; border-bottom: 2px solid transparent; font-weight: 600; color: #666; cursor: pointer;">
+                                            Thứ 2, 18/09/2023
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Beds Grid -->
+                                    <div class="beds-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px;">
+                                        <!-- Bed 2B06-32 - Occupied -->
+                                        <div class="bed-card occupied" data-bed="32" style="background-color: #fff; border: 1px solid #ddd; border-radius: 6px; padding: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                                                <div style="font-weight: 600; color: #333;">2B06-32</div>
+                                                <span style="background-color: #6c757d; color: white; padding: 2px 6px; border-radius: 10px; font-size: 10px;">ĐÃ SỬ DỤNG</span>
+                                            </div>
+                                            <div style="background-color: #6c757d; color: white; padding: 8px; border-radius: 4px; margin-bottom: 8px;">
+                                                <div style="font-weight: 600; font-size: 14px;">TRA</div>
+                                                <div style="font-size: 11px; opacity: 0.9;">IT Sinh viên</div>
+                                            </div>
+                                            <div style="font-size: 12px; color: #666;">Ngày vào: 17/09/2023</div>
+                                        </div>
+                                        
+                                        <!-- Bed 2B06-33 - Available -->
+                                        <div class="bed-card available" data-bed="33" style="background-color: #fff; border: 1px solid #ddd; border-radius: 6px; padding: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); cursor: pointer;">
+                                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                                                <div style="font-weight: 600; color: #333;">2B06-33</div>
+                                                <span style="background-color: #28a745; color: white; padding: 2px 6px; border-radius: 10px; font-size: 10px;">TRỐNG</span>
+                                            </div>
+                                            <div style="background-color: #28a745; color: white; padding: 8px; border-radius: 4px; margin-bottom: 8px; text-align: center;">
+                                                <div style="font-weight: 600; font-size: 14px;">Trống</div>
+                                            </div>
+                                            <button class="assign-bed-btn" data-bed="33" style="width: 100%; padding: 6px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">+ Gán bệnh nhân</button>
+                                        </div>
+                                        
+                                        <!-- Bed 2B06-34 - Available -->
+                                        <div class="bed-card available" data-bed="34" style="background-color: #fff; border: 1px solid #ddd; border-radius: 6px; padding: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); cursor: pointer;">
+                                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                                                <div style="font-weight: 600; color: #333;">2B06-34</div>
+                                                <span style="background-color: #28a745; color: white; padding: 2px 6px; border-radius: 10px; font-size: 10px;">TRỐNG</span>
+                                            </div>
+                                            <div style="background-color: #28a745; color: white; padding: 8px; border-radius: 4px; margin-bottom: 8px; text-align: center;">
+                                                <div style="font-weight: 600; font-size: 14px;">Trống</div>
+                                            </div>
+                                            <button class="assign-bed-btn" data-bed="34" style="width: 100%; padding: 6px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">+ Gán bệnh nhân</button>
+                                        </div>
+                                        
+                                        <!-- Bed 2B06-35 - Occupied -->
+                                        <div class="bed-card occupied" data-bed="35" style="background-color: #fff; border: 1px solid #ddd; border-radius: 6px; padding: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                                                <div style="font-weight: 600; color: #333;">2B06-35</div>
+                                                <span style="background-color: #6c757d; color: white; padding: 2px 6px; border-radius: 10px; font-size: 10px;">ĐÃ SỬ DỤNG</span>
+                                            </div>
+                                            <div style="background-color: #6c757d; color: white; padding: 8px; border-radius: 4px; margin-bottom: 8px;">
+                                                <div style="font-weight: 600; font-size: 14px;">NGAN</div>
+                                                <div style="font-size: 11px; opacity: 0.9;">Bác sĩ</div>
+                                            </div>
+                                            <div style="font-size: 12px; color: #666;">Ngày vào: 17/09/2023</div>
+                                        </div>
+                                        
+                                        <!-- Bed 2B06-36 - Occupied -->
+                                        <div class="bed-card occupied" data-bed="36" style="background-color: #fff; border: 1px solid #ddd; border-radius: 6px; padding: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                                                <div style="font-weight: 600; color: #333;">2B06-36</div>
+                                                <span style="background-color: #6c757d; color: white; padding: 2px 6px; border-radius: 10px; font-size: 10px;">ĐÃ SỬ DỤNG</span>
+                                            </div>
+                                            <div style="background-color: #6c757d; color: white; padding: 8px; border-radius: 4px; margin-bottom: 8px;">
+                                                <div style="font-weight: 600; font-size: 14px;">QUYNH</div>
+                                                <div style="font-size: 11px; opacity: 0.9;">IT</div>
+                                            </div>
+                                            <div style="font-size: 12px; color: #666;">Ngày vào: 17/09/2023</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <script>
+                    // Modal functionality
+                    const bedModal = document.getElementById('bedAssignmentModal');
+                    const openBedModalBtn = document.getElementById('openBedAssignmentModal');
+                    const closeBedModalBtn = document.getElementById('closeBedModal');
+                    const roomItems = document.querySelectorAll('.room-item');
+                    const dateTabs = document.querySelectorAll('.date-tab');
+                    const assignBedBtns = document.querySelectorAll('.assign-bed-btn');
+                    
+                    // Open modal
+                    openBedModalBtn.addEventListener('click', function() {
+                        bedModal.style.display = 'flex';
+                    });
+                    
+                    // Close modal
+                    function closeModal() {
+                        bedModal.style.display = 'none';
+                    }
+                    
+                    closeBedModalBtn.addEventListener('click', closeModal);
+                    
+                    // Close when clicking outside
+                    window.addEventListener('click', function(event) {
+                        if (event.target === bedModal) {
+                            closeModal();
+                        }
+                    });
+                    
+                    // Room selection
+                    roomItems.forEach(item => {
+                        item.addEventListener('click', function() {
+                            // Remove selected class from all items
+                            roomItems.forEach(i => i.classList.remove('selected'));
+                            // Add selected class to clicked item
+                            this.classList.add('selected');
+                            
+                            // Here you would typically load beds for the selected room
+                            const roomId = this.getAttribute('data-room');
+                            console.log('Selected room:', roomId);
+                            // Simulate loading new room data
+                            // loadRoomBeds(roomId);
+                        });
+                    });
+                    
+                    // Date tab selection
+                    dateTabs.forEach(tab => {
+                        tab.addEventListener('click', function() {
+                            // Remove active class from all tabs
+                            dateTabs.forEach(t => t.classList.remove('active'));
+                            // Add active class to clicked tab
+                            this.classList.add('active');
+                            
+                            // Here you would typically load beds for the selected date
+                            const date = this.getAttribute('data-date');
+                            console.log('Selected date:', date);
+                            // Simulate loading new date data
+                            // loadBedsByDate(date);
+                        });
+                    });
+                    
+                    // Assign bed button click
+                    assignBedBtns.forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            const bedId = this.getAttribute('data-bed');
+                            const roomId = document.querySelector('.room-item.selected').getAttribute('data-room');
+                            
+                            // Here you would typically show a confirmation dialog
+                            // or proceed with assigning the bed
+                            if (confirm(`Bạn có chắc chắn muốn gán bệnh nhân vào giường ${roomId}-${bedId}?`)) {
+                                alert(`Đã gán bệnh nhân vào giường ${roomId}-${bedId}`);
+                                // In a real application, you would send an API request here
+                                // Then refresh the bed status
+                                closeModal();
+                            }
+                        });
+                    });
+                    
+                    // Available beds only checkbox
+                    document.getElementById('availableOnly').addEventListener('change', function() {
+                        const showOnlyAvailable = this.checked;
+                        console.log('Show only available beds:', showOnlyAvailable);
+                        // In a real application, you would filter the bed display
+                        // filterBeds(showOnlyAvailable);
+                    });
+                    
+                    // Department change
+                    document.getElementById('departmentSelect').addEventListener('change', function() {
+                        const department = this.value;
+                        console.log('Selected department:', department);
+                        // In a real application, you would load rooms for the selected department
+                        // loadDepartmentRooms(department);
+                    });
+                </script>
+                
                 <div class="room-bed-section">
                     <!-- Thông tin phòng giường hiện tại -->
                     <div class="mb-4">
@@ -991,12 +2106,6 @@
                         </div>
                     </div>
                     
-                    <!-- Nút chức năng -->
-                    <div class="mb-4" style="display: flex; gap: 10px;">
-                        <button class="btn btn-primary btn-sm">Chuyển giường</button>
-                        <button class="btn btn-success btn-sm">Xuất viện</button>
-                        <button class="btn btn-info btn-sm">Lịch sử sử dụng</button>
-                    </div>
                     
                     <!-- Bảng liệt kê thông tin giường -->
                     <div class="table-responsive">
@@ -1058,8 +2167,153 @@
 
             <!-- Hồ sơ, giấy phiếu -->
             <div class="section">
-                <h2 class="section-title">Hồ sơ, giấy phiếu</h2>
-                <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid var(--line);">
+                    <h2 class="section-title">Hồ sơ, giấy phiếu</h2>
+                    
+                    <!-- Nút chức năng -->
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button class="btn btn-primary btn-sm">Tạo hồ sơ mới</button>
+                        <button class="btn btn-success btn-sm">Xuất danh sách hồ sơ</button>
+                        <button class="btn btn-info btn-sm">Lọc theo trạng thái</button>
+                    </div>
+                </div>
+                
+                <!-- Bảng danh sách hồ sơ, giấy, phiếu y khoa -->
+                <div class="table-responsive">
+                    <table class="table table-bordered table-sm">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Loại hồ sơ/phiếu</th>
+                                <th>Tên hồ sơ/phiếu</th>
+                                <th>Mã hồ sơ/phiếu</th>
+                                <th>Ngày tạo</th>
+                                <th>Người tạo</th>
+                                <th>Trạng thái</th>
+                                <th>Ngày ký số</th>
+                                <th>Người ký số</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Hồ sơ bệnh án -->
+                            <tr>
+                                <td>1</td>
+                                <td>Hồ sơ bệnh án</td>
+                                <td>Bệnh án nội trú - Nguyễn Văn A</td>
+                                <td>BA20241115001</td>
+                                <td>2024-11-15</td>
+                                <td>BS. Nguyễn Văn Minh</td>
+                                <td><span class="badge bg-primary">Đã ký số</span></td>
+                                <td>2024-11-16 10:30</td>
+                                <td>BS. Nguyễn Văn Minh</td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="#" class="btn btn-info">Xem</a>
+                                        <a href="#" class="btn btn-warning">Sửa</a>
+                                        <a href="#" class="btn btn-secondary">In</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Phiếu nhập viện -->
+                            <tr>
+                                <td>2</td>
+                                <td>Phiếu nhập viện</td>
+                                <td>Phiếu nhập viện - Nguyễn Văn A</td>
+                                <td>NV20241115001</td>
+                                <td>2024-11-15</td>
+                                <td>YT. Lê Thị Ngọc</td>
+                                <td><span class="badge bg-primary">Đã ký số</span></td>
+                                <td>2024-11-15 09:45</td>
+                                <td>BS. Nguyễn Văn Minh</td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="#" class="btn btn-info">Xem</a>
+                                        <a href="#" class="btn btn-warning">Sửa</a>
+                                        <a href="#" class="btn btn-secondary">In</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Hồ sơ xét nghiệm -->
+                            <tr>
+                                <td>3</td>
+                                <td>Hồ sơ xét nghiệm</td>
+                                <td>Kết quả xét nghiệm máu - Nguyễn Văn A</td>
+                                <td>XN20241115002</td>
+                                <td>2024-11-15</td>
+                                <td>YS. Trần Thị Hoa</td>
+                                <td><span class="badge bg-success">Hoàn tất</span></td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="#" class="btn btn-info">Xem</a>
+                                        <a href="#" class="btn btn-warning">Sửa</a>
+                                        <a href="#" class="btn btn-success">Ký số</a>
+                                        <a href="#" class="btn btn-secondary">In</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Phiếu y lệnh -->
+                            <tr>
+                                <td>4</td>
+                                <td>Phiếu y lệnh</td>
+                                <td>Y lệnh điều trị kháng sinh - Nguyễn Văn A</td>
+                                <td>YL20241115004</td>
+                                <td>2024-11-15</td>
+                                <td>BS. Nguyễn Văn Minh</td>
+                                <td><span class="badge bg-primary">Đã ký số</span></td>
+                                <td>2024-11-15 11:00</td>
+                                <td>BS. Nguyễn Văn Minh</td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="#" class="btn btn-info">Xem</a>
+                                        <a href="#" class="btn btn-warning">Sửa</a>
+                                        <a href="#" class="btn btn-secondary">In</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Phiếu xuất viện dự kiến -->
+                            <tr>
+                                <td>5</td>
+                                <td>Phiếu xuất viện</td>
+                                <td>Phiếu xuất viện dự kiến - Nguyễn Văn A</td>
+                                <td>XV20241116001</td>
+                                <td>2024-11-16</td>
+                                <td>BS. Nguyễn Văn Minh</td>
+                                <td><span class="badge bg-warning text-dark">Nháp</span></td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="#" class="btn btn-info">Xem</a>
+                                        <a href="#" class="btn btn-warning">Sửa</a>
+                                        <a href="#" class="btn btn-danger">Xóa</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Hồ sơ khám lại -->
+                            <tr>
+                                <td>6</td>
+                                <td>Hồ sơ khám bệnh</td>
+                                <td>Hồ sơ khám lại - Nguyễn Văn A</td>
+                                <td>KL20241116002</td>
+                                <td>2024-11-16</td>
+                                <td>BS. Nguyễn Văn Minh</td>
+                                <td><span class="badge bg-success">Hoàn tất</span></td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="#" class="btn btn-info">Xem</a>
+                                        <a href="#" class="btn btn-warning">Sửa</a>
+                                        <a href="#" class="btn btn-success">Ký số</a>
+                                        <a href="#" class="btn btn-secondary">In</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
@@ -1072,129 +2326,6 @@
         </div>
 
 
-        <!-- Sidebar phải: Quản lý bệnh án -->
-        <div class="sidebar-right">
-            <!-- Lịch trình ngày hôm nay -->
-            <div class="sidebar-section">
-                <div class="sidebar-section-header">
-                    <span>Lịch trình hôm nay</span>
-                    <button class="btn primary" style="font-size: 11px; padding: 4px 8px;" onclick="openSchedulePopup()">Thêm</button>
-                </div>
-                <div class="sidebar-section-content">
-                    <div class="schedule-item">
-                        <div class="schedule-time">08:00</div>
-                        <div class="schedule-content">
-                            <div class="schedule-title">Nhập hồ sơ sức khỏe</div>
-                            <div class="schedule-description">Nhập nhiệt độ, huyết áp, nhịp tim, nhịp thở</div>
-                        </div>
-                    </div>
-                    <div class="schedule-item">
-                        <div class="schedule-time">10:00</div>
-                        <div class="schedule-content">
-                            <div class="schedule-title">Khám lại</div>
-                            <div class="schedule-description">Bác sĩ Nguyễn Văn Minh</div>
-                        </div>
-                    </div>
-                    <div class="schedule-item">
-                        <div class="schedule-time">14:00</div>
-                        <div class="schedule-content">
-                            <div class="schedule-title">Thử nghiệm máu</div>
-                            <div class="schedule-description">Xác định nồng độ thuốc kháng sinh</div>
-                        </div>
-                    </div>
-                    <div class="schedule-item">
-                        <div class="schedule-time">18:00</div>
-                        <div class="schedule-content">
-                            <div class="schedule-title">Điều trị kháng sinh</div>
-                            <div class="schedule-description">YT. Lê Thị Ngọc</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Yêu cầu kiểm tra, xét nghiệm -->
-            <div class="sidebar-section">
-                <div class="sidebar-section-header">
-                    <span>Yêu cầu</span>
-                    <button class="btn primary" style="font-size: 11px; padding: 4px 8px;" onclick="openRequestPopup()">Thêm</button>
-                </div>
-                <div class="sidebar-section-content">
-                    <div class="request-card">
-                        <div class="request-header">
-                            <div class="request-title">Xét nghiệm máu</div>
-                            <span class="request-status request-completed">Hoàn thành</span>
-                        </div>
-                        <div class="request-details">
-                            <p>Ngày tạo: 15/11/2023 11:00</p>
-                            <p>Yêu cầu bởi: BS. Nguyễn Văn Minh</p>
-                        </div>
-                    </div>
-                    <div class="request-card">
-                        <div class="request-header">
-                            <div class="request-title">Xquang ngực</div>
-                            <span class="request-status request-completed">Hoàn thành</span>
-                        </div>
-                        <div class="request-details">
-                            <p>Ngày tạo: 15/11/2023 14:00</p>
-                            <p>Yêu cầu bởi: BS. Nguyễn Văn Minh</p>
-                        </div>
-                    </div>
-                    <div class="request-card">
-                        <div class="request-header">
-                            <div class="request-title">Xét nghiệm phân tích máu</div>
-                            <span class="request-status request-pending">Chờ thực hiện</span>
-                        </div>
-                        <div class="request-details">
-                            <p>Ngày tạo: 16/11/2023 10:00</p>
-                            <p>Yêu cầu bởi: BS. Nguyễn Văn Minh</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Hồ sơ bệnh án số hóa -->
-            <div class="sidebar-section">
-                <div class="sidebar-section-header">
-                    <span>Hồ sơ bệnh án số hóa</span>
-                    <button class="btn primary" style="font-size: 11px; padding: 4px 8px;" onclick="openFileUploadPopup()">Tải lên</button>
-                </div>
-                <div class="sidebar-section-content">
-                    <div class="file-list">
-                        <!-- File mẫu 1 -->
-                        <div class="file-item">
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <div>
-                                    <div style="display: flex; align-items: center; gap: 6px;">
-                                        <div style="font-weight: 500; font-size: 13px;">Phiếu nhập viện.pdf</div>
-                                        <span class="badge" style="background-color: #4CAF50; color: white; padding: 2px 6px; font-size: 10px; border-radius: 10px; display: inline-block;">Đã ký</span>
-                                    </div>
-                                    <div style="font-size: 11px; color: var(--text-secondary);">15/11/2023 - 2.5MB</div>
-                                </div>
-                            </div>
-                            <button class="btn primary" style="font-size: 11px; padding: 4px 8px; margin-top: 8px; width: 100%;">Xem</button>
-                        </div>
-
-                        <!-- File mẫu 2 -->
-                        <div class="file-item">
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <div>
-                                    <div style="display: flex; align-items: center; gap: 6px;">
-                                        <div style="font-weight: 500; font-size: 13px;">Kết quả xquang.jpg</div>
-                                        <span class="badge" style="background-color: #4CAF50; color: white; padding: 2px 6px; font-size: 10px; border-radius: 10px; display: inline-block;">Đã ký</span>
-                                    </div>
-                                    <div style="font-size: 11px; color: var(--text-secondary);">15/11/2023 - 5.8MB</div>
-                                </div>
-                            </div>
-                            <button class="btn primary" style="font-size: 11px; padding: 4px 8px; margin-top: 8px; width: 100%;">Xem</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-actions">
-                <button class="btn secondary" style="flex: 1;">BHYT</button>
-                <button class="btn secondary" style="flex: 1;">Bệnh án điện tử</button>
-            </div>
-        </div>
     </div>
 
     <script>
