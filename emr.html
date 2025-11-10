@@ -2404,6 +2404,176 @@
                 </div>
             </div>
         </div>
+
+
+        <div class="sidebar-right" style="width: 300px; border-left: 1px solid #dee2e6; background-color: #f8f9fa; display: flex; flex-direction: column; height: 100%;">
+            <!-- 聊天标题 -->
+            <div style="padding: 16px; border-bottom: 1px solid #dee2e6; background-color: #e9ecef; font-weight: 600; color: #495057;">
+                Trao đổi nội bộ
+            </div>
+            
+            <!-- 聊天历史区域 -->
+            <div id="chatHistory" style="flex-grow: 1; padding: 15px; overflow-y: auto; background-color: #fff;">
+                <!-- 欢迎消息 -->
+                <div style="text-align: center; margin-bottom: 15px; color: #6c757d; font-style: italic;">
+                    Bắt đầu trao đổi về bệnh nhân này
+                </div>
+            </div>
+            
+            <!-- 输入区域 -->
+            <div style="padding: 15px; border-top: 1px solid #dee2e6; background-color: #f8f9fa;">
+                <textarea id="chatInput" rows="3" style="width: 100%; padding: 8px; border: 1px solid #ced4da; border-radius: 4px; margin-bottom: 10px; resize: none;" placeholder="Nhập nội dung trao đổi..."></textarea>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; gap: 10px;">
+                        <button type="button" onclick="uploadAttachment()" style="padding: 6px 12px; background-color: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                            <i class="fa fa-paperclip"></i> Tài liệu
+                        </button>
+                        <input type="file" id="attachmentInput" style="display: none;" />
+                    </div>
+                    <button type="button" onclick="sendChatMessage()" style="padding: 8px 16px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                        Gửi
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <script>
+        // 模拟当前用户信息
+        const currentUser = {
+            name: "Bác sĩ Bảo",
+            role: "Bác sĩ điều trị"
+        };
+        
+        // 模拟其他用户列表
+        const otherUsers = [
+            { name: "Bác sĩ Minh", role: "Chuyên gia nội tiết" },
+            { name: "Y tá Ngọc", role: "Y tá phòng 302" },
+            { name: "Bác sĩ Hồng", role: "Chuyên gia tim mạch" }
+        ];
+        
+        // 发送聊天消息
+        function sendChatMessage() {
+            const chatInput = document.getElementById('chatInput');
+            const chatHistory = document.getElementById('chatHistory');
+            const message = chatInput.value.trim();
+            
+            if (message) {
+                // 获取当前时间
+                const now = new Date();
+                const timeString = now.getHours().toString().padStart(2, '0') + ':' + 
+                                  now.getMinutes().toString().padStart(2, '0');
+                
+                // 创建消息元素
+                const messageElement = document.createElement('div');
+                messageElement.style.marginBottom = '15px';
+                
+                messageElement.innerHTML = `
+                    <div style="display: flex; justify-content: flex-end; margin-bottom: 3px;">
+                        <div style="font-size: 12px; color: #6c757d; font-weight: 500; margin-right: 8px;">${currentUser.name} (${currentUser.role})</div>
+                    </div>
+                    <div style="display: flex; justify-content: flex-end;">
+                        <div style="max-width: 70%; background-color: #007bff; color: white; padding: 10px; border-radius: 12px 12px 0 12px; position: relative;">
+                            <div style="word-wrap: break-word;">${message}</div>
+                            <div style="font-size: 10px; opacity: 0.7; text-align: right; margin-top: 5px;">${timeString}</div>
+                        </div>
+                    </div>
+                `;
+                
+                // 添加到聊天历史
+                chatHistory.appendChild(messageElement);
+                
+                // 滚动到底部
+                chatHistory.scrollTop = chatHistory.scrollHeight;
+                
+                // 清空输入框
+                chatInput.value = '';
+                
+                // 模拟回复
+                setTimeout(() => {
+                    // 随机选择一个回复者
+                    const randomUser = otherUsers[Math.floor(Math.random() * otherUsers.length)];
+                    const replyMessage = [
+                        "Tôi đã xem thông tin bệnh nhân, sẽ liên hệ sớm.",
+                        "Cần thêm xét nghiệm máu cho bệnh nhân này.",
+                        "Bệnh nhân cần được theo dõi cẩn thận trong 24 giờ tới.",
+                        "Đã sắp xếp lịch khám lại cho bệnh nhân vào ngày mai.",
+                        "Tôi đồng ý với phương pháp điều trị này."
+                    ];
+                    const randomReply = replyMessage[Math.floor(Math.random() * replyMessage.length)];
+                    
+                    const replyElement = document.createElement('div');
+                    replyElement.style.marginBottom = '15px';
+                    
+                    replyElement.innerHTML = `
+                        <div style="display: flex; justify-content: flex-start; margin-bottom: 3px;">
+                            <div style="font-size: 12px; color: #6c757d; font-weight: 500; margin-left: 8px;">${randomUser.name} (${randomUser.role})</div>
+                        </div>
+                        <div style="display: flex; justify-content: flex-start;">
+                            <div style="max-width: 70%; background-color: #e9ecef; color: #333; padding: 10px; border-radius: 12px 12px 12px 0; position: relative;">
+                                <div style="word-wrap: break-word;">${randomReply}</div>
+                                <div style="font-size: 10px; opacity: 0.7; text-align: right; margin-top: 5px;">${timeString}</div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    chatHistory.appendChild(replyElement);
+                    chatHistory.scrollTop = chatHistory.scrollHeight;
+                }, 1000);
+            }
+        }
+        
+        // 上传附件
+        function uploadAttachment() {
+            document.getElementById('attachmentInput').click();
+        }
+        
+        // 处理附件上传
+        document.getElementById('attachmentInput').addEventListener('change', function(e) {
+            if (e.target.files && e.target.files[0]) {
+                const file = e.target.files[0];
+                const chatHistory = document.getElementById('chatHistory');
+                
+                // 获取当前时间
+                const now = new Date();
+                const timeString = now.getHours().toString().padStart(2, '0') + ':' + 
+                                  now.getMinutes().toString().padStart(2, '0');
+                
+                // 创建附件消息元素
+                const attachmentElement = document.createElement('div');
+                attachmentElement.style.marginBottom = '15px';
+                
+                attachmentElement.innerHTML = `
+                    <div style="display: flex; justify-content: flex-end; margin-bottom: 3px;">
+                        <div style="font-size: 12px; color: #6c757d; font-weight: 500; margin-right: 8px;">${currentUser.name} (${currentUser.role})</div>
+                    </div>
+                    <div style="display: flex; justify-content: flex-end;">
+                        <div style="max-width: 70%; background-color: #007bff; color: white; padding: 10px; border-radius: 12px 12px 0 12px; position: relative;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <i class="fa fa-file"></i>
+                                <span>${file.name}</span>
+                            </div>
+                            <div style="font-size: 10px; opacity: 0.7; text-align: right; margin-top: 5px;">${timeString}</div>
+                        </div>
+                    </div>
+                `;
+                
+                // 添加到聊天历史
+                chatHistory.appendChild(attachmentElement);
+                chatHistory.scrollTop = chatHistory.scrollHeight;
+                
+                // 重置文件输入
+                e.target.value = '';
+            }
+        });
+        
+        // 支持按Enter发送消息
+        document.getElementById('chatInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendChatMessage();
+            }
+        });
+        </script>
     </div>
 
     <script>

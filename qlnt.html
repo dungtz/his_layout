@@ -1029,7 +1029,7 @@
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid var(--line);">
                     <h2 class="section-title" style="color: #2c3e50; font-size: 18px;">Y lệnh bác sĩ</h2>
                     <div class="button-group" style="display: flex; gap: 10px; flex-wrap: wrap;">
-                        <button id="createPrescriptionBtn" class="btn btn-primary" style="padding: 8px 16px; border-radius: 4px; transition: background-color 0.3s;">Tạo Y lệnh</button>
+                        <button id="createPrescriptionBtn" class="btn btn-primary" style="padding: 8px 16px; border-radius: 4px; transition: background-color 0.3s;">Thêm Y lệnh</button>
                     </div>
                 </div>
                 
@@ -1039,7 +1039,7 @@
                         <div class="modal-content" style="border-radius: 8px; overflow: hidden;">
                             <!-- Modal Header -->
                             <div class="modal-header" style="padding: 16px 20px; background-color: #f8f9fa; border-bottom: 1px solid #e9ecef; display: flex; justify-content: space-between; align-items: center;">
-                                <h4 class="modal-title" style="margin: 0; font-size: 18px; color: #333;">Tạo Y lệnh</h4>
+                                <h4 class="modal-title" style="margin: 0; font-size: 18px; color: #333;">Thêm Y lệnh</h4>
                                 <button id="closePrescriptionModal" type="button" class="close" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #666;">&times;</button>
                             </div>
                             
@@ -1310,6 +1310,77 @@
                                         </table>
                                     </div>
                                 </div>
+
+
+                                <!-- Dịch vụ khác -->
+                                <div class="form-section">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                                        <h5 style="color: #495057; font-size: 16px; font-weight: 600; margin: 0;">Dịch vụ khác</h5>
+                                        <button id="addBloodProductBtn" type="button" class="btn btn-sm btn-success" style="padding: 6px 12px; border-radius: 4px; background-color: #28a745; color: white; border: none; cursor: pointer; transition: background-color 0.3s;">
+                                            + Thêm dịch vụ
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="table-responsive" style="border: 1px solid #dee2e6; border-radius: 4px; overflow: hidden;">
+                                        <table class="table table-striped" style="margin-bottom: 0; width: 100%; border-collapse: collapse;">
+                                            <thead style="background-color: #f8f9fa;">
+                                                <tr>
+                                                    <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left; font-weight: 600; width: 5%;">STT</th>
+                                                    <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left; font-weight: 600; width: 25%;">Tên DV</th>
+                                                    <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left; font-weight: 600; width: 10%;">Mã DV</th>
+                                                    <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left; font-weight: 600; width: 10%;">Đơn vị tính</th>
+                                                    <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left; font-weight: 600; width: 10%;">Số lượng</th>
+                                                    <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left; font-weight: 600; width: 10%;">Đơn giá</th>
+                                                    <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left; font-weight: 600; width: 20%;">Thành tiền</th>
+                                                    <th style="padding: 12px; border: 1px solid #dee2e6; text-align: center; font-weight: 600; width: 15%;">Hành động</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="bloodProductsTable">
+                                                <!-- Dòng mẫu -->
+                                                <tr>
+                                                    <td style="padding: 12px; border: 1px solid #dee2e6;">1</td>
+                                                    <td style="padding: 12px; border: 1px solid #dee2e6;">
+                                                        <select class="form-control" style="width: 100%; padding: 6px 8px; border: 1px solid #ced4da; border-radius: 4px;">
+                                                            <option value="whole_blood">Cơm phần</option>
+                                                            <option value="red_cells">Dinh dưỡng</option>
+                                                            <option value="platelets">Thuê giường phụ</option>
+                                                            <option value="plasma">Thuê giặt ủi</option>
+                                                        </select>
+                                                    </td>
+                                                    <td style="padding: 12px; border: 1px solid #dee2e6;">
+                                                        <select class="form-control" style="width: 100%; padding: 6px 8px; border: 1px solid #ced4da; border-radius: 4px;">
+                                                            <option value="a">1</option>
+                                                            <option value="b">2</option>
+                                                            <option value="ab">3</option>
+                                                            <option value="o">4</option>
+                                                        </select>
+                                                    </td>
+                                                    <td style="padding: 12px; border: 1px solid #dee2e6;">
+                                                        <select class="form-control" style="width: 100%; padding: 6px 8px; border: 1px solid #ced4da; border-radius: 4px;">
+                                                            <option value="positive">Lần</option>
+                                                            <option value="negative">Ngày</option>
+                                                        </select>
+                                                    </td>
+                                                    <td style="padding: 12px; border: 1px solid #dee2e6;">
+                                                        <input type="text" class="form-control" placeholder="1" style="width: 100%; padding: 6px 8px; border: 1px solid #ced4da; border-radius: 4px;">
+                                                    </td>
+                                                    <td style="padding: 12px; border: 1px solid #dee2e6;">
+                                                        <input type="text" class="form-control" placeholder="50.000" style="width: 100%; padding: 6px 8px; border: 1px solid #ced4da; border-radius: 4px;">
+                                                    </td>
+                                                    <td style="padding: 12px; border: 1px solid #dee2e6;">
+                                                        <input type="text" class="form-control" placeholder="50.000" style="width: 100%; padding: 6px 8px; border: 1px solid #ced4da; border-radius: 4px;">
+                                                    </td>
+                                                    <td style="padding: 12px; border: 1px solid #dee2e6; text-align: center;">
+                                                        <button type="button" class="btn btn-sm btn-danger" style="padding: 4px 8px; border-radius: 4px; background-color: #dc3545; color: white; border: none; cursor: pointer; transition: background-color 0.3s;">
+                                                            Xóa
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
                             </div>
                             
                             <!-- Modal Footer -->
@@ -2172,9 +2243,8 @@
                     
                     <!-- Nút chức năng -->
                     <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                        <button class="btn btn-primary btn-sm">Tạo hồ sơ mới</button>
-                        <button class="btn btn-success btn-sm">Xuất danh sách hồ sơ</button>
-                        <button class="btn btn-info btn-sm">Lọc theo trạng thái</button>
+                        <button id="createDocumentBtn" class="btn btn-primary btn-sm">Thêm hồ sơ, phiếu</button>
+                        <button class="btn btn-success btn-sm">Xuất danh sách</button>
                     </div>
                 </div>
                 
@@ -2319,11 +2389,426 @@
 
             <div class="footer-actions" style="margin: 12px;">
                 <button class="btn secondary" onclick="printRecord()">In hồ sơ</button>
-                <button class="btn warning" onclick="addNote()">Thêm ghi chú</button>
                 <button class="btn primary" onclick="updateTreatment()">Cập nhật điều trị</button>
-                <button class="btn danger" onclick="dischargePatient()">Xuất viện</button>
+                <button class="btn danger" id="dischargePatientBtn">Xuất viện</button>
+
+                <!-- Modal Xuất viện -->
+                <div id="dischargeModal" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5);">
+                    <div class="modal-content" style="background-color: #fff; margin: 2% auto; padding: 20px; border: 1px solid #888; width: 90%; max-height: 90vh; overflow-y: auto; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                        <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #e9ecef;">
+                            <h2 style="margin: 0; color: #2c3e50; font-size: 20px;">Thông tin xuất viện</h2>
+                            <button id="closeDischargeModal" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #6c757d;">&times;</button>
+                        </div>
+
+                        <!-- Nội dung chính -->
+                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
+                            <!-- Cột 1 -->
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label style="display: block; margin-bottom: 4px; font-weight: 500; font-size: 14px;">Chẩn đoán ra viện chính *:</label>
+                                <select style="width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px;">
+                                    <option>J04-Viêm thanh quản và khí quản cấp</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Cột 2 -->
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label style="display: block; margin-bottom: 4px; font-weight: 500; font-size: 14px;">Trạng thái người bệnh:</label>
+                                <select style="width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px;">
+                                    <option>Khỏe mạnh</option>
+                                    <option>Có cải thiện</option>
+                                    <option>Không đổi</option>
+                                    <option>Xấu đi</option>
+                                    <option>Đã tử vong</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Cột 3 -->
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label style="display: block; margin-bottom: 4px; font-weight: 500; font-size: 14px;">Tình trạng ra viện:</label>
+                                <select style="width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px;">
+                                    <option>Ra viện</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Cột 4 -->
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label style="display: block; margin-bottom: 4px; font-weight: 500; font-size: 14px;">Kết quả điều trị:</label>
+                                <select style="width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px;">
+                                    <option>Khỏi</option>
+                                </select>
+                            </div>
+                            
+                            <div style="margin-bottom: 0;">
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label style="display: block; margin-bottom: 4px; font-weight: 500; font-size: 14px;">Chẩn đoán ra viện kèm theo:</label>
+                                    <textarea rows="3" style="width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px; resize: vertical;"></textarea>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-bottom: 0;">
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label style="display: block; margin-bottom: 4px; font-weight: 500; font-size: 14px;">Chẩn đoán xuất viện chi tiết:</label>
+                                    <textarea rows="3" style="width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px; resize: vertical;"></textarea>
+                                </div>
+                            </div>
+                            
+                            <!-- Dòng tiếp theo - Cột 3-4 -->
+                            <div style="margin-bottom: 0;">
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label style="display: block; margin-bottom: 4px; font-weight: 500; font-size: 14px;">Phương pháp điều trị *:</label>
+                                    <textarea rows="3" style="width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px; resize: vertical;"></textarea>
+                                </div>
+                            </div>
+                            <!-- Dòng tiếp theo - Cột 3-4 -->
+                            <div style=" margin-bottom: 0;">
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label style="display: block; margin-bottom: 4px; font-weight: 500; font-size: 14px;">Tóm tắt kết quả CLS:</label>
+                                    <textarea rows="3" style="width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px; resize: vertical;"></textarea>
+                                </div>
+                            </div>
+                            
+                            <!-- Dòng tiếp theo - Cột 1-2 -->
+                            <div style="grid-column: 1 / 3; margin-bottom: 0;">
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label style="display: block; margin-bottom: 4px; font-weight: 500; font-size: 14px;">Quá trình bệnh lý & diễn biến lâm sàng:</label>
+                                    <textarea rows="3" style="width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px; resize: vertical;"></textarea>
+                                </div>
+                            </div>
+                            
+                            
+                            <!-- Dòng tiếp theo - Cột 1-2 -->
+                            <div style=" margin-bottom: 0;">
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label style="display: block; margin-bottom: 4px; font-weight: 500; font-size: 14px;">Lời dặn bác sĩ:</label>
+                                    <textarea rows="3" style="width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px; resize: vertical;"></textarea>
+                                </div>
+                            </div>
+                            
+                            <!-- Dòng tiếp theo - Cột 3-4 -->
+                            <div style="margin-bottom: 0;">
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label style="display: block; margin-bottom: 4px; font-weight: 500; font-size: 14px;">Hướng dẫn điều trị và chế độ tiếp theo:</label>
+                                    <textarea rows="3" style="width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px; resize: vertical;"></textarea>
+                                </div>
+                            </div>
+                            
+                            <!-- Dòng tiếp theo - Cột 1-2 -->
+                            <div style=" margin-bottom: 0;">
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label style="display: block; margin-bottom: 4px; font-weight: 500; font-size: 14px;">Thời gian ra viện:</label>
+                                    <input type="date" style="width: 48%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px; margin-right: 4%;">
+                                    <input type="time" style="width: 48%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px;">
+                                </div>
+                            </div>
+                            
+                            <!-- Dòng tiếp theo - Cột 3-4 -->
+                            <div style="margin-bottom: 0;">
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label style="display: block; margin-bottom: 4px; font-weight: 500; font-size: 14px;">Thời gian hẹn tái khám:</label>
+                                    <input type="date" style="width: 48%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px; margin-right: 4%;">
+                                    <input type="time" style="width: 48%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px;">
+                                </div>
+                            </div>
+                            
+                            <!-- Dòng tiếp theo - Cột 1 -->
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label style="display: block; margin-bottom: 4px; font-weight: 500; font-size: 14px;">Phòng hẹn khám:</label>
+                                <select style="width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px;">
+                                    <option>Chọn phòng hẹn khám</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Thông tin khác-->
+                        <div style="margin-top: 20px;">
+                            <details open>
+                                <summary style="font-weight: 600; color: #495057; cursor: pointer; padding: 8px; background-color: #f8f9fa; border-radius: 4px;">Thông tin khác</summary>
+                                <div style="padding: 15px; border: 1px solid #e9ecef; border-radius: 4px; margin-top: 10px;">
+                                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
+                                        <div class="form-group" style="margin-bottom: 0;">
+                                            <label style="display: block; margin-bottom: 2px; font-size: 13px;">Mã số BHXH:</label>
+                                            <input type="text" value="83838292" style="width: 100%; padding: 6px 10px; border: 1px solid #ced4da; border-radius: 4px; box-sizing: border-box;">
+                                        </div>
+                                        
+                                        <div class="form-group" style="margin-bottom: 0;">
+                                            <label style="display: block; margin-bottom: 2px; font-size: 13px;">Mã số BHYT:</label>
+                                            <input type="text" value="" style="width: 100%; padding: 6px 10px; border: 1px solid #ced4da; border-radius: 4px; box-sizing: border-box;">
+                                        </div>
+                                        
+                                        <div class="form-group" style="margin-bottom: 0;">
+                                            <label style="display: block; margin-bottom: 2px; font-size: 13px;">Đình chỉ thai nghén:</label>
+                                            <input type="text" value="" style="width: 100%; padding: 6px 10px; border: 1px solid #ced4da; border-radius: 4px; box-sizing: border-box;">
+                                        </div>
+                                        
+                                        <div class="form-group" style="margin-bottom: 0;">
+                                            <label style="display: block; margin-bottom: 2px; font-size: 13px;">Tuổi thai:</label>
+                                            <input type="text" value="" style="width: 100%; padding: 6px 10px; border: 1px solid #ced4da; border-radius: 4px; box-sizing: border-box;">
+                                        </div>
+                                        
+                                        <div class="form-group" style="margin-bottom: 0;">
+                                            <label style="display: block; margin-bottom: 2px; font-size: 13px;">Nghỉ ngoại trú từ ngày:</label>
+                                            <input type="date" value="" style="width: 100%; padding: 6px 10px; border: 1px solid #ced4da; border-radius: 4px; box-sizing: border-box;">
+                                        </div>
+                                        
+                                        <div class="form-group" style="margin-bottom: 0;">
+                                            <label style="display: block; margin-bottom: 2px; font-size: 13px;">Nghỉ ngoại trú đến ngày:</label>
+                                            <input type="date" value="" style="width: 100%; padding: 6px 10px; border: 1px solid #ced4da; border-radius: 4px; box-sizing: border-box;">
+                                        </div>
+                                        
+                                        <div class="form-group" style="margin-bottom: 0;">
+                                            <label style="display: block; margin-bottom: 2px; font-size: 13px;">Thủ trưởng đơn vị:</label>
+                                            <input type="text" value="" style="width: 100%; padding: 6px 10px; border: 1px solid #ced4da; border-radius: 4px; box-sizing: border-box;">
+                                        </div>
+                                        
+                                        <div class="form-group" style="margin-bottom: 0;">
+                                            <label style="display: block; margin-bottom: 2px; font-size: 13px;">Trường khoa:</label>
+                                            <input type="text" value="" style="width: 100%; padding: 6px 10px; border: 1px solid #ced4da; border-radius: 4px; box-sizing: border-box;">
+                                        </div>         
+                                    </div>
+                                </div>
+                            </details>
+                        </div>
+
+                        <!-- Thông tin cha mẹ -->
+                        <div style="margin-top: 20px;">
+                            <details open>
+                                <summary style="font-weight: 600; color: #495057; cursor: pointer; padding: 8px; background-color: #f8f9fa; border-radius: 4px;">Thông tin cha, mẹ (Áp dụng cho người bệnh dưới 7 tuổi)</summary>
+                                <div style="padding: 15px; border: 1px solid #e9ecef; border-radius: 4px; margin-top: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                    <div class="form-group" style="margin-bottom: 12px;">
+                                        <label style="display: block; margin-bottom: 2px; font-size: 13px;">Họ tên bố:</label>
+                                        <input type="text" value="LÊ MINH THẾ" style="width: 100%; padding: 6px 10px; border: 1px solid #ced4da; border-radius: 4px;">
+                                    </div>
+                                    <div class="form-group" style="margin-bottom: 12px;">
+                                        <label style="display: block; margin-bottom: 2px; font-size: 13px;">Họ tên mẹ:</label>
+                                        <input type="text" value="NGUYỄN THỊ BẢU SÂU" style="width: 100%; padding: 6px 10px; border: 1px solid #ced4da; border-radius: 4px;">
+                                    </div>
+                                </div>
+                            </details>
+                        </div>
+
+                        <!-- Nút hành động -->
+                        <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e9ecef;">
+                            <button id="cancelDischarge" style="padding: 8px 20px; background-color: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer;">Hủy</button>
+                            <button id="confirmDischarge" style="padding: 8px 20px; background-color: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">Xuất viện</button>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    // Mở modal xuất viện
+                    document.getElementById('dischargePatientBtn').addEventListener('click', function() {
+                        document.getElementById('dischargeModal').style.display = 'block';
+                    });
+                    
+                    // Đóng modal
+                    function closeDischargeModal() {
+                        document.getElementById('dischargeModal').style.display = 'none';
+                    }
+                    
+                    document.getElementById('closeDischargeModal').addEventListener('click', closeDischargeModal);
+                    document.getElementById('cancelDischarge').addEventListener('click', closeDischargeModal);
+                    
+                    // Đóng modal khi nhấp ra ngoài
+                    window.addEventListener('click', function(event) {
+                        if (event.target === document.getElementById('dischargeModal')) {
+                            closeDischargeModal();
+                        }
+                    });
+                    
+                    // Xử lý xuất viện
+                    document.getElementById('confirmDischarge').addEventListener('click', function() {
+                        // Validate các trường bắt buộc
+                        const mainDiagnosis = document.querySelector('#dischargeModal select').value;
+                        const treatmentMethod = document.querySelector('#dischargeModal textarea:nth-of-type(3)').value;
+                        
+                        if (!mainDiagnosis) {
+                            alert('Vui lòng chọn chẩn đoán xuất viện chính');
+                            return;
+                        }
+                        
+                        if (!treatmentMethod) {
+                            alert('Vui lòng nhập phương pháp điều trị');
+                            return;
+                        }
+                        
+                        // Hiển thị thông báo thành công
+                        alert('Xuất viện thành công!');
+                        closeDischargeModal();
+                        
+                        // Ở đây có thể thêm logic xử lý xuất viện như gửi dữ liệu đến server
+                    });
+                </script>
             </div>
         </div>
+
+        <div class="sidebar-right" style="width: 300px; border-left: 1px solid #dee2e6; background-color: #f8f9fa; display: flex; flex-direction: column; height: 100%;">
+            <!-- 聊天标题 -->
+            <div style="padding: 16px; border-bottom: 1px solid #dee2e6; background-color: #e9ecef; font-weight: 600; color: #495057;">
+                Trao đổi nội bộ
+            </div>
+            
+            <!-- 聊天历史区域 -->
+            <div id="chatHistory" style="flex-grow: 1; padding: 15px; overflow-y: auto; background-color: #fff;">
+                <!-- 欢迎消息 -->
+                <div style="text-align: center; margin-bottom: 15px; color: #6c757d; font-style: italic;">
+                    Bắt đầu trao đổi về bệnh nhân này
+                </div>
+            </div>
+            
+            <!-- 输入区域 -->
+            <div style="padding: 15px; border-top: 1px solid #dee2e6; background-color: #f8f9fa;">
+                <textarea id="chatInput" rows="3" style="width: 100%; padding: 8px; border: 1px solid #ced4da; border-radius: 4px; margin-bottom: 10px; resize: none;" placeholder="Nhập nội dung trao đổi..."></textarea>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; gap: 10px;">
+                        <button type="button" onclick="uploadAttachment()" style="padding: 6px 12px; background-color: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                            <i class="fa fa-paperclip"></i> Tài liệu
+                        </button>
+                        <input type="file" id="attachmentInput" style="display: none;" />
+                    </div>
+                    <button type="button" onclick="sendChatMessage()" style="padding: 8px 16px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                        Gửi
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <script>
+        // 模拟当前用户信息
+        const currentUser = {
+            name: "Bác sĩ Bảo",
+            role: "Bác sĩ điều trị"
+        };
+        
+        // 模拟其他用户列表
+        const otherUsers = [
+            { name: "Bác sĩ Minh", role: "Chuyên gia nội tiết" },
+            { name: "Y tá Ngọc", role: "Y tá phòng 302" },
+            { name: "Bác sĩ Hồng", role: "Chuyên gia tim mạch" }
+        ];
+        
+        // 发送聊天消息
+        function sendChatMessage() {
+            const chatInput = document.getElementById('chatInput');
+            const chatHistory = document.getElementById('chatHistory');
+            const message = chatInput.value.trim();
+            
+            if (message) {
+                // 获取当前时间
+                const now = new Date();
+                const timeString = now.getHours().toString().padStart(2, '0') + ':' + 
+                                  now.getMinutes().toString().padStart(2, '0');
+                
+                // 创建消息元素
+                const messageElement = document.createElement('div');
+                messageElement.style.marginBottom = '15px';
+                
+                messageElement.innerHTML = `
+                    <div style="display: flex; justify-content: flex-end; margin-bottom: 3px;">
+                        <div style="font-size: 12px; color: #6c757d; font-weight: 500; margin-right: 8px;">${currentUser.name} (${currentUser.role})</div>
+                    </div>
+                    <div style="display: flex; justify-content: flex-end;">
+                        <div style="max-width: 70%; background-color: #007bff; color: white; padding: 10px; border-radius: 12px 12px 0 12px; position: relative;">
+                            <div style="word-wrap: break-word;">${message}</div>
+                            <div style="font-size: 10px; opacity: 0.7; text-align: right; margin-top: 5px;">${timeString}</div>
+                        </div>
+                    </div>
+                `;
+                
+                // 添加到聊天历史
+                chatHistory.appendChild(messageElement);
+                
+                // 滚动到底部
+                chatHistory.scrollTop = chatHistory.scrollHeight;
+                
+                // 清空输入框
+                chatInput.value = '';
+                
+                // 模拟回复
+                setTimeout(() => {
+                    // 随机选择一个回复者
+                    const randomUser = otherUsers[Math.floor(Math.random() * otherUsers.length)];
+                    const replyMessage = [
+                        "Tôi đã xem thông tin bệnh nhân, sẽ liên hệ sớm.",
+                        "Cần thêm xét nghiệm máu cho bệnh nhân này.",
+                        "Bệnh nhân cần được theo dõi cẩn thận trong 24 giờ tới.",
+                        "Đã sắp xếp lịch khám lại cho bệnh nhân vào ngày mai.",
+                        "Tôi đồng ý với phương pháp điều trị này."
+                    ];
+                    const randomReply = replyMessage[Math.floor(Math.random() * replyMessage.length)];
+                    
+                    const replyElement = document.createElement('div');
+                    replyElement.style.marginBottom = '15px';
+                    
+                    replyElement.innerHTML = `
+                        <div style="display: flex; justify-content: flex-start; margin-bottom: 3px;">
+                            <div style="font-size: 12px; color: #6c757d; font-weight: 500; margin-left: 8px;">${randomUser.name} (${randomUser.role})</div>
+                        </div>
+                        <div style="display: flex; justify-content: flex-start;">
+                            <div style="max-width: 70%; background-color: #e9ecef; color: #333; padding: 10px; border-radius: 12px 12px 12px 0; position: relative;">
+                                <div style="word-wrap: break-word;">${randomReply}</div>
+                                <div style="font-size: 10px; opacity: 0.7; text-align: right; margin-top: 5px;">${timeString}</div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    chatHistory.appendChild(replyElement);
+                    chatHistory.scrollTop = chatHistory.scrollHeight;
+                }, 1000);
+            }
+        }
+        
+        // 上传附件
+        function uploadAttachment() {
+            document.getElementById('attachmentInput').click();
+        }
+        
+        // 处理附件上传
+        document.getElementById('attachmentInput').addEventListener('change', function(e) {
+            if (e.target.files && e.target.files[0]) {
+                const file = e.target.files[0];
+                const chatHistory = document.getElementById('chatHistory');
+                
+                // 获取当前时间
+                const now = new Date();
+                const timeString = now.getHours().toString().padStart(2, '0') + ':' + 
+                                  now.getMinutes().toString().padStart(2, '0');
+                
+                // 创建附件消息元素
+                const attachmentElement = document.createElement('div');
+                attachmentElement.style.marginBottom = '15px';
+                
+                attachmentElement.innerHTML = `
+                    <div style="display: flex; justify-content: flex-end; margin-bottom: 3px;">
+                        <div style="font-size: 12px; color: #6c757d; font-weight: 500; margin-right: 8px;">${currentUser.name} (${currentUser.role})</div>
+                    </div>
+                    <div style="display: flex; justify-content: flex-end;">
+                        <div style="max-width: 70%; background-color: #007bff; color: white; padding: 10px; border-radius: 12px 12px 0 12px; position: relative;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <i class="fa fa-file"></i>
+                                <span>${file.name}</span>
+                            </div>
+                            <div style="font-size: 10px; opacity: 0.7; text-align: right; margin-top: 5px;">${timeString}</div>
+                        </div>
+                    </div>
+                `;
+                
+                // 添加到聊天历史
+                chatHistory.appendChild(attachmentElement);
+                chatHistory.scrollTop = chatHistory.scrollHeight;
+                
+                // 重置文件输入
+                e.target.value = '';
+            }
+        });
+        
+        // 支持按Enter发送消息
+        document.getElementById('chatInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendChatMessage();
+            }
+        });
+        </script>
 
 
     </div>
@@ -2354,7 +2839,7 @@
             alert('✅ Kết quả đo bệnh đã được lưu thành công!');
         }
 
-        // Tạo và in đơn thuốc
+        // Thêm và in đơn thuốc
         function generatePrescription() {
             alert('✅ Đơn thuốc đã được tạo. Đang chuẩn bị in...');
             // Trong thực tế, đây sẽ mở một cửa sổ in hoặc tải tệp PDF
@@ -2398,10 +2883,10 @@
                 tableBody.innerHTML = '';
             }
 
-            // Tạo STT dựa trên số hàng hiện tại
+            // Thêm STT dựa trên số hàng hiện tại
             const stt = tableBody.children.length + 1;
 
-            // Tạo một hàng mới
+            // Thêm một hàng mới
             const newRow = document.createElement('tr');
             newRow.innerHTML = `
                 <td style="padding: 8px; border-bottom: 1px solid #ddd;">${stt}</td>
@@ -2729,6 +3214,402 @@
             closeFileUploadPopup();
         }
     </script>
+    
+    <!-- Popup Thêm hồ phiếu -->
+    <div id="documentModal" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: hidden; background-color: rgba(0,0,0,0.4);">
+        <div class="modal-dialog" style="margin: 2% auto; width: 95%; height: 92%; background-color: #fff; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); display: flex; flex-direction: column;">
+            <div class="modal-content" style="border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; height: 100%;">
+                <!-- Modal Header -->
+                <div class="modal-header" style="padding: 16px 20px; background-color: #f8f9fa; border-bottom: 1px solid #e9ecef; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;">
+                    <h4 class="modal-title" style="margin: 0; font-size: 18px; color: #333;">Thêm hồ sơ, giấy phiếu bệnh án</h4>
+                    <button type="button" class="close" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #666;">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                
+                <!-- Modal Body -->
+                <div class="modal-body" style="padding: 20px; flex-grow: 1; display: flex; overflow: hidden;">
+                    <!-- Left Sidebar - Document Types -->
+                    <div class="sidebar" style="width: 250px; border-right: 1px solid #dee2e6; padding-right: 15px; overflow-y: auto; margin-right: 20px; flex-shrink: 0;">
+                        <h2 style="margin-bottom: 16px; color: #495057; font-size: 16px; font-weight: 600; margin-top: 0px;">Chọn loại giấy phiếu</h6>
+                        <div class="list-group" style="width: 100%;">
+                            <button class="list-group-item list-group-item-action document-type" data-template="hoSoVaoVien" style="display: block; width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px; margin-bottom: 6px; cursor: pointer; transition: all 0.3s; text-align: left; background-color: #fff;">Hồ sơ vào viện</button>
+                            <button class="list-group-item list-group-item-action document-type" data-template="hoSoRaVien" style="display: block; width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px; margin-bottom: 6px; cursor: pointer; transition: all 0.3s; text-align: left; background-color: #fff;">Hồ sơ ra viện</button>
+                            <button class="list-group-item list-group-item-action document-type" data-template="thongTinKham" style="display: block; width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px; margin-bottom: 6px; cursor: pointer; transition: all 0.3s; text-align: left; background-color: #fff;">Thông tin khám bệnh</button>
+                            <button class="list-group-item list-group-item-action document-type" data-template="donThuoc" style="display: block; width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px; margin-bottom: 6px; cursor: pointer; transition: all 0.3s; text-align: left; background-color: #fff;">Đơn thuốc</button>
+                            <button class="list-group-item list-group-item-action document-type" data-template="phiếuXetNghiem" style="display: block; width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px; margin-bottom: 6px; cursor: pointer; transition: all 0.3s; text-align: left; background-color: #fff;">Phiếu xét nghiệm</button>
+                            <button class="list-group-item list-group-item-action document-type" data-template="phiếuSieuAm" style="display: block; width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px; margin-bottom: 6px; cursor: pointer; transition: all 0.3s; text-align: left; background-color: #fff;">Phiếu siêu âm</button>
+                            <button class="list-group-item list-group-item-action document-type" data-template="phiếuChẩnĐoán" style="display: block; width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px; margin-bottom: 6px; cursor: pointer; transition: all 0.3s; text-align: left; background-color: #fff;">Phiếu chẩn đoán</button>
+                            <button class="list-group-item list-group-item-action document-type" data-template="phiếuTáiKhám" style="display: block; width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px; margin-bottom: 6px; cursor: pointer; transition: all 0.3s; text-align: left; background-color: #fff;">Phiếu tái khám</button>
+                            <button class="list-group-item list-group-item-action document-type" data-template="phiếuHướngDẫn" style="display: block; width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px; margin-bottom: 6px; cursor: pointer; transition: all 0.3s; text-align: left; background-color: #fff;">Phiếu hướng dẫn</button>
+                            <button class="list-group-item list-group-item-action document-type" data-template="phiếuBảoHiểm" style="display: block; width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px; margin-bottom: 6px; cursor: pointer; transition: all 0.3s; text-align: left; background-color: #fff;">Phiếu bảo hiểm</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Main Content - Template Container -->
+                    <div class="main-content" style="overflow-y: auto; flex-grow: 1;">
+                        <div id="templateContainer" style="background-color: white; border: 1px solid #dee2e6; border-radius: 4px; padding: 20px;">
+                            <div class="alert alert-info p-4" style="background-color: #e3f2fd; border: 1px solid #bbdefb; border-radius: 4px; color: #1565c0;">
+                                Vui lòng chọn một loại giấy phiếu từ menu bên trái
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Modal Footer -->
+                <div class="modal-footer" style="padding: 16px 20px; background-color: #f8f9fa; border-top: 1px solid #e9ecef; display: flex; justify-content: flex-end; gap: 10px; flex-shrink: 0;">
+                    <button type="button" class="btn btn-secondary" style="padding: 8px 16px; border-radius: 4px; background-color: #6c757d; color: white; border: none; cursor: pointer; transition: background-color 0.3s;">Đóng</button>
+                    <button type="button" class="btn btn-success" id="saveDocumentBtn" disabled style="padding: 8px 16px; border-radius: 4px; background-color: #28a745; color: white; border: none; cursor: pointer; transition: background-color 0.3s;">Lưu phiếu</button>
+                    <button type="button" class="btn btn-primary" id="printDocumentBtn" disabled style="padding: 8px 16px; border-radius: 4px; background-color: #007bff; color: white; border: none; cursor: pointer; transition: background-color 0.3s;">In phiếu</button>
+                    <button type="button" class="btn btn-info" id="digitalSignBtn" disabled style="padding: 8px 16px; border-radius: 4px; background-color: #17a2b8; color: white; border: none; cursor: pointer; transition: background-color 0.3s;">Ký số</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Xử lý sự kiện cho popup tạo hồ phiếu
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing modal scripts');
+            
+            // Đảm bảo modal ban đầu được ẩn
+            const documentModal = document.getElementById('documentModal');
+            if (documentModal) {
+                documentModal.style.display = 'none';
+            }
+            
+            // Hàm hiển thị modal
+            function showModal(modalId) {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    console.log('Showing modal:', modalId);
+                    modal.style.display = 'block';
+                    
+                    // Thêm lớp backdrop
+                    const backdrop = document.createElement('div');
+                    backdrop.className = 'modal-backdrop fade show';
+                    backdrop.id = 'modalBackdrop';
+                    document.body.appendChild(backdrop);
+                    
+                    // Ngăn cuộn body
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+            
+            // Hàm ẩn modal
+            function hideModal(modalId) {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    console.log('Hiding modal:', modalId);
+                    modal.style.display = 'none';
+                    
+                    // Xóa backdrop
+                    const backdrop = document.getElementById('modalBackdrop');
+                    if (backdrop) {
+                        backdrop.remove();
+                    }
+                    
+                    // Cho phép cuộn body lại
+                    document.body.style.overflow = '';
+                }
+            }
+            
+            // Xử lý sự kiện cho nút Thêm hồ phiếu
+            const createDocumentBtn = document.getElementById('createDocumentBtn');
+            if (createDocumentBtn) {
+                createDocumentBtn.addEventListener('click', function() {
+                    console.log('Nút Thêm hồ phiếu được nhấn');
+                    showModal('documentModal');
+                    
+                    // Reset trạng thái
+                    const templateContainer = document.getElementById('templateContainer');
+                    if (templateContainer) {
+                        templateContainer.innerHTML = '<div class="alert alert-info p-4">Vui lòng chọn một loại giấy phiếu từ menu bên trái</div>';
+                    }
+                    
+                    document.getElementById('saveDocumentBtn').disabled = true;
+                    document.getElementById('printDocumentBtn').disabled = true;
+                    document.getElementById('digitalSignBtn').disabled = true;
+                });
+            }
+            
+            // Xử lý nút đóng modal
+            const closeBtn = document.querySelector('#documentModal .close');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function() {
+                    hideModal('documentModal');
+                });
+            }
+            
+            // Xử lý nút Đóng
+            const closeModalBtn = document.querySelector('#documentModal .modal-footer .btn-secondary');
+            if (closeModalBtn) {
+                closeModalBtn.addEventListener('click', function() {
+                    hideModal('documentModal');
+                });
+            }
+            
+            // Xử lý chọn loại giấy phiếu
+            const documentTypes = document.querySelectorAll('.document-type');
+            documentTypes.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Xóa active từ các item khác
+                    documentTypes.forEach(b => {
+                        b.classList.remove('active', 'bg-primary', 'text-white');
+                    });
+                    // Thêm active vào item được chọn
+                    this.classList.add('active', 'bg-primary', 'text-white');
+                     
+                    // Lấy template ID
+                    const templateId = this.getAttribute('data-template');
+                     
+                    // Load template tương ứng
+                    loadTemplate(templateId);
+                     
+                    // Kích hoạt nút chức năng
+                    document.getElementById('saveDocumentBtn').disabled = false;
+                    document.getElementById('printDocumentBtn').disabled = false;
+                    document.getElementById('digitalSignBtn').disabled = false;
+                });
+            });
+            
+            // Xử lý lưu phiếu
+            const saveDocumentBtn = document.getElementById('saveDocumentBtn');
+            if (saveDocumentBtn) {
+                saveDocumentBtn.addEventListener('click', function() {
+                    alert('Hồ sơ đã được lưu thành công!');
+                });
+            }
+            
+            // Xử lý in phiếu
+            const printDocumentBtn = document.getElementById('printDocumentBtn');
+            if (printDocumentBtn) {
+                printDocumentBtn.addEventListener('click', function() {
+                    // Chỉ in phần templateContainer
+                    const printContent = document.getElementById('templateContainer').innerHTML;
+                     
+                    // Thêm một cửa sổ in
+                    const printWindow = window.open('', '_blank');
+                    printWindow.document.open();
+                    printWindow.document.write(`
+                        <html>
+                        <head>
+                            <title>In hồ sơ bệnh án</title>
+                            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+                        </head>
+                        <body>
+                            ${printContent}
+                            <script>
+                                window.onload = function() {
+                                    window.print();
+                                    setTimeout(function() { window.close(); }, 100);
+                                };
+                            <\/script>
+                        </body>
+                        </html>
+                    `);
+                    printWindow.document.close();
+                });
+            }
+            
+            // Xử lý ký số
+            const digitalSignBtn = document.getElementById('digitalSignBtn');
+            if (digitalSignBtn) {
+                digitalSignBtn.addEventListener('click', function() {
+                    alert('Ký số thành công! Hồ sơ đã được xác thực điện tử.');
+                });
+            }
+        });
+        
+        // Hàm load template
+        function loadTemplate(templateId) {
+            let templateContent = '';
+            
+            // Nội dung mẫu cho từng loại phiếu
+            switch(templateId) {
+                case 'hoSoVaoVien':
+                    templateContent = `
+                        <div class="card">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="card-title mb-0">Hồ sơ vào viện</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Họ và tên bệnh nhân:</label>
+                                            <input type="text" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Ngày sinh:</label>
+                                            <input type="date" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Giới tính:</label>
+                                            <select class="form-control">
+                                                <option>Nam</option>
+                                                <option>Nữ</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Số điện thoại:</label>
+                                            <input type="tel" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Địa chỉ:</label>
+                                            <input type="text" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Chẩn đoán sơ bộ:</label>
+                                            <textarea class="form-control" rows="3"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Ngày vào viện:</label>
+                                            <input type="date" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Bác sĩ phụ trách:</label>
+                                            <input type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'hoSoRaVien':
+                    templateContent = `
+                        <div class="card">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="card-title mb-0">Hồ sơ ra viện</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Họ và tên bệnh nhân:</label>
+                                            <input type="text" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Chẩn đoán ra viện:</label>
+                                            <textarea class="form-control" rows="3"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Phương pháp điều trị:</label>
+                                            <textarea class="form-control" rows="3"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Ngày vào viện:</label>
+                                            <input type="date" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Ngày ra viện:</label>
+                                            <input type="date" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Tình trạng ra viện:</label>
+                                            <select class="form-control">
+                                                <option>Đã chữa khỏi</option>
+                                                <option>Đã ổn định</option>
+                                                <option>Chuyển viện</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Lời dặn:</label>
+                                            <textarea class="form-control" rows="3"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Bác sĩ xác nhận:</label>
+                                            <input type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'thongTinKham':
+                    templateContent = `
+                        <div class="card">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="card-title mb-0">Thông tin khám bệnh</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Triệu chứng chính:</label>
+                                            <textarea class="form-control" rows="2"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Thời gian bắt đầu triệu chứng:</label>
+                                            <input type="date" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Nhiệt độ thân nhiệt:</label>
+                                            <input type="number" step="0.1" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Huyết áp:</label>
+                                            <input type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Kết quả khám bệnh:</label>
+                                            <textarea class="form-control" rows="4"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Bác sĩ khám:</label>
+                                            <input type="text" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Ngày khám:</label>
+                                            <input type="date" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                default:
+                    // Mẫu chung cho các loại phiếu khác
+                    templateContent = `
+                        <div class="card">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="card-title mb-0">Giấy phiếu</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label>Thông tin chi tiết:</label>
+                                    <textarea class="form-control" rows="5"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Ngày lập phiếu:</label>
+                                    <input type="date" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Người lập phiếu:</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    `;
+            }
+            
+            // Hiển thị template
+            const templateContainer = document.getElementById('templateContainer');
+            if (templateContainer) {
+                templateContainer.innerHTML = templateContent;
+            }
+        }
+    </script>
 </body>
 
 </html>
+
