@@ -601,6 +601,36 @@
             max-height: 80vh;
             overflow-y: auto;
         }
+        
+        /* Modal layout styles */
+        .modal-layout {
+            display: flex;
+            height: 100%;
+            min-height: 600px;
+        }
+        
+        .modal-sidebar {
+            width: 280px;
+            background-color: #fafafa;
+            border-right: 1px solid #e8e8e8;
+            padding: 20px;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+        
+        .modal-main {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: white;
+        }
+        
+        .sidebar-title {
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 16px;
+            color: #333;
+        }
 
         .modal-header {
             display: flex;
@@ -793,6 +823,7 @@
                     <button class="tab" onclick="openTab(event, 'tab-bia')">Bìa bệnh án</button>
                     <button class="tab" onclick="openTab(event, 'tab-thongtin')">A. Bệnh án</button>
                     <button class="tab" onclick="openTab(event, 'tab-tongket')">B. Tổng kết bệnh án</button>
+                    <button class="tab" onclick="openTab(event, 'tab-phauthuat')">Phẫu thuật</button>
                     <button class="tab" onclick="openTab(event, 'tab-theodoi')">Theo dõi điều trị</button>
                     <button class="tab" onclick="openTab(event, 'tab-thongke')">Thống kê </button>
                     <button class="tab" onclick="openTab(event, 'tab-tailieu')">Tài liệu khác</button>
@@ -965,6 +996,226 @@
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content - Phẫu thuật -->
+                <div id="tab-phauthuat" class="tab-content">
+                    <div class="modal-layout">
+                        <!-- Sidebar with forms list -->
+                        <div class="modal-sidebar">
+                            <h3 class="sidebar-title">Danh sách biểu mẫu</h3>
+                            <style>
+                                .forms-list {
+                                    list-style: none;
+                                    padding: 0;
+                                    margin: 0;
+                                }
+                                
+                                .form-item {
+                                    padding: 12px 15px;
+                                    margin-bottom: 5px;
+                                    border-radius: 5px;
+                                    cursor: pointer;
+                                    transition: all 0.2s ease;
+                                    display: flex;
+                                    justify-content: space-between;
+                                    align-items: center;
+                                    border: 1px solid transparent;
+                                }
+                                
+                                .form-item:hover {
+                                    background-color: #f5f5f5;
+                                }
+                                
+                                .form-item.active {
+                                    background-color: #e6f7ff;
+                                    border-color: #1890ff;
+                                    font-weight: 600;
+                                }
+                                
+                                .form-name {
+                                    flex: 1;
+                                }
+                                
+                                .status-container {
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 5px;
+                                }
+                                
+                                .form-status {
+                                    width: 12px;
+                                    height: 12px;
+                                    border-radius: 50%;
+                                }
+                                
+                                .status-text {
+                                    font-size: 12px;
+                                    font-weight: normal;
+                                }
+                                
+                                .status-completed {
+                                    background-color: #52c41a;
+                                }
+                                
+                                .status-completed + .status-text {
+                                    color: #52c41a;
+                                }
+                                
+                                .status-in-progress {
+                                    background-color: #faad14;
+                                }
+                                
+                                .status-in-progress + .status-text {
+                                    color: #faad14;
+                                }
+                                
+                                .status-pending {
+                                    background-color: #d9d9d9;
+                                }
+                                
+                                .status-pending + .status-text {
+                                    color: #8c8c8c;
+                                }
+                                
+                                .form-content {
+                                    display: none;
+                                }
+                                
+                                .form-content.active {
+                                    display: block;
+                                }
+                            </style>
+                            <ul class="forms-list">
+                                <li class="form-item" data-form="camket">
+                                    <div class="form-name">Giấy cam kêt</div>
+                                    <div class="status-container">
+                                        <div class="form-status status-completed"></div>
+                                        <div class="status-text">Hoàn tất</div>
+                                    </div>
+                                </li>
+                                <li class="form-item" data-form="consent">
+                                    <div class="form-name">Giải thích, cam kết</div>
+                                    <div class="status-container">
+                                        <div class="form-status status-pending"></div>
+                                        <div class="status-text">Chưa làm</div>
+                                    </div>
+                                </li>
+                                <li class="form-item" data-form="preAnesthesia">
+                                    <div class="form-name">Khám tiền mê</div>
+                                    <div class="status-container">
+                                        <div class="form-status status-pending"></div>
+                                        <div class="status-text">Chưa làm</div>
+                                    </div>
+                                </li>
+                                <li class="form-item" data-form="scheduling">
+                                    <div class="form-name">Lên lịch mổ, phân công</div>
+                                    <div class="status-container">
+                                        <div class="form-status status-pending"></div>
+                                        <div class="status-text">Chưa làm</div>
+                                    </div>
+                                </li>
+                                <li class="form-item" data-form="checklist">
+                                    <div class="form-name">Checklist trước gây mê</div>
+                                    <div class="status-container">
+                                        <div class="form-status status-pending"></div>
+                                        <div class="status-text">Chưa làm</div>
+                                    </div>
+                                </li>
+                                <li class="form-item" data-form="duringSurgery">
+                                    <div class="form-name">Trong phẫu thuật</div>
+                                    <div class="status-container">
+                                        <div class="form-status status-pending"></div>
+                                        <div class="status-text">Chưa làm</div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <script>
+                                // Add click event handlers to form items
+                                document.querySelectorAll('.form-item').forEach(item => {
+                                    item.addEventListener('click', function(e) {
+                                        // Remove active class from all items
+                                        document.querySelectorAll('.form-item').forEach(i => i.classList.remove('active'));
+                                        // Add active class to clicked item
+                                        this.classList.add('active');
+                                        
+                                        // Get form type
+                                        const formType = this.getAttribute('data-form');
+                                        // Hide all form contents
+                                        document.querySelectorAll('.form-content').forEach(content => {
+                                            content.classList.remove('active');
+                                            content.style.display = 'none';
+                                        });
+                                        // Show selected form content
+                                        const selectedForm = document.getElementById('form-' + formType);
+                                        if (selectedForm) {
+                                            selectedForm.classList.add('active');
+                                            selectedForm.style.display = 'block';
+                                        }
+                                    });
+                                });
+                                
+                                // Initialize - ensure first form is displayed
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    const activeForm = document.querySelector('.form-item.active');
+                                    if (activeForm) {
+                                        const formType = activeForm.getAttribute('data-form');
+                                        const selectedForm = document.getElementById('form-' + formType);
+                                        if (selectedForm) {
+                                            selectedForm.classList.add('active');
+                                            selectedForm.style.display = 'block';
+                                        }
+                                    }
+                                });
+                                
+                                // Add update form status function
+                                function updateFormStatus(element) {
+                                    const statusDiv = element.querySelector('.form-status');
+                                    const statusText = element.querySelector('.status-text');
+                                    
+                                    if (statusDiv.classList.contains('status-pending')) {
+                                        // Chưa làm -> Đang làm
+                                        statusDiv.classList.remove('status-pending');
+                                        statusDiv.classList.add('status-in-progress');
+                                        statusText.textContent = 'Đang làm';
+                                    } else if (statusDiv.classList.contains('status-in-progress')) {
+                                        // Đang làm -> Hoàn tất
+                                        statusDiv.classList.remove('status-in-progress');
+                                        statusDiv.classList.add('status-completed');
+                                        statusText.textContent = 'Hoàn tất';
+                                    } else {
+                                        // Hoàn tất -> Chưa làm
+                                        statusDiv.classList.remove('status-completed');
+                                        statusDiv.classList.add('status-pending');
+                                        statusText.textContent = 'Chưa làm';
+                                    }
+                                }
+                                
+                                // Add click event to status container
+                                document.querySelectorAll('.status-container').forEach(container => {
+                                    container.addEventListener('click', function(e) {
+                                        e.stopPropagation(); // Prevent event bubbling
+                                        const formItem = this.closest('.form-item');
+                                        updateFormStatus(formItem);
+                                    });
+                                });
+                            </script>
+                        </div>
+
+                        <!-- Main content area -->
+                        <div class="modal-main">
+                            <!-- Form content for Giấy cam kết -->
+                            <div id="form-camket" class="form-content">
+                                <div class="form-header">
+                                    <h3>Giấy Cam Kết Chấp Thuận</h3>
+                                    <h4>PHẪU THUẬT, THỦ THUẬT VÀ GÂY MÊ HỒI SỨC</h4>
+                                </div>
+                                <div class="form-container">
+                                    <!-- Form content will be added here -->
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

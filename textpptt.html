@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Bộ biểu mẫu Phẫu thuật - Thủ thuật</title>
+  <style>
+    :root {
+      --bg: #f5f5f7;
+      --card: #ffffff;
+      --line: #e5e7eb;
+      --txt: #111827;
+      --muted: #6b7280;
+      --accent: #2563eb;
+      --danger: #b91c1c;
+      --font: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 16px;
+      background: var(--bg);
+      font-family: var(--font);
+      color: var(--txt);
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .page {
+      background: var(--card);
+      max-width: 900px;
+      margin: 0 auto 24px auto;
+      padding: 20px 24px;
+      border-radius: 8px;
+      box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.04), 0 18px 45px rgba(15, 23, 42, 0.12);
+    }
+
+    .page + .page {
+      margin-top: 32px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      border-bottom: 2px solid var(--line);
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+    }
+
+    .header-left {
+      font-size: 12px;
+    }
+
+    .header-left strong {
+      text-transform: uppercase;
+    }
+
+    .header-right {
+      text-align: right;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .barcode-box {
+      border: 1px dashed var(--line);
+      padding: 4px 8px;
+      font-size: 11px;
+      margin-top: 4px;
+    }
+
+    h1.form-title {
+      text-align: center;
+      font-size: 18px;
+      margin: 8px 0 4px 0;
+      text-transform: uppercase;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .patient-info,
+    .section {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-weight: 600;
+      font-size: 13px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 4px;
+    }
+
+    .row .field {
+      flex: 1;
+    }
+
+    .field-label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 2px;
+    }
+
+    .field-line {
+      border-bottom: 1px dotted #9ca3af;
+      min-height: 16px;
+      padding-bottom: 1px;
+      font-size: 13px;
+    }
+
+    .field-inline {
+      display: inline-block;
+      min-width: 80px;
+      border-bottom: 1px dotted #9ca3af;
+      padding: 0 4px 1px 4px;
+    }
+
+    .checkbox-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+      font-size: 13px;
+    }
+
+    .checkbox-box {
+      width: 14px;
+      height: 14px;
+      border: 1px solid var(--line);
+      border-radius: 2px;
+      display: inline-block;
+    }
+
+    .note {
+      font-size: 11px;
+      color: var(--muted);
+      font-style: italic;
+      margin-top: 4px;
+    }
+
+    .sign-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      margin-top: 16px;
+    }
+
+    .sign-col {
+      flex: 1;
+      text-align: center;
+      font-size: 12px;
+    }
+
+    .sign-space {
+      margin-top: 60px;
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin-top: 6px;
+    }
+
+    .table th,
+    .table td {
+      border: 1px solid var(--line);
+      padding: 4px 6px;
+      text-align: left;
+    }
+
+    .table th {
+      background: #f3f4f6;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-size: 11px;
+      margin-left: 4px;
+    }
+
+    .danger-text {
+      color: var(--danger);
+      font-weight: 600;
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+        padding: 0;
+      }
+      .page {
+        box-shadow: none;
+        border-radius: 0;
+        margin: 0 auto;
+        page-break-after: always;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ================== 1. PHIẾU CHỈ ĐỊNH PHẪU THUẬT / THỦ THUẬT ================== -->
+<div class="page" id="phieu-chi-dinh-pttt">
+  <div class="header">
+    <div class="header-left">
+      <strong>TÊN CƠ SỞ KHÁM CHỮA BỆNH</strong><br />
+      Khoa: ......................<br />
+      Số HSBA: ...................
+    </div>
+    <div class="header-right">
+      Mã NB: ..................<br />
+      <div class="barcode-box">
+        Barcode / QR NB<br />
+        (Mã vạch / Mã QR)
+      </div>
+    </div>
+  </div>
+
+  <h1 class="form-title">Phiếu chỉ định phẫu thuật / thủ thuật</h1>
+  <div class="subtitle">(Theo Thông tư 43/2018/TT-BYT)</div>
+
+  <div class="patient-info">
+    <div class="section-title">Thông tin người bệnh</div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">Họ và tên</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field" style="max-width: 150px;">
+        <div class="field-label">Giới</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field" style="max-width: 180px;">
+        <div class="field-label">Tuổi</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">Địa chỉ</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">Chẩn đoán trước phẫu thuật / thủ thuật</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Nội dung chỉ định</div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">Tên phẫu thuật / thủ thuật</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">Mã phẫu thuật / thủ thuật (MA_PTTT)</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">Mức độ phẫu thuật</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">Loại phẫu thuật / thủ thuật</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">Dự kiến gây mê / gây tê</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">Chỉ định phẫu thuật / thủ thuật vì</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Thời gian và kíp phẫu thuật</div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">Thời gian dự kiến</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">Phòng mổ</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">Bác sĩ phẫu thuật chính</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">Bác sĩ gây mê</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sign-row">
+    <div class="sign-col">
+      <strong>Bác sĩ điều trị</strong><br />
+      (Ký, ghi rõ họ tên)<br />
+      <div class="sign-space"></div>
+    </div>
+    <div class="sign-col">
+      <strong>Trưởng khoa / Người duyệt</strong><br />
+      (Ký, ghi rõ họ tên)<br />
+      <div class="sign-space"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================== 2. PHIẾU CAM KẾT PHẪU THUẬT / THỦ THUẬT ================== -->
+<div class="page" id="phieu-cam-ket-pttt">
+  <div class="header">
+    <div class="header-left">
+      <strong>TÊN CƠ SỞ KHÁM CHỮA BỆNH</strong><br />
+      Khoa: ......................<br />
+      Số HSBA: ...................
+    </div>
+    <div class="header-right">
+      Mã NB: ..................<br />
+      <div class="barcode-box">
+        Barcode / QR NB
+      </div>
+    </div>
+  </div>
+
+  <h1 class="form-title">Phiếu cam kết phẫu thuật / thủ thuật</h1>
+  <div class="subtitle">(Theo Thông tư 43/2018/TT-BYT)</div>
+
+  <div class="patient-info">
+    <div class="section-title">Thông tin người bệnh / đại diện hợp pháp</div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">Tôi tên là</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">Tuổi</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">CMND/CCCD/Hộ chiếu số</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">Quan hệ với người bệnh</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">Địa chỉ</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Nội dung được giải thích</div>
+    <p style="font-size: 13px; margin-bottom: 4px;">
+      Tôi đã được Bác sĩ
+      <span class="field-inline"></span>
+      giải thích rõ về:
+    </p>
+    <ul style="font-size: 13px; margin-top: 2px; padding-left: 18px;">
+      <li>Tình trạng bệnh hiện tại của tôi / người bệnh.</li>
+      <li>Mục đích, tính chất, cách tiến hành phẫu thuật / thủ thuật.</li>
+      <li>Các lợi ích, nguy cơ, tai biến và biến chứng có thể xảy ra.</li>
+      <li>Các phương án điều trị khác (nếu có) và hậu quả nếu không điều trị.</li>
+      <li>Khả năng phải thay đổi phương pháp phẫu thuật / thủ thuật trong khi thực hiện.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Nội dung cam kết</div>
+    <p style="font-size: 13px; margin-bottom: 4px;">
+      Sau khi đã được giải thích đầy đủ, tôi:
+    </p>
+    <div class="checkbox-line">
+      <span class="checkbox-box"></span> Đồng ý thực hiện phẫu thuật / thủ thuật:
+    </div>
+    <div class="field-line" style="margin-bottom: 6px;"></div>
+
+    <div class="checkbox-line">
+      <span class="checkbox-box"></span> Không đồng ý thực hiện phẫu thuật / thủ thuật.
+    </div>
+
+    <p class="note">
+      Lưu ý: Nếu người bệnh không tự quyết định được, người đại diện hợp pháp sẽ ký cam kết.
+    </p>
+  </div>
+
+  <div class="sign-row">
+    <div class="sign-col">
+      <em>Ngày .... tháng .... năm ....</em><br /><br />
+      <strong>Người giải thích</strong><br />
+      (Bác sĩ điều trị)<br />
+      <div class="sign-space"></div>
+    </div>
+    <div class="sign-col">
+      <em>Ngày .... tháng .... năm ....</em><br /><br />
+      <strong>Người bệnh / Đại diện hợp pháp</strong><br />
+      (Ký, ghi rõ họ tên)<br />
+      <div class="sign-space"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================== 3. PHIẾU KHÁM TIỀN MÊ ================== -->
+<div class="page" id="phieu-kham-tien-me">
+  <div class="header">
+    <div class="header-left">
+      <strong>TÊN CƠ SỞ KHÁM CHỮA BỆNH</strong><br />
+      Khoa Gây mê Hồi sức<br />
+      Số HSBA: ...................
+    </div>
+    <div class="header-right">
+      Mã NB: ..................<br />
+      <div class="barcode-box">
+        Barcode / QR NB
+      </div>
+    </div>
+  </div>
+
+  <h1 class="form-title">Phiếu khám tiền mê</h1>
+  <div class="subtitle">(Theo Thông tư 43/2018/TT-BYT)</div>
+
+  <div class="patient-info">
+    <div class="section-title">Thông tin người bệnh</div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">Họ và tên</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">Tuổi</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">Giới</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">Chẩn đoán</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">Phẫu thuật / thủ thuật dự kiến</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Khám lâm sàng – đánh giá nguy cơ</div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">Tiền sử bệnh nội khoa</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">Khám tim mạch</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">Khám hô hấp</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">Đường thở (Mallampati, khoảng cắn, cổ, răng...)</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">ASA (I, II, III, IV)</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">Nguy cơ đặc biệt</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Xét nghiệm, cận lâm sàng</div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Xét nghiệm</th>
+          <th>Kết quả</th>
+          <th>Ngày làm</th>
+          <th>Ghi chú</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Công thức máu</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Đông máu</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Điện tim</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Chụp Xquang / Siêu âm</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Kế hoạch vô cảm</div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">Phương pháp dự kiến</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">Thuốc sẽ sử dụng chính</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">Chuẩn bị đặc biệt (máu, phương tiện, ICU...)</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sign-row">
+    <div class="sign-col"></div>
+    <div class="sign-col">
+      <em>Ngày .... tháng .... năm ....</em><br /><br />
+      <strong>Bác sĩ gây mê khám và đánh giá</strong><br />
+      (Ký, ghi rõ họ tên)<br />
+      <div class="sign-space"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================== 4. BIÊN BẢN PHẪU THUẬT / THỦ THUẬT ================== -->
+<div class="page" id="bien-ban-pttt">
+  <div class="header">
+    <div class="header-left">
+      <strong>TÊN CƠ SỞ KHÁM CHỮA BỆNH</strong><br />
+      Phòng mổ / Khoa ................<br />
+      Số HSBA: ...................
+    </div>
+    <div class="header-right">
+      Mã NB: ..................<br />
+      <div class="barcode-box">
+        Barcode / QR NB
+      </div>
+    </div>
+  </div>
+
+  <h1 class="form-title">Biên bản phẫu thuật / thủ thuật</h1>
+  <div class="subtitle">(Theo Thông tư 43/2018/TT-BYT)</div>
+
+  <div class="patient-info">
+    <div class="section-title">Thông tin chung</div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">Họ và tên người bệnh</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">Tuổi</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">Giới</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">Chẩn đoán trước mổ</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">Chẩn đoán sau mổ</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Kíp phẫu thuật</div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">Bác sĩ phẫu thuật chính</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">Bác sĩ phẫu thuật phụ</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">Bác sĩ gây mê</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">Điều dưỡng dụng cụ</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">Điều dưỡng vòng ngoài</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Thời gian và phương pháp</div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">Thời gian bắt đầu mổ</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">Thời gian kết thúc mổ</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">Phương pháp vô cảm</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Mô tả phẫu thuật / thủ thuật</div>
+    <div class="field-line" style="height: 260px;"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Kết quả, tai biến và xử trí</div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">Kết quả ngay sau mổ</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">Tai biến, biến chứng (nếu có) và cách xử trí</div>
+        <div class="field-line" style="height: 90px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sign-row">
+    <div class="sign-col">
+      <strong>Bác sĩ gây mê</strong><br />
+      (Ký, ghi rõ họ tên)<br />
+      <div class="sign-space"></div>
+    </div>
+    <div class="sign-col">
+      <strong>Bác sĩ phẫu thuật chính</strong><br />
+      (Ký, ghi rõ họ tên)<br />
+      <div class="sign-space"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================== 5. CHECKLIST AN TOÀN PHẪU THUẬT (3 GIAI ĐOẠN) ================== -->
+<div class="page" id="checklist-an-toan-phau-thuat">
+  <div class="header">
+    <div class="header-left">
+      <strong>TÊN CƠ SỞ KHÁM CHỮA BỆNH</strong><br />
+      Phòng mổ / Khoa ................
+    </div>
+    <div class="header-right">
+      Mã NB: ..................<br />
+      <div class="barcode-box">Barcode / QR NB</div>
+    </div>
+  </div>
+
+  <h1 class="form-title">Phiếu kiểm tra an toàn phẫu thuật</h1>
+  <div class="subtitle">(Theo QĐ 3152/QĐ-BYT – Mẫu WHO)</div>
+
+  <div class="patient-info">
+    <div class="section-title">Thông tin cơ bản</div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">Tên người bệnh</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">Tuổi / Giới</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">Tên phẫu thuật</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">A. Trước khi gây mê (SIGN IN)</div>
+
+    <div class="checkbox-line">
+      <span class="checkbox-box"></span> Xác nhận đúng người bệnh, đúng phẫu thuật, đúng vị trí.
+    </div>
+    <div class="checkbox-line">
+      <span class="checkbox-box"></span> Đã đánh dấu vị trí phẫu thuật (nếu có).
+    </div>
+    <div class="checkbox-line">
+      <span class="checkbox-box"></span> Kiểm tra phiếu cam kết phẫu thuật đã ký.
+    </div>
+    <div class="checkbox-line">
+      <span class="checkbox-box"></span> Đã kiểm tra dị ứng thuốc.
+    </div>
+    <div class="checkbox-line">
+      <span class="checkbox-box"></span> Đã đánh giá nguy cơ đường thở khó / nguy cơ mất máu.
+    </div>
+
+    <div class="note">
+      Người chịu trách nhiệm checklist A: Điều dưỡng gây mê / Bác sĩ gây mê.
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">B. Trước khi rạch da (TIME OUT)</div>
+
+    <div class="checkbox-line">
+      <span class="checkbox-box"></span> Tất cả thành viên kíp mổ tự giới thiệu tên và nhiệm vụ.
+    </div>
+    <div class="checkbox-line">
+      <span class="checkbox-box"></span> Nhắc lại: tên người bệnh, phẫu thuật và vị trí mổ.
+    </div>
+    <div class="checkbox-line">
+      <span class="checkbox-box"></span> Đã chuẩn bị kháng sinh dự phòng (nếu có chỉ định).
+    </div>
+    <div class="checkbox-line">
+      <span class="checkbox-box"></span> Kiểm tra dụng cụ, thiết bị, phương tiện đã sẵn sàng.
+    </div>
+
+    <div class="note">
+      Người chịu trách nhiệm checklist B: Điều dưỡng dụng cụ / Bác sĩ phẫu thuật.
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">C. Trước khi rời phòng mổ (SIGN OUT)</div>
+
+    <div class="checkbox-line">
+      <span class="checkbox-box"></span> Xác nhận tên phẫu thuật đã thực hiện.
+    </div>
+    <div class="checkbox-line">
+      <span class="checkbox-box"></span> Kiểm dụng cụ, gạc, kim: đầy đủ, không sót trong người bệnh.
+    </div>
+    <div class="checkbox-line">
+      <span class="checkbox-box"></span> Ghi nhận mẫu bệnh phẩm gửi xét nghiệm (nếu có).
+    </div>
+    <div class="checkbox-line">
+      <span class="checkbox-box"></span> Ghi nhận các vấn đề cần theo dõi đặc biệt sau mổ.
+    </div>
+
+    <div class="note">
+      Người chịu trách nhiệm checklist C: Điều dưỡng dụng cụ / Bác sĩ phẫu thuật / Bác sĩ gây mê.
+    </div>
+  </div>
+
+  <div class="sign-row">
+    <div class="sign-col">
+      <strong>Điều dưỡng</strong><br />
+      (Ký, ghi rõ họ tên)<br />
+      <div class="sign-space"></div>
+    </div>
+    <div class="sign-col">
+      <strong>Bác sĩ phẫu thuật</strong><br />
+      (Ký, ghi rõ họ tên)<br />
+      <div class="sign-space"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================== 6. PHIẾU THEO DÕI SAU MỔ / HỒI TỈNH ================== -->
+<div class="page" id="phieu-theo-doi-sau-mo">
+  <div class="header">
+    <div class="header-left">
+      <strong>TÊN CƠ SỞ KHÁM CHỮA BỆNH</strong><br />
+      Khoa Hồi sức / Hậu phẫu
+    </div>
+    <div class="header-right">
+      Mã NB: ..................<br />
+      <div class="barcode-box">Barcode / QR NB</div>
+    </div>
+  </div>
+
+  <h1 class="form-title">Phiếu theo dõi sau mổ / hồi tỉnh</h1>
+
+  <div class="patient-info">
+    <div class="section-title">Thông tin người bệnh</div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">Họ và tên</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">Tuổi / Giới</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">Loại phẫu thuật</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Bảng theo dõi</div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Giờ</th>
+          <th>Mạch</th>
+          <th>Huyết áp</th>
+          <th>Nhịp thở</th>
+          <th>SpO₂</th>
+          <th>Ý thức</th>
+          <th>Đau (VAS)</th>
+          <th>Vết mổ / Dẫn lưu</th>
+          <th>Người ghi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td colspan="9" style="height: 22px;"></td></tr>
+        <tr><td colspan="9" style="height: 22px;"></td></tr>
+        <tr><td colspan="9" style="height: 22px;"></td></tr>
+        <tr><td colspan="9" style="height: 22px;"></td></tr>
+        <tr><td colspan="9" style="height: 22px;"></td></tr>
+        <tr><td colspan="9" style="height: 22px;"></td></tr>
+      </tbody>
+    </table>
+    <div class="note">
+      Ghi ít nhất mỗi 15–30 phút trong 2 giờ đầu, sau đó tùy tình trạng người bệnh.
+    </div>
+  </div>
+
+  <div class="sign-row">
+    <div class="sign-col">
+      <strong>Điều dưỡng theo dõi</strong><br />
+      (Ký, ghi rõ họ tên)<br />
+      <div class="sign-space"></div>
+    </div>
+    <div class="sign-col">
+      <strong>Bác sĩ phụ trách</strong><br />
+      (Ký, ghi rõ họ tên)<br />
+      <div class="sign-space"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================== 7. PHIẾU SỬ DỤNG THUỐC, VẬT TƯ TRONG PHẪU THUẬT ================== -->
+<div class="page" id="phieu-vattu-thuoc-pttt">
+  <div class="header">
+    <div class="header-left">
+      <strong>TÊN CƠ SỞ KHÁM CHỮA BỆNH</strong><br />
+      Phòng mổ / Khoa Dược
+    </div>
+    <div class="header-right">
+      Mã NB: ..................<br />
+      <div class="barcode-box">Barcode / QR NB</div>
+    </div>
+  </div>
+
+  <h1 class="form-title">Phiếu sử dụng thuốc, vật tư trong phẫu thuật</h1>
+  <div class="subtitle">(Liên kết với BHYT XML4 – MA_THUOC, MA_VATTU)</div>
+
+  <div class="patient-info">
+    <div class="section-title">Thông tin phẫu thuật</div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">Họ và tên người bệnh</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">Mã NB</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <div class="field-label">Tên phẫu thuật / thủ thuật</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">Mã PTTT (MA_PTTT)</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Danh mục thuốc, dịch truyền</div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>STT</th>
+          <th>Tên thuốc</th>
+          <th>Mã thuốc (MA_THUOC)</th>
+          <th>Hàm lượng</th>
+          <th>ĐVT</th>
+          <th>Số lượng</th>
+          <th>Đường dùng</th>
+          <th>Ghi chú</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td colspan="8" style="height: 22px;"></td></tr>
+        <tr><td colspan="8" style="height: 22px;"></td></tr>
+        <tr><td colspan="8" style="height: 22px;"></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Danh mục vật tư tiêu hao</div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>STT</th>
+          <th>Tên vật tư</th>
+          <th>Mã vật tư (MA_VATTU)</th>
+          <th>Quy cách</th>
+          <th>ĐVT</th>
+          <th>Số lượng</th>
+          <th>Vị trí sử dụng</th>
+          <th>Ghi chú</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td colspan="8" style="height: 22px;"></td></tr>
+        <tr><td colspan="8" style="height: 22px;"></td></tr>
+        <tr><td colspan="8" style="height: 22px;"></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sign-row">
+    <div class="sign-col">
+      <strong>Điều dưỡng dụng cụ</strong><br />
+      (Ký, ghi rõ họ tên)<br />
+      <div class="sign-space"></div>
+    </div>
+    <div class="sign-col">
+      <strong>Dược sĩ kiểm soát</strong><br />
+      (Ký, ghi rõ họ tên)<br />
+      <div class="sign-space"></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

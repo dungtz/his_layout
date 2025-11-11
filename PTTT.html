@@ -1,1127 +1,1733 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản Lý Phẫu Thuật & Thủ Thuật - HIS</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#1e40af',
-                        secondary: '#3b82f6',
-                        success: '#10b981',
-                        warning: '#f59e0b',
-                        danger: '#ef4444',
-                        info: '#3b82f6',
-                        light: '#f3f4f6',
-                        dark: '#1f2937',
-                        'gray-100': '#f3f4f6',
-                        'gray-200': '#e5e7eb',
-                        'gray-300': '#d1d5db',
-                        'gray-400': '#9ca3af',
-                        'gray-500': '#6b7280',
-                        'gray-600': '#4b5563',
-                        'gray-700': '#374151',
-                        'gray-800': '#1f2937',
-                        'gray-900': '#111827'
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif']
-                    },
-                    borderRadius: {
-                        'sm': '0.125rem',
-                        'md': '0.375rem',
-                        'lg': '0.5rem',
-                        'xl': '0.75rem'
-                    }
-                }
-            }
-        }
-    </script>
-    <style type="text/tailwindcss">
-        @layer utilities {
-            .content-auto {
-                content-visibility: auto;
-            }
-            .scrollbar-thin {
-                scrollbar-width: thin;
-            }
-            .scrollbar-none {
-                scrollbar-width: none;
-            }
-            .scrollbar-none::-webkit-scrollbar {
-                display: none;
-            }
-            .shadow-custom {
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            }
-            .transition-custom {
-                transition: all 0.2s ease-in-out;
-            }
-        }
-    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Phẩu thuật Thủ thuật - Hệ Thống Bệnh Viện</title>
     <style>
-        /* Base styles */
+        :root {
+            --bg: #f6f7f9;
+            --card: #fff;
+            --line: #e5e7eb;
+            --txt: #111827;
+            --muted: #6b7280;
+            --primary: #2563eb;
+            --secondary: #4b5563;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --sidebar-width: 250px;
+            --right-sidebar-width: 250px;
+            --font-family: 'Times New Roman';
+        }
+
         * {
-            margin: 0;
-            padding: 0;
             box-sizing: border-box;
         }
+
+        html,
         body {
-            font-family: 'Inter', system-ui, sans-serif;
-            background-color: #f8fafc;
-            color: #1f2937;
+            height: 100%;
+            margin: 0;
+            font: 14px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+            color: var(--txt);
+            background: var(--bg);
+            font-family: var(--font-family);
         }
-        /* Custom styles */
-        .header {
-            background-color: #ffffff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+        /* Layout tổng thể */
+        .container {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
         }
-        .sidebar {
-            background-color: #ffffff;
-            box-shadow: 2px 0 4px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-        }
+
+        /* Main content */
         .main-content {
-            background-color: #f1f5f9;
-            min-height: calc(100vh - 64px);
+            flex: 1;
+            padding: 20px;
+            padding-top: 80px;
+            background: var(--bg);
+            overflow: hidden;
         }
-        .card {
-            background-color: #ffffff;
-            border-radius: 0.5rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+        /* Header chung */
+        .header {
+            padding: 12px 16px;
+            background: var(--card);
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
         }
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-        .btn {
-            padding: 8px 16px;
-            border-radius: 0.375rem;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border: none;
-            outline: none;
-        }
-        .btn-primary {
-            background-color: #1e40af;
-            color: white;
-        }
-        .btn-primary:hover {
-            background-color: #1e3a8a;
-        }
-        .btn-secondary {
-            background-color: #6b7280;
-            color: white;
-        }
-        .btn-secondary:hover {
-            background-color: #4b5563;
-        }
-        .btn-success {
-            background-color: #10b981;
-            color: white;
-        }
-        .btn-success:hover {
-            background-color: #059669;
-        }
-        .btn-warning {
-            background-color: #f59e0b;
-            color: white;
-        }
-        .btn-warning:hover {
-            background-color: #d97706;
-        }
-        .btn-danger {
-            background-color: #ef4444;
-            color: white;
-        }
-        .btn-danger:hover {
-            background-color: #dc2626;
-        }
-        .btn-outline {
-            border: 1px solid #d1d5db;
-            background-color: white;
-            color: #374151;
-        }
-        .btn-outline:hover {
-            background-color: #f3f4f6;
-        }
-        .input, .select, .textarea {
+
+        input[type="text"],
+        input[type="date"],
+        input[type="time"],
+        select,
+        textarea {
             width: 100%;
-            padding: 8px 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 0.375rem;
-            font-size: 14px;
-            transition: border-color 0.2s ease;
-        }
-        .input:focus, .select:focus, .textarea:focus {
+            padding: 2px 4px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: #fff;
             outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            font-family: var(--font-family);
+            border: none;
+            border-bottom: 1px dashed #000;
+            outline: none;
+            margin-bottom: 10px;
         }
-        .label {
-            display: block;
+
+        textarea {
+            min-height: 84px;
+            resize: vertical;
+
+        }
+
+        .btn {
+            appearance: none;
+            border: 1px solid var(--line);
+            background: #fff;
+            padding: 10px 14px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: var(--font-family);
+        }
+
+
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo img {
+            height: 40px;
+            width: auto;
+        }
+
+        .logo h1 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--primary);
+            margin: 0;
+        }
+
+        .stats-container {
+            display: flex;
+            gap: 12px;
+        }
+
+        .stat-card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 4px 6px;
+            min-width: 140px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 16px;
+            font-weight: 600;
             margin-bottom: 4px;
-            font-size: 13px;
-            font-weight: 500;
-            color: #374151;
         }
-        .modal {
+
+        .stat-label {
+            font-size: 10px;
+            color: var(--muted);
+        }
+
+        .stat-waiting {
+            color: var(--warning);
+        }
+
+        .stat-processing {
+            color: var(--primary);
+        }
+
+        .stat-completed {
+            color: var(--success);
+        }
+
+        .stat-total {
+            color: var(--secondary);
+        }
+
+        /* Kanban Board Styles */
+        .kanban-board {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 16px;
+            width: 100%;
+            height: calc(100vh - 150px);
+        }
+
+        .kanban-column {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 10px;
+            min-width: calc(20% - 6.4px);
+            max-width: calc(20% - 6.4px);
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            height: 100%;
+        }
+
+        @media (max-width: 1200px) {
+            .kanban-column {
+                min-width: calc(25% - 6px);
+                max-width: calc(25% - 6px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .kanban-column {
+                min-width: 300px;
+                max-width: 300px;
+                height: calc(100vh - 180px);
+            }
+        }
+
+        .column-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .column-title {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--txt);
+            margin: 0;
+        }
+
+        .task-count {
+            background: #f9fafb;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 2px 8px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--secondary);
+        }
+
+        .column-content {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: calc(100% - 80px);
+        }
+
+        /* Task Card Styles */
+        .task-card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .task-card:hover {
+            border-color: var(--primary);
+            background: #f0f9ff;
+        }
+
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .task-id {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 13px;
+        }
+
+        .task-priority {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .priority-high {
+            background: #fee2e2;
+            color: var(--danger);
+            border: 1px solid #fecaca;
+        }
+
+        .priority-medium {
+            background: #fef3c7;
+            color: var(--warning);
+            border: 1px solid #fde68a;
+        }
+
+        .priority-low {
+            background: #dbeafe;
+            color: var(--primary);
+            border: 1px solid #bfdbfe;
+        }
+
+        .task-patient {
+            margin-bottom: 6px;
+        }
+
+        .patient-name {
+            font-weight: 500;
+            margin-bottom: 2px;
+            font-size: 14px;
+        }
+
+        .patient-info {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .task-procedure {
+            margin-bottom: 8px;
+            padding: 8px;
+            background: #f9fafb;
+            border-radius: 4px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .procedure-name {
+            font-size: 12px;
+            color: var(--secondary);
+            margin-bottom: 2px;
+            line-height: 1.4;
+        }
+
+        .task-footer {
+            font-size: 11px;
+            color: var(--muted);
+            padding-top: 6px;
+            border-top: 1px solid var(--line);
+        }
+
+        .add-task-btn {
+            background: transparent;
+            border: 1px dashed var(--line);
+            color: var(--secondary);
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+            text-align: center;
+            margin-top: 8px;
+        }
+
+        .add-task-btn:hover {
+            background: #f9fafb;
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: flex;
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 1100;
             justify-content: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
+            align-items: center;
         }
-        .modal.active {
-            opacity: 1;
-            visibility: visible;
-        }
+
         .modal-content {
-            background-color: white;
-            border-radius: 0.5rem;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            max-width: 90%;
-            max-height: 90vh;
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            width: 90%;
+            height: 90%;
             overflow-y: auto;
-            transform: scale(0.95);
-            transition: transform 0.3s ease;
         }
-        .modal.active .modal-content {
-            transform: scale(1);
+
+        .modal-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .badge {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 9999px;
-            font-size: 12px;
-            font-weight: 500;
+
+        .modal-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0;
+            color: var(--txt);
         }
-        .badge-success {
-            background-color: #d1fae5;
-            color: #065f46;
-        }
-        .badge-warning {
-            background-color: #fef3c7;
-            color: #92400e;
-        }
-        .badge-danger {
-            background-color: #fee2e2;
-            color: #991b1b;
-        }
-        .badge-info {
-            background-color: #dbeafe;
-            color: #1e3a8a;
-        }
-        .tab {
-            padding: 12px 24px;
+
+        .close-modal-btn {
+            background: none;
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            padding: 4px 8px;
             cursor: pointer;
-            border-bottom: 2px solid transparent;
-            transition: all 0.2s ease;
+            color: var(--secondary);
+            font-size: 14px;
         }
-        .tab.active {
-            color: #1e40af;
-            border-bottom-color: #1e40af;
-            font-weight: 500;
+
+        .modal-body {
+            padding: 16px;
         }
-        /* Animation */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
+
+        .modal-footer {
+            padding: 12px 16px;
+            border-top: 1px solid var(--line);
+            background: #f9fafb;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        /* Button styles */
+        .btn {
+            padding: 8px 12px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: #fff;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+            font-family: var(--font-family);
+        }
+
+        .btn:hover {
+            background: #f9fafb;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: #fff;
+            border-color: var(--secondary);
+        }
+
+        .btn-secondary:hover {
+            background: #374151;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: #fff;
+            border-color: var(--success);
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+
+            .header-container {
+                flex-direction: column;
+                gap: 12px;
+                align-items: stretch;
+            }
+
+            .stats-container {
+                width: 100%;
+                overflow-x: auto;
+                padding-bottom: 8px;
+                justify-content: space-between;
+            }
+
+            .stat-card {
+                min-width: 120px;
+            }
+
+            .main-content {
+                padding: 12px;
+            }
+
+            .kanban-board {
+                gap: 12px;
+            }
+
+            .kanban-column {
+                min-width: 260px;
+                padding: 12px;
             }
         }
-        .fade-in {
-            animation: fadeIn 0.3s ease;
+
+        .search {
+            display: flex;
+            gap: 8px;
+        }
+
+        .modal-body {
+            padding: 16px;
         }
     </style>
 </head>
+
 <body>
     <!-- Header -->
-    <header class="header sticky top-0 z-10">
-        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
-            <div class="flex items-center space-x-4">
-                <button id="menu-toggle" class="lg:hidden text-gray-700 hover:text-gray-900">
-                    <i class="fa fa-bars text-xl"></i>
-                </button>
-                <h1 class="text-xl font-bold text-primary">Quản Lý Phẫu Thuật & Thủ Thuật</h1>
-            </div>
-            <div class="flex items-center space-x-4">
-                <div class="relative">
-                    <input type="text" placeholder="Tìm kiếm..." class="input pl-9 pr-4 py-2 w-64">
-                    <i class="fa fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+    <header class="header">
+        <div class="header-container">
+            <a href="home.html" style="display: flex; align-items: center;">
+                <div
+                    style="width: 40px; height: 40px; background-color: #4CAF50; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px;">
+                    HIS
                 </div>
-                <div class="flex items-center space-x-3">
-                    <button class="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-full">
-                        <i class="fa fa-bell text-xl"></i>
-                    </button>
-                    <div class="flex items-center space-x-2">
-                        <img src="https://picsum.photos/id/1005/40/40" alt="User" class="w-10 h-10 rounded-full object-cover">
-                        <span class="hidden md:block text-sm font-medium">Bác Sĩ Phẫu Thuật</span>
-                    </div>
+            </a>
+
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-number stat-waiting">12</div>
+                    <div class="stat-label">Chờ tiếp nhận</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number stat-processing">8</div>
+                    <div class="stat-label">Đang diễn ra</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number stat-completed">15</div>
+                    <div class="stat-label">Hoàn tất hôm nay</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number stat-total">35</div>
+                    <div class="stat-label">Tổng ca phẫu thuật hôm nay</div>
                 </div>
             </div>
         </div>
     </header>
 
-    <div class="flex">
-        <!-- Sidebar -->
-        <aside id="sidebar" class="sidebar fixed top-16 left-0 h-[calc(100vh-4rem)] w-64 transform -translate-x-full lg:translate-x-0 z-20">
-            <nav class="py-4 px-3 h-full flex flex-col overflow-y-auto">
-                <div class="mb-6">
-                    <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider px-3 mb-2">Chức năng chính</div>
-                    <ul class="space-y-1">
-                        <li>
-                            <a href="home.html" class="flex items-center px-3 py-2 text-gray-700 rounded-md hover:bg-gray-100">
-                                <i class="fa fa-home mr-3"></i>
-                                <span>Trang chủ</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="flex items-center px-3 py-2 text-primary font-medium bg-blue-50 rounded-md">
-                                <i class="fa fa-stethoscope mr-3"></i>
-                                <span>Phẫu Thuật & Thủ Thuật</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="tiepnhan.html" class="flex items-center px-3 py-2 text-gray-700 rounded-md hover:bg-gray-100">
-                                <i class="fa fa-user-plus mr-3"></i>
-                                <span>Tiếp Nhận</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="khambenh.html" class="flex items-center px-3 py-2 text-gray-700 rounded-md hover:bg-gray-100">
-                                <i class="fa fa-medkit mr-3"></i>
-                                <span>Khám Bệnh</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="xetnghiem.html" class="flex items-center px-3 py-2 text-gray-700 rounded-md hover:bg-gray-100">
-                                <i class="fa fa-flask mr-3"></i>
-                                <span>Xét Nghiệm</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="cdha.html" class="flex items-center px-3 py-2 text-gray-700 rounded-md hover:bg-gray-100">
-                                <i class="fa fa-x-ray mr-3"></i>
-                                <span>Chẩn Đoán Hình Ảnh</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="thutien.html" class="flex items-center px-3 py-2 text-gray-700 rounded-md hover:bg-gray-100">
-                                <i class="fa fa-money mr-3"></i>
-                                <span>Thu Tiền</span>
-                            </a>
-                        </li>
-                    </ul>
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Kanban Board -->
+        <div class="kanban-board">
+            <!-- Column: Chờ tiếp nhận -->
+            <div class="kanban-column">
+                <div class="column-header">
+                    <div class="column-title">Chờ tiếp nhận</div>
+                    <div class="task-count">5</div>
                 </div>
-                <div class="mt-auto">
-                    <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider px-3 mb-2">Hỗ trợ</div>
-                    <ul class="space-y-1">
-                        <li>
-                            <a href="#" class="flex items-center px-3 py-2 text-gray-700 rounded-md hover:bg-gray-100">
-                                <i class="fa fa-question-circle mr-3"></i>
-                                <span>Trợ giúp</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="flex items-center px-3 py-2 text-gray-700 rounded-md hover:bg-gray-100">
-                                <i class="fa fa-cog mr-3"></i>
-                                <span>Cài đặt</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="flex items-center px-3 py-2 text-gray-700 rounded-md hover:bg-gray-100">
-                                <i class="fa fa-sign-out mr-3"></i>
-                                <span>Đăng xuất</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        </aside>
+                <div class="column-content">
+                    <div class="task-card" onclick="viewProcedure('PT001')">
+                        <div class="task-header">
+                            <div class="task-id">PT001</div>
+                            <div class="task-priority priority-medium">Trung bình</div>
+                        </div>
+                        <div class="task-patient">
+                            <div class="patient-name">Nguyễn Văn A</div>
+                            <div class="patient-info">Tuổi: 45 - Nam | BHYT</div>
+                        </div>
+                        <div class="task-procedure">
+                            <div class="procedure-name">• Phẫu thuật niêm mạc não</div>
+                            <div class="procedure-name">• Khoảng thời gian: ~ 120 phút</div>
+                        </div>
+                        <div class="task-footer">
+                            Yêu cầu: BS. Trần Văn B | 08:15 AM
+                        </div>
+                    </div>
 
-        <!-- Main Content -->
-        <main class="main-content flex-1 lg:ml-64 p-4 md:p-6">
-            <!-- Dashboard Summary -->
-            <div class="mb-6">
-                <h2 class="text-xl font-semibold mb-4">Tổng quan hệ thống</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div class="card p-4">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-sm text-gray-500">Số ca phẫu thuật hôm nay</p>
-                                <h3 class="text-2xl font-bold mt-1">12</h3>
-                            </div>
-                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-primary">
-                                <i class="fa fa-heartbeat text-xl"></i>
-                            </div>
+                    <div class="task-card" onclick="viewProcedure('PT002')">
+                        <div class="task-header">
+                            <div class="task-id">PT002</div>
+                            <div class="task-priority priority-high">Khẩn cấp</div>
                         </div>
-                        <div class="mt-3 text-sm">
-                            <span class="text-success flex items-center">
-                                <i class="fa fa-arrow-up mr-1"></i> 16% so với hôm qua
-                            </span>
+                        <div class="task-patient">
+                            <div class="patient-name">Trần Thị B</div>
+                            <div class="patient-info">Tuổi: 68 - Nữ | BHYT</div>
+                        </div>
+                        <div class="task-procedure">
+                            <div class="procedure-name">• Cán mạch tim cấp</div>
+                            <div class="procedure-name">• Khoảng thời gian: ~ 90 phút</div>
+                        </div>
+                        <div class="task-footer">
+                            Yêu cầu: BS. Phạm Thị C | 08:30 AM
                         </div>
                     </div>
-                    <div class="card p-4">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-sm text-gray-500">Số ca phẫu thuật tuần này</p>
-                                <h3 class="text-2xl font-bold mt-1">48</h3>
-                            </div>
-                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-success">
-                                <i class="fa fa-calendar-check-o text-xl"></i>
-                            </div>
+
+                    <div class="task-card" onclick="viewProcedure('PT003')">
+                        <div class="task-header">
+                            <div class="task-id">PT003</div>
+                            <div class="task-priority priority-low">Thường</div>
                         </div>
-                        <div class="mt-3 text-sm">
-                            <span class="text-success flex items-center">
-                                <i class="fa fa-arrow-up mr-1"></i> 8% so với tuần trước
-                            </span>
+                        <div class="task-patient">
+                            <div class="patient-name">Lê Văn C</div>
+                            <div class="patient-info">Tuổi: 32 - Nam | Bảo hiểm</div>
                         </div>
-                    </div>
-                    <div class="card p-4">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-sm text-gray-500">Bệnh nhân chờ phẫu thuật</p>
-                                <h3 class="text-2xl font-bold mt-1">5</h3>
-                            </div>
-                            <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center text-warning">
-                                <i class="fa fa-clock-o text-xl"></i>
-                            </div>
+                        <div class="task-procedure">
+                            <div class="procedure-name">• Cắt bỏ khối u da</div>
+                            <div class="procedure-name">• Khoảng thời gian: ~ 45 phút</div>
                         </div>
-                        <div class="mt-3 text-sm">
-                            <span class="text-warning flex items-center">
-                                <i class="fa fa-exclamation-triangle mr-1"></i> Cần xử lý
-                            </span>
+                        <div class="task-footer">
+                            Yêu cầu: BS. Võ Văn D | 09:00 AM
                         </div>
                     </div>
-                    <div class="card p-4">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-sm text-gray-500">Tỷ lệ thành công</p>
-                                <h3 class="text-2xl font-bold mt-1">98.5%</h3>
-                            </div>
-                            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-purple-600">
-                                <i class="fa fa-check-circle text-xl"></i>
-                            </div>
+
+                    <div class="task-card" onclick="viewProcedure('PT004')">
+                        <div class="task-header">
+                            <div class="task-id">PT004</div>
+                            <div class="task-priority priority-medium">Trung bình</div>
                         </div>
-                        <div class="mt-3 text-sm">
-                            <span class="text-success flex items-center">
-                                <i class="fa fa-arrow-up mr-1"></i> 1.2% so với tháng trước
-                            </span>
+                        <div class="task-patient">
+                            <div class="patient-name">Phạm Thị D</div>
+                            <div class="patient-info">Tuổi: 52 - Nữ | Tự trả</div>
+                        </div>
+                        <div class="task-procedure">
+                            <div class="procedure-name">• Cắt bỏ đường ruột thừa</div>
+                            <div class="procedure-name">• Khoảng thời gian: ~ 60 phút</div>
+                        </div>
+                        <div class="task-footer">
+                            Yêu cầu: BS. Đinh Văn E | 09:15 AM
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" onclick="printProcedure()">In tất cả>
+                        <button class="btn btn-primary" onclick="saveAllChanges()">Lưu tất cả thay đổi>
+                        <button class="btn btn-success" onclick="changeStatus()">Chuyển trạng thái>
+                    </div>
+                </div>
+                <button class="add-task-btn" onclick="addNewProcedure()">+ Thêm ca phẫu thuật</button>
+            </div>
+
+            <!-- Column: Chờ xếp lịch -->
+            <div class="kanban-column">
+                <div class="column-header">
+                    <div class="column-title">Chờ xếp lịch</div>
+                    <div class="task-count">7</div>
+                </div>
+                <div class="column-content">
+                    <div class="task-card" onclick="viewProcedure('PT005')">
+                        <div class="task-header">
+                            <div class="task-id">PT005</div>
+                            <div class="task-priority priority-medium">Trung bình</div>
+                        </div>
+                        <div class="task-patient">
+                            <div class="patient-name">Nguyễn Văn E</div>
+                            <div class="patient-info">Tuổi: 55 - Nam | BHYT</div>
+                        </div>
+                        <div class="task-procedure">
+                            <div class="procedure-name">• Phẫu thuật phẫu thuật cổ thận</div>
+                            <div class="procedure-name">• Khoảng thời gian: ~ 90 phút</div>
+                        </div>
+                        <div class="task-footer">
+                            Yêu cầu: BS. Phạm Văn F | 10:00 AM
+                        </div>
+                    </div>
+
+                    <div class="task-card" onclick="viewProcedure('PT006')">
+                        <div class="task-header">
+                            <div class="task-id">PT006</div>
+                            <div class="task-priority priority-low">Thường</div>
+                        </div>
+                        <div class="task-patient">
+                            <div class="patient-name">Trần Văn F</div>
+                            <div class="patient-info">Tuổi: 42 - Nam | Bảo hiểm</div>
+                        </div>
+                        <div class="task-procedure">
+                            <div class="procedure-name">• Phẫu thuật arthroscope gối</div>
+                            <div class="procedure-name">• Khoảng thời gian: ~ 75 phút</div>
+                        </div>
+                        <div class="task-footer">
+                            Yêu cầu: BS. Võ Thị G | 10:30 AM
+                        </div>
+                    </div>
+
+                    <div class="task-card" onclick="viewProcedure('PT007')">
+                        <div class="task-header">
+                            <div class="task-id">PT007</div>
+                            <div class="task-priority priority-medium">Trung bình</div>
+                        </div>
+                        <div class="task-patient">
+                            <div class="patient-name">Lê Thị G</div>
+                            <div class="patient-info">Tuổi: 28 - Nữ | BHYT</div>
+                        </div>
+                        <div class="task-procedure">
+                            <div class="procedure-name">• Phẫu thuật siêu vi thai kỳ</div>
+                            <div class="procedure-name">• Khoảng thời gian: ~ 30 phút</div>
+                        </div>
+                        <div class="task-footer">
+                            Yêu cầu: BS. Đặng Văn H | 11:00 AM
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Tabs -->
-            <div class="mb-6">
-                <div class="border-b">
-                    <div class="flex overflow-x-auto scrollbar-none">
-                        <button class="tab active" data-tab="tab1">Quản lý phẫu thuật</button>
-                        <button class="tab" data-tab="tab2">Danh sách chờ phẫu thuật</button>
-                        <button class="tab" data-tab="tab3">Lịch sử phẫu thuật</button>
-                        <button class="tab" data-tab="tab4">Quản lý phòng phẫu thuật</button>
-                        <button class="tab" data-tab="tab5">Báo cáo thống kê</button>
-                    </div>
+            <!-- Column: Đang diễn ra -->
+            <div class="kanban-column">
+                <div class="column-header">
+                    <div class="column-title">Đang diễn ra</div>
+                    <div class="task-count">8</div>
                 </div>
-            </div>
+                <div class="column-content">
+                    <div class="task-card" onclick="viewProcedure('PT008')">
+                        <div class="task-header">
+                            <div class="task-id">PT008</div>
+                            <div class="task-priority priority-high">Khẩn cấp</div>
+                        </div>
+                        <div class="task-patient">
+                            <div class="patient-name">Phạm Văn H</div>
+                            <div class="patient-info">Tuổi: 65 - Nam | BHYT</div>
+                        </div>
+                        <div class="task-procedure">
+                            <div class="procedure-name">• Nội soi đường tiêu hóa</div>
+                            <div class="procedure-name">• Khoảng thời gian: ~ 60 phút</div>
+                        </div>
+                        <div class="task-footer">
+                            Phòng: PT02 | Bắt đầu: 08:30 AM
+                        </div>
+                    </div>
 
-            <!-- Tab Content -->
-            <div class="tab-content active" id="tab1">
-                <!-- Search and Filters -->
-                <div class="card p-4 mb-6">
-                    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                        <div>
-                            <label class="label">Mã bệnh nhân</label>
-                            <input type="text" class="input" placeholder="Nhập mã bệnh nhân">
+                    <div class="task-card" onclick="viewProcedure('PT009')">
+                        <div class="task-header">
+                            <div class="task-id">PT009</div>
+                            <div class="task-priority priority-medium">Trung bình</div>
                         </div>
-                        <div>
-                            <label class="label">Họ tên bệnh nhân</label>
-                            <input type="text" class="input" placeholder="Nhập họ tên">
+                        <div class="task-patient">
+                            <div class="patient-name">Võ Thị I</div>
+                            <div class="patient-info">Tuổi: 58 - Nữ | BHYT</div>
                         </div>
-                        <div>
-                            <label class="label">Loại phẫu thuật</label>
-                            <select class="select">
-                                <option value="">Tất cả</option>
-                                <option value="1">Phẫu thuật nội trú</option>
-                                <option value="2">Phẫu thuật ngoại trú</option>
-                                <option value="3">Thủ thuật nội soi</option>
-                                <option value="4">Thủ thuật y học</option>
-                            </select>
+                        <div class="task-procedure">
+                            <div class="procedure-name">• Cắt bỏ khối u thyroid</div>
+                            <div class="procedure-name">• Khoảng thời gian: ~ 120 phút</div>
                         </div>
-                        <div>
-                            <label class="label">Trạng thái</label>
-                            <select class="select">
-                                <option value="">Tất cả</option>
-                                <option value="1">Chờ xác nhận</option>
-                                <option value="2">Đã xác nhận</option>
-                                <option value="3">Đã thực hiện</option>
-                                <option value="4">Bị hủy</option>
-                            </select>
-                        </div>
-                        <div class="flex items-end">
-                            <button class="btn btn-primary w-full">
-                                <i class="fa fa-search mr-2"></i> Tìm kiếm
-                            </button>
+                        <div class="task-footer">
+                            Phòng: PT01 | Bắt đầu: 09:00 AM
                         </div>
                     </div>
-                </div>
 
-                <!-- Operation List -->
-                <div class="card">
-                    <div class="p-4 border-b flex items-center justify-between">
-                        <h3 class="font-semibold">Danh sách phẫu thuật</h3>
-                        <button id="add-operation-btn" class="btn btn-primary">
-                            <i class="fa fa-plus mr-2"></i> Thêm phẫu thuật
-                        </button>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full">
-                            <thead>
-                                <tr class="bg-gray-50">
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mã PT</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mã BN</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Họ tên BN</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Loại PT</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ngày PT</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Bác sĩ chủ刀</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phòng PT</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Trạng thái</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hành động</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                <!-- Sample Data Rows -->
-                                <tr>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">PT00123</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">BN2023001</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">Nguyễn Văn A</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">Phẫu thuật phổi</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">2024-06-15</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">Bác sĩ Minh</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">Phòng PT 01</td>
-                                    <td class="px-4 py-3 whitespace-nowrap">
-                                        <span class="badge badge-success">Đã thực hiện</span>
-                                    </td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                                        <button class="text-primary hover:text-blue-800 mr-3">
-                                            <i class="fa fa-eye"></i>
-                                        </button>
-                                        <button class="text-gray-600 hover:text-gray-900 mr-3">
-                                            <i class="fa fa-edit"></i>
-                                        </button>
-                                        <button class="text-danger hover:text-red-800">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">PT00124</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">BN2023002</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">Trần Thị B</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">Thủ thuật nội soi</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">2024-06-16</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">Bác sĩ Hương</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">Phòng PT 02</td>
-                                    <td class="px-4 py-3 whitespace-nowrap">
-                                        <span class="badge badge-warning">Đã xác nhận</span>
-                                    </td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                                        <button class="text-primary hover:text-blue-800 mr-3">
-                                            <i class="fa fa-eye"></i>
-                                        </button>
-                                        <button class="text-gray-600 hover:text-gray-900 mr-3">
-                                            <i class="fa fa-edit"></i>
-                                        </button>
-                                        <button class="text-danger hover:text-red-800">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">PT00125</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">BN2023003</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">Lê Văn C</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">Phẫu thuật bụng</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">2024-06-17</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">Bác sĩ Tuấn</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">Phòng PT 01</td>
-                                    <td class="px-4 py-3 whitespace-nowrap">
-                                        <span class="badge badge-info">Chờ xác nhận</span>
-                                    </td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                                        <button class="text-primary hover:text-blue-800 mr-3">
-                                            <i class="fa fa-eye"></i>
-                                        </button>
-                                        <button class="text-gray-600 hover:text-gray-900 mr-3">
-                                            <i class="fa fa-edit"></i>
-                                        </button>
-                                        <button class="text-danger hover:text-red-800">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">PT00126</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">BN2023004</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">Phạm Thị D</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">Phẫu thuật khớp</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">2024-06-18</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">Bác sĩ Lâm</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">Phòng PT 03</td>
-                                    <td class="px-4 py-3 whitespace-nowrap">
-                                        <span class="badge badge-danger">Bị hủy</span>
-                                    </td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                                        <button class="text-primary hover:text-blue-800 mr-3">
-                                            <i class="fa fa-eye"></i>
-                                        </button>
-                                        <button class="text-gray-600 hover:text-gray-900 mr-3">
-                                            <i class="fa fa-edit"></i>
-                                        </button>
-                                        <button class="text-danger hover:text-red-800">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">PT00127</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">BN2023005</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">Đỗ Văn E</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">Thủ thuật tim mạch</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">2024-06-19</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">Bác sĩ Ngọc</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">Phòng PT 04</td>
-                                    <td class="px-4 py-3 whitespace-nowrap">
-                                        <span class="badge badge-warning">Đã xác nhận</span>
-                                    </td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                                        <button class="text-primary hover:text-blue-800 mr-3">
-                                            <i class="fa fa-eye"></i>
-                                        </button>
-                                        <button class="text-gray-600 hover:text-gray-900 mr-3">
-                                            <i class="fa fa-edit"></i>
-                                        </button>
-                                        <button class="text-danger hover:text-red-800">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- Pagination -->
-                    <div class="px-4 py-3 flex items-center justify-between border-t">
-                        <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-                            <div>
-                                <p class="text-sm text-gray-700">
-                                    Hiển thị <span class="font-medium">1</span> đến <span class="font-medium">5</span> của <span class="font-medium">24</span> kết quả
-                                </p>
-                            </div>
-                            <div>
-                                <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                                    <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                                        <span class="sr-only">Previous</span>
-                                        <i class="fa fa-chevron-left"></i>
-                                    </a>
-                                    <a href="#" aria-current="page" class="z-10 bg-blue-50 border-blue-500 text-blue-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
-                                        1
-                                    </a>
-                                    <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
-                                        2
-                                    </a>
-                                    <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
-                                        3
-                                    </a>
-                                    <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
-                                        ...
-                                    </span>
-                                    <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
-                                        5
-                                    </a>
-                                    <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                                        <span class="sr-only">Next</span>
-                                        <i class="fa fa-chevron-right"></i>
-                                    </a>
-                                </nav>
-                            </div>
+                    <div class="task-card" onclick="viewProcedure('PT010')">
+                        <div class="task-header">
+                            <div class="task-id">PT010</div>
+                            <div class="task-priority priority-medium">Trung bình</div>
+                        </div>
+                        <div class="task-patient">
+                            <div class="patient-name">Đặng Văn I</div>
+                            <div class="patient-info">Tuổi: 48 - Nam | Tự trả</div>
+                        </div>
+                        <div class="task-procedure">
+                            <div class="procedure-name">• Phẫu thuật cắt bỏ mụn nước</div>
+                            <div class="procedure-name">• Khoảng thời gian: ~ 45 phút</div>
+                        </div>
+                        <div class="task-footer">
+                            Phòng: PT03 | Bắt đầu: 09:30 AM
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="tab-content" id="tab2">
-                <div class="card">
-                    <div class="p-4 border-b">
-                        <h3 class="font-semibold">Danh sách bệnh nhân chờ phẫu thuật</h3>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full">
-                            <thead>
-                                <tr class="bg-gray-50">
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mã BN</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Họ tên BN</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tuổi</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Giới tính</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Chẩn đoán</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Loại PT</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ngày yêu cầu</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hành động</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                <!-- Sample Data Rows -->
-                                <tr>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">BN2023045</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">Vũ Văn F</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">56</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">Nam</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">Bệnh phổi tắc nghẽn mãn tính</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">Phẫu thuật phổi</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">2024-06-10</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                                        <button class="text-primary hover:text-blue-800 mr-3">
-                                            <i class="fa fa-eye"></i>
-                                        </button>
-                                        <button class="text-success hover:text-green-800 mr-3">
-                                            <i class="fa fa-check"></i> Xác nhận
-                                        </button>
-                                        <button class="text-danger hover:text-red-800">
-                                            <i class="fa fa-times"></i> Từ chối
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">BN2023046</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">Hồ Thị G</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">42</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">Nữ</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">Bệnh thận đá</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">Thủ thuật nội soi</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">2024-06-11</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                                        <button class="text-primary hover:text-blue-800 mr-3">
-                                            <i class="fa fa-eye"></i>
-                                        </button>
-                                        <button class="text-success hover:text-green-800 mr-3">
-                                            <i class="fa fa-check"></i> Xác nhận
-                                        </button>
-                                        <button class="text-danger hover:text-red-800">
-                                            <i class="fa fa-times"></i> Từ chối
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+            <!-- Column: Chờ xác nhận -->
+            <div class="kanban-column">
+                <div class="column-header">
+                    <div class="column-title">Chờ xác nhận</div>
+                    <div class="task-count">4</div>
                 </div>
-            </div>
+                <div class="column-content">
+                    <div class="task-card" onclick="viewProcedure('PT011')">
+                        <div class="task-header">
+                            <div class="task-id">PT011</div>
+                            <div class="task-priority priority-medium">Trung bình</div>
+                        </div>
+                        <div class="task-patient">
+                            <div class="patient-name">Nguyễn Văn J</div>
+                            <div class="patient-info">Tuổi: 38 - Nam | Bảo hiểm</div>
+                        </div>
+                        <div class="task-procedure">
+                            <div class="procedure-name">• Phẫu thuật cắt bỏ khối u gan</div>
+                            <div class="procedure-name">• Hoàn thành: 10:15 AM</div>
+                        </div>
+                        <div class="task-footer">
+                            Phòng: PT01 | BS. Phạm Văn K
+                        </div>
+                    </div>
 
-            <div class="tab-content" id="tab3">
-                <div class="card">
-                    <div class="p-4 border-b">
-                        <h3 class="font-semibold">Lịch sử phẫu thuật</h3>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full">
-                            <thead>
-                                <tr class="bg-gray-50">
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mã PT</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mã BN</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Họ tên BN</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Loại PT</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ngày PT</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kết quả</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hành động</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                <!-- Sample Data Rows -->
-                                <tr>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">PT00100</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">BN2023001</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">Nguyễn Văn A</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">Phẫu thuật phổi</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">2024-05-20</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700">Thành công</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                                        <button class="text-primary hover:text-blue-800 mr-3">
-                                            <i class="fa fa-file-text-o"></i> Xem hồ sơ
-                                        </button>
-                                        <button class="text-gray-600 hover:text-gray-900">
-                                            <i class="fa fa-print"></i> In
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tab-content" id="tab4">
-                <div class="card">
-                    <div class="p-4 border-b">
-                        <h3 class="font-semibold">Quản lý phòng phẫu thuật</h3>
-                    </div>
-                    <div class="p-4">
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            <!-- Operation Room Cards -->
-                            <div class="card p-4 border-l-4 border-green-500">
-                                <div class="flex justify-between items-start">
-                                    <div>
-                                        <h4 class="font-semibold">Phòng PT 01</h4>
-                                        <p class="text-sm text-gray-500">Trạng thái: Sẵn sàng</p>
-                                    </div>
-                                    <span class="badge badge-success">Trống</span>
-                                </div>
-                                <div class="mt-4 text-sm">
-                                    <p><i class="fa fa-calendar mr-2"></i> Lịch hôm nay: 3 ca</p>
-                                    <p><i class="fa fa-user-md mr-2"></i> Bác sĩ phụ trách: Bác sĩ Minh</p>
-                                </div>
-                                <div class="mt-4 flex space-x-2">
-                                    <button class="btn btn-outline text-sm">Xem chi tiết</button>
-                                    <button class="btn btn-outline text-sm">Sửa</button>
-                                </div>
-                            </div>
-                            <div class="card p-4 border-l-4 border-yellow-500">
-                                <div class="flex justify-between items-start">
-                                    <div>
-                                        <h4 class="font-semibold">Phòng PT 02</h4>
-                                        <p class="text-sm text-gray-500">Trạng thái: Đang sử dụng</p>
-                                    </div>
-                                    <span class="badge badge-warning">Có người</span>
-                                </div>
-                                <div class="mt-4 text-sm">
-                                    <p><i class="fa fa-calendar mr-2"></i> Lịch hôm nay: 4 ca</p>
-                                    <p><i class="fa fa-user-md mr-2"></i> Bác sĩ phụ trách: Bác sĩ Hương</p>
-                                </div>
-                                <div class="mt-4 flex space-x-2">
-                                    <button class="btn btn-outline text-sm">Xem chi tiết</button>
-                                    <button class="btn btn-outline text-sm">Sửa</button>
-                                </div>
-                            </div>
-                            <div class="card p-4 border-l-4 border-red-500">
-                                <div class="flex justify-between items-start">
-                                    <div>
-                                        <h4 class="font-semibold">Phòng PT 03</h4>
-                                        <p class="text-sm text-gray-500">Trạng thái: Bảo trì</p>
-                                    </div>
-                                    <span class="badge badge-danger">Bảo trì</span>
-                                </div>
-                                <div class="mt-4 text-sm">
-                                    <p><i class="fa fa-calendar mr-2"></i> Lịch hôm nay: 0 ca</p>
-                                    <p><i class="fa fa-wrench mr-2"></i> Ngày hoàn thành: 2024-06-20</p>
-                                </div>
-                                <div class="mt-4 flex space-x-2">
-                                    <button class="btn btn-outline text-sm">Xem chi tiết</button>
-                                    <button class="btn btn-outline text-sm">Sửa</button>
-                                </div>
-                            </div>
+                    <div class="task-card" onclick="viewProcedure('PT012')">
+                        <div class="task-header">
+                            <div class="task-id">PT012</div>
+                            <div class="task-priority priority-low">Thường</div>
+                        </div>
+                        <div class="task-patient">
+                            <div class="patient-name">Trần Thị J</div>
+                            <div class="patient-info">Tuổi: 25 - Nữ | BHYT</div>
+                        </div>
+                        <div class="task-procedure">
+                            <div class="procedure-name">• Phẫu thuật cắt bỏ mụn nước mũi</div>
+                            <div class="procedure-name">• Hoàn thành: 10:30 AM</div>
+                        </div>
+                        <div class="task-footer">
+                            Phòng: PT03 | BS. Võ Văn L
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="tab-content" id="tab5">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="card">
-                        <div class="p-4 border-b">
-                            <h3 class="font-semibold">Thống kê phẫu thuật theo tháng</h3>
-                        </div>
-                        <div class="p-4">
-                            <canvas id="operationChart" height="250"></canvas>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="p-4 border-b">
-                            <h3 class="font-semibold">Thống kê theo loại phẫu thuật</h3>
-                        </div>
-                        <div class="p-4">
-                            <canvas id="operationTypeChart" height="250"></canvas>
-                        </div>
-                    </div>
+            <!-- Column: Hoàn tất -->
+            <div class="kanban-column">
+                <div class="column-header">
+                    <div class="column-title">Hoàn tất</div>
+                    <div class="task-count">15</div>
                 </div>
-            </div>
-        </main>
-    </div>
+                <div class="column-content">
+                    <div class="task-card" onclick="viewProcedure('PT013')">
+                        <div class="task-header">
+                            <div class="task-id">PT013</div>
+                            <div class="task-priority priority-medium">Trung bình</div>
+                        </div>
+                        <div class="task-patient">
+                            <div class="patient-name">Lê Văn K</div>
+                            <div class="patient-info">Tuổi: 52 - Nam | BHYT</div>
+                        </div>
+                        <div class="task-procedure">
+                            <div class="procedure-name">• Phẫu thuật phẫu thuật tim phức hợp</div>
+                            <div class="procedure-name">• Hoàn thành: 07:45 AM</div>
+                        </div>
+                        <div class="task-footer">
+                            Kết quả: Thành công | Phòng: PT01
+                        </div>
+                    </div>
 
-    <!-- Add Operation Modal -->
-    <div id="add-operation-modal" class="modal">
-        <div class="modal-content w-full max-w-4xl">
-            <div class="p-5 border-b flex items-center justify-between">
-                <h3 class="text-lg font-semibold">Thêm mới phẫu thuật</h3>
-                <button class="close-modal text-gray-500 hover:text-gray-700">
-                    <i class="fa fa-times text-xl"></i>
-                </button>
-            </div>
-            <div class="p-5">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="label">Mã bệnh nhân</label>
-                        <input type="text" class="input" placeholder="Nhập mã bệnh nhân">
+                    <div class="task-card" onclick="viewProcedure('PT014')">
+                        <div class="task-header">
+                            <div class="task-id">PT014</div>
+                            <div class="task-priority priority-high">Khẩn cấp</div>
+                        </div>
+                        <div class="task-patient">
+                            <div class="patient-name">Phạm Thị L</div>
+                            <div class="patient-info">Tuổi: 72 - Nữ | BHYT</div>
+                        </div>
+                        <div class="task-procedure">
+                            <div class="procedure-name">• Nội soi tim cấp cứu</div>
+                            <div class="procedure-name">• Hoàn thành: 06:30 AM</div>
+                        </div>
+                        <div class="task-footer">
+                            Kết quả: Thành công | Phòng: PT04
+                        </div>
                     </div>
-                    <div>
-                        <label class="label">Họ tên bệnh nhân</label>
-                        <input type="text" class="input" placeholder="Nhập họ tên">
-                    </div>
-                    <div>
-                        <label class="label">Tuổi</label>
-                        <input type="number" class="input" placeholder="Nhập tuổi">
-                    </div>
-                    <div>
-                        <label class="label">Giới tính</label>
-                        <select class="select">
-                            <option value="">Chọn giới tính</option>
-                            <option value="nam">Nam</option>
-                            <option value="nu">Nữ</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="label">Chẩn đoán</label>
-                        <textarea class="textarea" rows="2" placeholder="Nhập chẩn đoán"></textarea>
-                    </div>
-                    <div>
-                        <label class="label">Loại phẫu thuật</label>
-                        <select class="select">
-                            <option value="">Chọn loại phẫu thuật</option>
-                            <option value="1">Phẫu thuật nội trú</option>
-                            <option value="2">Phẫu thuật ngoại trú</option>
-                            <option value="3">Thủ thuật nội soi</option>
-                            <option value="4">Thủ thuật y học</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="label">Ngày phẫu thuật</label>
-                        <input type="date" class="input">
-                    </div>
-                    <div>
-                        <label class="label">Thời gian bắt đầu</label>
-                        <input type="time" class="input">
-                    </div>
-                    <div>
-                        <label class="label">Bác sĩ chủ刀</label>
-                        <select class="select">
-                            <option value="">Chọn bác sĩ</option>
-                            <option value="1">Bác sĩ Minh</option>
-                            <option value="2">Bác sĩ Hương</option>
-                            <option value="3">Bác sĩ Tuấn</option>
-                            <option value="4">Bác sĩ Lâm</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="label">Phòng phẫu thuật</label>
-                        <select class="select">
-                            <option value="">Chọn phòng</option>
-                            <option value="1">Phòng PT 01</option>
-                            <option value="2">Phòng PT 02</option>
-                            <option value="3">Phòng PT 03</option>
-                            <option value="4">Phòng PT 04</option>
-                        </select>
-                    </div>
-                    <div class="md:col-span-2">
-                        <label class="label">Mô tả chi tiết</label>
-                        <textarea class="textarea" rows="4" placeholder="Nhập mô tả chi tiết"></textarea>
+
+                    <div class="task-card" onclick="viewProcedure('PT015')">
+                        <div class="task-header">
+                            <div class="task-id">PT015</div>
+                            <div class="task-priority priority-low">Thường</div>
+                        </div>
+                        <div class="task-patient">
+                            <div class="patient-name">Võ Văn L</div>
+                            <div class="patient-info">Tuổi: 35 - Nam | Tự trả</div>
+                        </div>
+                        <div class="task-procedure">
+                            <div class="procedure-name">• Phẫu thuật cắt bỏ khối u mặt</div>
+                            <div class="procedure-name">• Hoàn thành: 07:15 AM</div>
+                        </div>
+                        <div class="task-footer">
+                            Kết quả: Thành công | Phòng: PT02
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="p-5 border-t flex justify-end space-x-3">
-                <button class="btn btn-secondary close-modal">Hủy</button>
-                <button class="btn btn-primary">Lưu</button>
             </div>
         </div>
-    </div>
+    </main>
 
-    <!-- Success Modal -->
-    <div id="success-modal" class="modal">
-        <div class="modal-content w-full max-w-md">
-            <div class="p-5 text-center">
-                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fa fa-check text-2xl text-success"></i>
-                </div>
-                <h3 class="text-lg font-semibold mb-2">Thành công!</h3>
-                <p class="text-gray-600 mb-5">Thao tác đã được thực hiện thành công.</p>
-                <button class="btn btn-primary w-full close-modal">OK</button>
+    <!-- Procedure Detail Modal -->
+    <div id="procedureModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Chi tiết ca phẫu thuật <span id="modalProcedureId">PT001</span></h2>
+                <button class="close-modal-btn" onclick="closeModal()">Đóng</button>
             </div>
-        </div>
-    </div>
 
-    <script>
-        // Sidebar toggle
-        const menuToggle = document.getElementById('menu-toggle');
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.createElement('div');
-        overlay.className = 'fixed inset-0 bg-black bg-opacity-50 z-10 lg:hidden hidden';
-        document.body.appendChild(overlay);
+            <div class="modal-body">
+                <!-- Modal Tabs -->
+                <div class="modal-tabs">
+                    <button class="tab-btn active" onclick="switchTab('info')">Thông tin ca phẫu thuật</button>
+                    <button class="tab-btn" onclick="switchTab('checklistBefore')">Trước phẫu thuật</button>
+                    <button class="tab-btn" onclick="switchTab('checklistIn')">Trong khi phẩu thuật</button>
+                    <button class="tab-btn" onclick="switchTab('checklistAfter')">Sau phẩu thuật</button>
+                </div>
 
-        menuToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('-translate-x-full');
-            overlay.classList.toggle('hidden');
-        });
+                <!-- Tab Content -->
+                <div id="tab-info" class="tab-content active">
+                    <!-- Procedure Information Form -->
+                    <div class="form-container">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Mã phẫu thuật:</label>
+                                <input type="text" id="procedure-id" value="PT001" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label>Trạng thái:</label>
+                                <select id="procedure-status">
+                                    <option value="pending">Chờ tiếp nhận</option>
+                                    <option value="scheduled">Chờ xếp lịch</option>
+                                    <option value="in-progress">Đang diễn ra</option>
+                                    <option value="confirming">Chờ xác nhận</option>
+                                    <option value="completed">Hoàn tất</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Mức độ ưu tiên:</label>
+                                <select id="procedure-priority">
+                                    <option value="low">Thường</option>
+                                    <option value="medium" selected>Trung bình</option>
+                                    <option value="high">Khẩn cấp</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Tên bệnh nhân:</label>
+                                <input type="text" id="patient-name" value="Nguyễn Văn A">
+                            </div>
+                            <div class="form-group">
+                                <label>Tuổi:</label>
+                                <input type="number" id="patient-age" value="45">
+                            </div>
+                            <div class="form-group">
+                                <label>Giới tính:</label>
+                                <select id="patient-gender">
+                                    <option value="male" selected>Nam</option>
+                                    <option value="female">Nữ</option>
+                                </select>
+                            </div>
+                        </div>
 
-        overlay.addEventListener('click', () => {
-            sidebar.classList.add('-translate-x-full');
-            overlay.classList.add('hidden');
-        });
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Loại bảo hiểm:</label>
+                                <select id="patient-insurance">
+                                    <option value="bhyt" selected>BHYT</option>
+                                    <option value="private">Bảo hiểm riêng</option>
+                                    <option value="self">Tự trả</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Ngày phẫu thuật:</label>
+                                <input type="date" id="procedure-date" value="2023-11-10">
+                            </div>
+                            <div class="form-group">
+                                <label>Giờ bắt đầu:</label>
+                                <input type="time" id="procedure-start" value="08:15">
+                            </div>
 
-        // Tab functionality
-        const tabs = document.querySelectorAll('.tab');
-        const tabContents = document.querySelectorAll('.tab-content');
+                            <div class="form-group">
+                                <label>Phòng phẫu thuật:</label>
+                                <select id="procedure-room">
+                                    <option value="PT01">Phòng PT01</option>
+                                    <option value="PT02">Phòng PT02</option>
+                                    <option value="PT03">Phòng PT03</option>
+                                    <option value="PT04">Phòng PT04</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Thời gian dự kiến:</label>
+                                <input type="text" id="procedure-duration" value="120 phút">
+                            </div>
+                            <div class="form-group">
+                                <label>BS. phụ trách:</label>
+                                <input type="text" id="surgeon" value="Trần Văn B">
+                            </div>
+                        </div>
 
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                // Remove active class from all tabs
-                tabs.forEach(t => t.classList.remove('active'));
-                // Add active class to clicked tab
-                tab.classList.add('active');
-                
-                // Hide all tab contents
-                tabContents.forEach(content => content.classList.remove('active'));
-                // Show corresponding tab content
-                const tabId = tab.getAttribute('data-tab');
-                document.getElementById(tabId).classList.add('active');
-            });
-        });
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label>Tên thủ thuật:</label>
+                                <textarea id="procedure-name">Phẫu thuật niêm mạc não</textarea>
+                            </div>
+                        </div>
 
-        // Modal functionality
-        const modals = document.querySelectorAll('.modal');
-        const closeModalButtons = document.querySelectorAll('.close-modal');
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label>Mô tả chi tiết:</label>
+                                <textarea
+                                    id="procedure-description">Phẫu thuật loại bỏ khối u benign trên niêm mạc não, vị trí trán.</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-        function openModal(modalId) {
-            const modal = document.getElementById(modalId);
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
 
-        function closeModal(modal) {
-            modal.classList.remove('active');
-            document.body.style.overflow = '';
-        }
+                <div id="tab-checklistBefore" class="tab-content" style="display: none;">
+                    <div class="modal-layout">
+                        <!-- Sidebar with forms list -->
+                        <div class="modal-sidebar">
+                            <h3 class="sidebar-title">Danh sách biểu mẫu</h3>
+                            <style>
+                                .forms-list {
+                                    list-style: none;
+                                    padding: 0;
+                                    margin: 0;
+                                }
+                                
+                                .form-item {
+                                    padding: 12px 15px;
+                                    margin-bottom: 5px;
+                                    border-radius: 5px;
+                                    cursor: pointer;
+                                    transition: all 0.2s ease;
+                                    display: flex;
+                                    justify-content: space-between;
+                                    align-items: center;
+                                    border: 1px solid transparent;
+                                }
+                                
+                                .form-item:hover {
+                                    background-color: #f5f5f5;
+                                }
+                                
+                                .form-item.active {
+                                    background-color: #e6f7ff;
+                                    border-color: #1890ff;
+                                    font-weight: 600;
+                                }
+                                
+                                .form-name {
+                                    flex: 1;
+                                }
+                                
+                                .status-container {
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 5px;
+                                }
+                                
+                                .form-status {
+                                    width: 12px;
+                                    height: 12px;
+                                    border-radius: 50%;
+                                }
+                                
+                                .status-text {
+                                    font-size: 12px;
+                                    font-weight: normal;
+                                }
+                                
+                                .status-completed {
+                                    background-color: #52c41a;
+                                }
+                                
+                                .status-completed + .status-text {
+                                    color: #52c41a;
+                                }
+                                
+                                .status-in-progress {
+                                    background-color: #faad14;
+                                }
+                                
+                                .status-in-progress + .status-text {
+                                    color: #faad14;
+                                }
+                                
+                                .status-pending {
+                                    background-color: #d9d9d9;
+                                }
+                                
+                                .status-pending + .status-text {
+                                    color: #8c8c8c;
+                                }
+                                
+                                .form-content {
+                                    display: none;
+                                }
+                                
+                                .form-content.active {
+                                    display: block;
+                                }
+                            </style>
+                            <ul class="forms-list">
+                                <li class="form-item" data-form="camket">
+                                    <div class="form-name">Giấy cam kêt</div>
+                                    <div class="status-container">
+                                        <div class="form-status status-completed"></div>
+                                        <div class="status-text">Hoàn tất</div>
+                                    </div>
+                                </li>
+                                <li class="form-item" data-form="consent">
+                                    <div class="form-name">Giải thích, cam kết</div>
+                                    <div class="status-container">
+                                        <div class="form-status status-pending"></div>
+                                        <div class="status-text">Chưa làm</div>
+                                    </div>
+                                </li>
+                                <li class="form-item" data-form="preAnesthesia">
+                                    <div class="form-name">Khám tiền mê</div>
+                                    <div class="status-container">
+                                        <div class="form-status status-pending"></div>
+                                        <div class="status-text">Chưa làm</div>
+                                    </div>
+                                </li>
+                                <li class="form-item" data-form="scheduling">
+                                    <div class="form-name">Lên lịch mổ, phân công</div>
+                                    <div class="status-container">
+                                        <div class="form-status status-pending"></div>
+                                        <div class="status-text">Chưa làm</div>
+                                    </div>
+                                </li>
+                                <li class="form-item" data-form="checklist">
+                                    <div class="form-name">Checklist trước gây mê</div>
+                                    <div class="status-container">
+                                        <div class="form-status status-pending"></div>
+                                        <div class="status-text">Chưa làm</div>
+                                    </div>
+                                </li>
+                                <li class="form-item" data-form="duringSurgery">
+                                    <div class="form-name">Trong phẫu thuật</div>
+                                    <div class="status-container">
+                                        <div class="form-status status-pending"></div>
+                                        <div class="status-text">Chưa làm</div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <script>
+                                // Add click event handlers to form items
+                                document.querySelectorAll('.form-item').forEach(item => {
+                                    item.addEventListener('click', function() {
+                                        // Remove active class from all items
+                                        document.querySelectorAll('.form-item').forEach(i => i.classList.remove('active'));
+                                        // Add active class to clicked item
+                                        this.classList.add('active');
+                                        
+                                        // Get form type
+                                        const formType = this.getAttribute('data-form');
+                                        // Hide all form contents
+                                        document.querySelectorAll('.form-content').forEach(content => {
+                                            content.classList.remove('active');
+                                            content.style.display = 'none';
+                                        });
+                                        // Show selected form content
+                                        const selectedForm = document.getElementById('form-' + formType);
+                                        if (selectedForm) {
+                                            selectedForm.classList.add('active');
+                                            selectedForm.style.display = 'block';
+                                        }
+                                    });
+                                });
+                                
+                                // Initialize - ensure first form is displayed
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    const activeForm = document.querySelector('.form-item.active');
+                                    if (activeForm) {
+                                        const formType = activeForm.getAttribute('data-form');
+                                        const selectedForm = document.getElementById('form-' + formType);
+                                        if (selectedForm) {
+                                            selectedForm.classList.add('active');
+                                            selectedForm.style.display = 'block';
+                                        }
+                                    }
+                                });
+                            </script>
+                        </div>
 
-        // Add operation button click
-        document.getElementById('add-operation-btn').addEventListener('click', () => {
-            openModal('add-operation-modal');
-        });
+                        <!-- Main content area -->
+                        <div class="modal-main">
+                            <!-- Form content for Giấy cam kết -->
+                            <div id="form-camket" class="form-content">
+                                <div class="form-header">
+                                    <h3>Giấy Cam Kết Chấp Thuận</h3>
+                                    <h4>PHẪU THUẬT, THỦ THUẬT VÀ GÂY MÊ HỒI SỨC</h4>
+                                </div>
+                                <div class="form-container">
+                                    <!-- Section 1: Surgeon/Anesthesiologist Information -->
+                                    <div class="consent-section">
+                                        <div class="form-row">
+                                            <div class="form-group full-width">
+                                                <label>Loại cấp cứu:</label>
+                                                <div class="checkbox-group">
+                                                    <label><input type="checkbox" name="emergency-type" value="emergency"> Cấp cứu</label>
+                                                    <label><input type="checkbox" name="emergency-type" value="semi-emergency"> Bản cấp</label>
+                                                    <label><input type="checkbox" name="emergency-type" value="planned"> Chương trình Phiền</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <h4>I. BÁC SĨ PHẪU THUẬT/THỦ THUẬT/GÂY MÊ HỒI SỨC:</h4>
+                                        
+                                        <div class="form-row">
+                                            <div class="form-group full-width">
+                                                <label>Tổ tên là:</label>
+                                                <input type="text" name="surgeon-name">
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label>Chức danh:</label>
+                                                <input type="text" name="surgeon-title">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Khoa:</label>
+                                                <input type="text" name="surgeon-department">
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label>Và bạn số:</label>
+                                                <input type="text" name="assistant-name">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Chức danh:</label>
+                                                <input type="text" name="assistant-title">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Khoa:</label>
+                                                <input type="text" name="assistant-department">
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-row">
+                                            <div class="form-group full-width">
+                                                <label>Được phân công thực hiện phẫu thuật/thủ thuật/gây mê cho người bệnh:</label>
+                                                <input type="text" name="patient-name-for-surgery">
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-row">
+                                            <div class="form-group full-width">
+                                                <label>Chẩn đoán:</label>
+                                                <textarea name="diagnosis"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Section 2: Information Disclosure -->
+                                    <div class="consent-section">
+                                        <p>Chúng tôi đã trú vấn, giải thích đầy đủ, rõ ràng những thông tin liên quan đến cuộc phẫu thuật/thủ thuật/gây mê hội sức cho người bệnh/thân nhân người bệnh về các vấn đề sau:</p>
+                                        
+                                        <div class="checkbox-section">
+                                            <label><input type="checkbox" name="disclosure" value="reason"> Chỉ cho dåm</label>
+                                            <label><input type="checkbox" name="disclosure" value="reason"> Lý do phẫu thuật/thủ thuật</label>
+                                            <label><input type="checkbox" name="disclosure" value="risk"> Rủi ro, nguy cơ nếu không thực hiện phẫu thuật/thủ thuật</label>
+                                            <label><input type="checkbox" name="disclosure" value="result"> Kết quả sau phẫu thuật/thủ thuật (Dự kiến):</label>
+                                        </div>
+                                        
+                                        <div class="form-row">
+                                            <div class="form-group full-width">
+                                                <input type="text" name="expected-result">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Section 3: Surgical Methods -->
+                                    <div class="consent-section">
+                                        <h4>Phương pháp phẫu thuật/thủ thuật dự kiến:</h4>
+                                        <div class="checkbox-group">
+                                            <label><input type="checkbox" name="surgical-method" value="open"> Phẫu thuật mở</label>
+                                            <label><input type="checkbox" name="surgical-method" value="laparoscopic"> Phẫu thuật nội soi</label>
+                                            <label><input type="checkbox" name="surgical-method" value="other"> Thủ thuật</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Section 4: Anesthesia Methods -->
+                                    <div class="consent-section">
+                                        <h4>Phương pháp gây mê hội sức dự kiến:</h4>
+                                        <div class="checkbox-group">
+                                            <label><input type="checkbox" name="anesthesia-method" value="general"> Mê nội khí quản</label>
+                                            <label><input type="checkbox" name="anesthesia-method" value="mask"> Mê mask thanh quản</label>
+                                            <label><input type="checkbox" name="anesthesia-method" value="spinal"> Mê tủy sống</label>
+                                            <label><input type="checkbox" name="anesthesia-method" value="epidural"> Tế ngoài màng cứng</label>
+                                            <label><input type="checkbox" name="anesthesia-method" value="nerve"> Tế dán rồi thần kinh</label>
+                                            <label><input type="checkbox" name="anesthesia-method" value="preanesthesia"> Tiền mê + Tế tại chỗ</label>
+                                            <label><input type="checkbox" name="anesthesia-method" value="other"> Khác:</label>
+                                            <input type="text" name="anesthesia-other">
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Section 5: Alternative Methods -->
+                                    <div class="consent-section">
+                                        <h4>Các phương pháp điều trị khác ngoài phẫu thuật/thủ thuật:</h4>
+                                        <div class="checkbox-group">
+                                            <label><input type="checkbox" name="alternative-method" value="none"> Không</label>
+                                            <label><input type="checkbox" name="alternative-method" value="yes"> Có, cụ thể:</label>
+                                            <input type="text" name="alternative-method-detail">
+                                        </div>
+                                    </div>
+                                    <style>
+                                        .consent-section {
+                                            margin-bottom: 20px;
+                                            padding: 15px;
+                                            background-color: #f9f9f9;
+                                            border-radius: 5px;
+                                        }
+                                        .consent-section h4 {
+                                            margin-top: 0;
+                                            color: #333;
+                                            font-weight: bold;
+                                        }
+                                        .checkbox-group, .checkbox-section {
+                                            display: flex;
+                                            flex-wrap: wrap;
+                                            gap: 15px;
+                                        }
+                                        .checkbox-group label, .checkbox-section label {
+                                            display: flex;
+                                            align-items: flex-start;
+                                            margin-right: 20px;
+                                            margin-bottom: 10px;
+                                            flex: 0 0 auto;
+                                            max-width: calc(50% - 10px);
+                                            word-break: break-word;
+                                        }
+                                        .checkbox-group label input, .checkbox-section label input {
+                                            margin-right: 5px;
+                                            margin-top: 3px;
+                                        }
+                                        .signature-row {
+                                            display: flex;
+                                            justify-content: space-between;
+                                            margin-top: 30px;
+                                        }
+                                        .signature-col {
+                                            flex: 1;
+                                            text-align: center;
+                                            margin: 0 10px;
+                                        }
+                                        .signature-box {
+                                            height: 80px;
+                                            border: 1px solid #000;
+                                            margin-top: 10px;
+                                            width: 100%;
+                                            max-width: 200px;
+                                            margin-left: auto;
+                                            margin-right: auto;
+                                        }
+                                        .form-actions {
+                                            margin-top: 30px;
+                                            text-align: center;
+                                        }
+                                        .btn-save, .btn-print, .btn-signature {
+                                            padding: 10px 20px;
+                                            margin: 0 10px;
+                                            cursor: pointer;
+                                            border: none;
+                                            border-radius: 4px;
+                                            font-size: 14px;
+                                        }
+                                        .btn-save {
+                                            background-color: #4CAF50;
+                                            color: white;
+                                        }
+                                        .btn-print {
+                                            background-color: #2196F3;
+                                            color: white;
+                                        }
+                                        .btn-signature {
+                                            background-color: #FF9800;
+                                            color: white;
+                                        }
+                                    </style>
+                                </div>
+                            
+                            
+                            <!-- Placeholders for other form contents -->
+                            <div id="form-preparation" class="form-content" style="display: none;"></div>
+                            <div id="form-diagnosis" class="form-content" style="display: none;"></div>
+                            <div id="form-consent" class="form-content" style="display: none;">                                <div class="form-header">                                    <h3>Giấy cam kết</h3>                                </div>                                <div class="form-container">                                    <!-- Section 6: Risks -->                                    <div class="consent-section">                                        <h4>Nguy cơ, tai biến trong và sau phẫu thuật/thủ thuật có thể xảy ra:</h4>                                        <div class="checkbox-group">                                            <label><input type="checkbox" name="risks" value="allergic"> Phản ứng thuốc</label>                                            <label><input type="checkbox" name="risks" value="respiratory"> Suy hô hấp - tuần hoàn</label>                                            <label><input type="checkbox" name="risks" value="bleeding"> Chảy máu</label>                                            <label><input type="checkbox" name="risks" value="infection"> Nhiễm trùng</label>                                            <label><input type="checkbox" name="risks" value="death"> Tử vong</label>                                            <label><input type="checkbox" name="risks" value="other"> Nguy cơ/rủi ro khác:</label>                                            <input type="text" name="risks-other">                                        </div>                                    </div>                                    <!-- Section 7: Patient Consent -->                                    <div class="consent-section">                                        <p>Chúng tôi đã dành đủ thời gian để người bệnh/thân nhân đặt các câu hỏi liên quan đến phẫu thuật/thủ thuật/gây mê sẽ được thực hiện hoặc các mối quan tâm khác và chúng tôi đã trả lời tất cả các câu hỏi đó.</p>                                        <p>Chúng tôi cam kết phục vụ người bệnh bằng lòng tấm và trách nhiệm của người thầy thuốc cùng với tất cả kiến thức, sự hiểu biết về chuyên môn và phương tiện hiện có của <strong>Tổ cơ sở khám bệnh, chữa bệnh</strong>..................................................để nỗ lực đưa lại kết quả tốt nhất cho người bệnh.</p>                                    </div>                                    <!-- Section 8: Patient/Relative Information -->                                    <div class="consent-section">                                        <h4>II. NGƯỜI BỆNH/THÂN NHÂN:</h4>                                        <div class="form-row">                                            <div class="form-group">                                                <label>Họ và tên người bệnh:</label>                                                <input type="text" name="patient-fullname">                                            </div>                                            <div class="form-group">                                                <label>Năm sinh:</label>                                                <input type="text" name="patient-dob">                                            </div>                                        </div>                                        <div class="form-row">                                            <div class="form-group">                                                <label>Họ và tên thân nhân:</label>                                                <input type="text" name="relative-fullname">                                            </div>                                            <div class="form-group">                                                <label>Năm sinh:</label>                                                <input type="text" name="relative-dob">                                            </div>                                        </div>                                        <div class="form-row">                                            <div class="form-group full-width">                                                <label>Quan hệ với người bệnh:</label>                                                <input type="text" name="relationship">                                            </div>                                        </div>                                    </div>                                    <!-- Section 9: Patient Declaration -->                                    <div class="consent-section">                                        <p>Tôi đã được nghe các Bác sĩ giải thích và trao đổi với các Bác sĩ về tất cả các thông tin của cuộc phẫu thuật/thủ thuật/gây mê, những nguy cơ thường gặp có thể xảy ra trong phẫu thuật/thủ thuật/gây mê như:.........................................................................................................................................................................và mức độ thành công.</p>                                        <p>Tôi đã hiểu lý do phải thực hiện phẫu thuật/thủ thuật/gây mê và đồng ý để Bác sĩ phẫu thuật/thủ thuật/gây mê cho tôi/thân nhân của tôi.</p>                                        <p>Tôi đồng ý để các Bác sĩ thực hiện các phẫu thuật/thủ thuật/gây mê/kiểm tra/điều trị nếu việc đó là cần thiết để cứu tinh mạng hoặc cải thiện tình trạng khám bệnh, chữa bệnh..............................................................................................................................................................................</p>                                        <p>Tôi hiểu rằng cùng với tất cả kiến thức, sự hiểu biết và phương tiện hiện có của Tổ cơ sở khám bệnh, chữa bệnh sẽ nỗ lực làm cho kết quả tốt nhất cho tôi/thân nhân của tôi. Tuy nhiên, cũng không thể đảm bảo hoàn toàn với tôi rằng phẫu thuật/thủ thuật sẽ cải thiện tình trạng hoặc không làm cho tình trạng của tôi/thân nhân của tôi trở nên xấu đi.</p>                                        <p>Tôi đã đọc bản cam kết với tinh thần hoàn toàn minh mẫn và hiểu biết. Tôi đã hiểu các vấn đề Bác sĩ đã giải thích về quy trình phẫu thuật/thủ thuật/gây mê cho tôi/thân nhân của tôi. Tôi xin hoàn toàn chịu trách nhiệm sau khi hiểu các Bác sĩ cho biết tình trạng bệnh của tôi/thân nhân của tôi, những nguy hiểm của bệnh nếu không thực hiện phẫu thuật/thủ thuật/gây mê hội sức và những rủi ro có thể xảy ra do bệnh tật, do khi tiến hành phẫu thuật/thủ thuật/gây mê hội sức; tôi tự nguyện viết giấy cam đoan này:</p>                                    </div>                                    <!-- Section 10: Consent Options -->                                    <div class="consent-section">                                        <ol type="1">                                            <li><label><input type="radio" name="consent-option" value="agree"> Đồng ý xin phẫu thuật, thủ thuật, gây mê hội sức và để giấy này làm bằng chứng.</label></li>                                            <li><label><input type="radio" name="consent-option" value="disagree"> Không đồng ý phẫu thuật, thủ thuật, gây mê hội sức và để giấy này làm bằng chứng.</label></li>                                        </ol>                                        <p><em>(Câu 1 và câu 2 do người bệnh, thân nhân của người bệnh tự viết dưới đây).</em></p>                                    </div>                                    <!-- Section 11: Signatures -->                                    <div class="consent-section signatures">                                        <div class="signature-row">                                            <div class="signature-col">                                                <p>PHẪU THUẬT VIÊN/<br>BÁC SĨ THỰC HIỆN<br>THỦ THUẬT</p>                                                <p><em>(Ký, ghi rõ họ tên)</em></p>                                                <div class="signature-box"></div>                                            </div>                                            <div class="signature-col">                                                <p>BÁC SĨ GÂY MÊ<br>(Ký, ghi rõ họ tên)</p>                                                <div class="signature-box"></div>                                            </div>                                            <div class="signature-col">                                                <p>Ngày.......tháng.......năm 20.......</p>                                                <p>NGƯỜI BỆNH/THÂN NHÂN<br>(Ký, ghi rõ họ tên)</p>                                                <div class="signature-box"></div>                                            </div>                                        </div>                                    </div>                                    <style>                                        .consent-section {                                            margin-bottom: 20px;                                            padding: 15px;                                            background-color: #f9f9f9;                                            border-radius: 5px;                                        }                                        .consent-section h4 {                                            margin-top: 0;                                            color: #333;                                            font-weight: bold;                                        }                                        .checkbox-group, .checkbox-section {                                            display: flex;                                            flex-wrap: wrap;                                            gap: 15px;                                        }                                        .checkbox-group label, .checkbox-section label {                                            display: flex;                                            align-items: flex-start;                                            margin-right: 20px;                                            margin-bottom: 10px;                                            flex: 0 0 auto;                                            max-width: calc(50% - 10px);                                            word-break: break-word;                                        }                                        .checkbox-group label input, .checkbox-section label input {                                            margin-right: 5px;                                            margin-top: 3px;                                        }                                        .signature-row {                                            display: flex;                                            justify-content: space-between;                                            margin-top: 30px;                                        }                                        .signature-col {                                            flex: 1;                                            text-align: center;                                            margin: 0 10px;                                        }                                        .signature-box {                                            height: 80px;                                            border: 1px solid #000;                                            margin-top: 10px;                                            width: 100%;                                            max-width: 200px;                                            margin-left: auto;                                            margin-right: auto;                                        }                                        .form-actions {                                            margin-top: 30px;                                            text-align: center;                                        }                                        .btn-save, .btn-print, .btn-signature {                                            padding: 10px 20px;                                            margin: 0 10px;                                            cursor: pointer;                                            border: none;                                            border-radius: 4px;                                            font-size: 14px;                                        }                                        .btn-save {                                            background-color: #4CAF50;                                            color: white;                                        }                                        .btn-print {                                            background-color: #2196F3;                                            color: white;                                        }                                        .btn-signature {                                            background-color: #FF9800;                                            color: white;                                        }                                    </style>                                </div>                            </div>
+                            <div id="form-preAnesthesia" class="form-content" style="display: none;"></div>
+                            <div id="form-scheduling" class="form-content" style="display: none;"></div>
+                            <div id="form-checklist" class="form-content" style="display: none;"></div>
+                            <div id="form-duringSurgery" class="form-content" style="display: none;"></div>
+                            
+                            
+                            <!-- Form actions -->
+                            <div class="form-actions">
+                                <button class="btn btn-primary" onclick="saveCurrentForm()">Lưu biểu mẫu</button>
+                                <button class="btn btn-secondary" onclick="printCurrentForm()">In biểu mẫu</button>
+                                <button class="btn btn-info" onclick="addSignature()">Ký số</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-        // Close modal buttons
-        closeModalButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const modal = button.closest('.modal');
-                closeModal(modal);
-            });
-        });
+                <script>
+                    // Modal and Tab Functions
+                    function viewProcedure(id) {
+                        const modal = document.getElementById('procedureModal');
+                        document.getElementById('modalProcedureId').textContent = id;
+                        document.getElementById('procedure-id').value = id;
+                        modal.style.display = 'flex';
+                    }
 
-        // Close modal when clicking outside
-        modals.forEach(modal => {
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    closeModal(modal);
-                }
-            });
-        });
+                    function closeModal() {
+                        const modal = document.getElementById('procedureModal');
+                        modal.style.display = 'none';
+                    }
 
-        // Charts initialization
-        window.addEventListener('DOMContentLoaded', () => {
-            // Operation Chart
-            const operationCtx = document.getElementById('operationChart').getContext('2d');
-            new Chart(operationCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6'],
-                    datasets: [{
-                        label: 'Số ca phẫu thuật',
-                        data: [65, 78, 90, 85, 95, 110],
-                        backgroundColor: '#3b82f6',
-                        borderColor: '#1e40af',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true
+                    function switchTab(tabId) {
+                        // Hide all tab contents
+                        const tabContents = document.querySelectorAll('.tab-content');
+                        tabContents.forEach(content => {
+                            content.style.display = 'none';
+                        });
+
+                        // Remove active class from all tab buttons
+                        const tabButtons = document.querySelectorAll('.tab-btn');
+                        tabButtons.forEach(button => {
+                            button.classList.remove('active');
+                        });
+
+                        // Show selected tab content and mark button as active
+                        document.getElementById(`tab-${tabId}`).style.display = 'block';
+                        event.currentTarget.classList.add('active');
+                    }
+
+                    function changeStatus() {
+                        const currentStatus = document.getElementById('procedure-status').value;
+                        const statuses = ['pending', 'scheduled', 'in-progress', 'confirming', 'completed'];
+                        const currentIndex = statuses.indexOf(currentStatus);
+
+                        if (currentIndex < statuses.length - 1) {
+                            document.getElementById('procedure-status').value = statuses[currentIndex + 1];
+                            alert('Đã chuyển trạng thái ca phẫu thuật');
+                        } else {
+                            alert('Ca phẫu thuật đã hoàn thành');
                         }
                     }
-                }
-            });
 
-            // Operation Type Chart
-            const operationTypeCtx = document.getElementById('operationTypeChart').getContext('2d');
-            new Chart(operationTypeCtx, {
-                type: 'pie',
-                data: {
-                    labels: ['Phẫu thuật nội trú', 'Phẫu thuật ngoại trú', 'Thủ thuật nội soi', 'Thủ thuật y học'],
-                    datasets: [{
-                        data: [35, 25, 20, 20],
-                        backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6'],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false
-                }
-            });
-        });
+                    function saveProcedure() {
+                        // Simulate saving data
+                        alert('Thông tin ca phẫu thuật đã được lưu');
+                    }
 
-        // Search functionality
-        document.querySelectorAll('.btn-primary').forEach(button => {
-            if (button.querySelector('.fa-search')) {
-                button.addEventListener('click', () => {
-                    // Simulate search
-                    console.log('Searching...');
-                });
+                    function printProcedure() {
+                        // Simulate printing
+                        alert('In phiếu phẫu thuật');
+                    }
+
+                    function addRequirement() {
+                        // Simulate adding a new requirement
+                        alert('Thêm yêu cầu mới');
+                    }
+
+                    function exportChecklist() {
+                        // Simulate exporting checklist
+                        alert('Checklist đã được xuất');
+                    }
+
+                    function confirmReadiness() {
+                        // Check if all mandatory fields are completed
+                        const prepDate = document.getElementById('prep-date').value;
+                        const confirmDoctor = document.getElementById('confirm-doctor').value;
+                        const doctorNotes = document.getElementById('doctor-notes').value;
+
+                        if (!prepDate || !confirmDoctor || !doctorNotes) {
+                            alert('Vui lòng điền đầy đủ thông tin xác nhận');
+                            return;
+                        }
+
+                        // Show confirmation
+                        if (confirm('Xác nhận rằng tất cả các chuẩn bị trước phẫu thuật đã hoàn thành?')) {
+                            alert('Đã xác nhận sẵn sàng phẫu thuật');
+                        }
+                    }
+
+                    function addNewProcedure() {
+                        alert('Thêm ca phẫu thuật mới');
+                        // Here you would typically open a form to add a new procedure
+                    }
+
+                    function showSearchResults() {
+                        alert('Hiển thị kết quả tìm kiếm');
+                        // Here you would implement search functionality
+                    }
+
+                    // Add CSS for tabs and forms
+                    const style = document.createElement('style');
+                    style.textContent = `
+            /* Modal Layout */
+            .modal-layout {
+                display: flex;
+                gap: 20px;
+                height: calc(100vh - 300px);
+                min-height: 400px;
+                flex-wrap: wrap;
             }
-        });
-
-        // Form submission
-        document.querySelectorAll('form').forEach(form => {
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
-                // Simulate form submission
-                closeModal(document.querySelector('.modal.active'));
-                setTimeout(() => {
-                    openModal('success-modal');
-                }, 300);
-            });
-        });
-
-        // Save button in add operation modal
-        document.querySelector('#add-operation-modal .btn-primary').addEventListener('click', () => {
-            // Simulate save
-            closeModal(document.getElementById('add-operation-modal'));
-            setTimeout(() => {
-                openModal('success-modal');
-            }, 300);
-        });
-    </script>
+            
+            .modal-sidebar {
+                width: 280px;
+                background: #f8f9fa;
+                border-radius: 8px;
+                padding: 16px;
+                overflow-y: auto;
+                border: 1px solid var(--line);
+                flex-shrink: 0;
+                max-height: 100%;
+            }
+            
+            .modal-main {
+                flex: 1;
+                overflow-y: auto;
+                background: #fff;
+                border-radius: 8px;
+                padding: 20px;
+                border: 1px solid var(--line);
+                min-width: 300px;
+                max-height: 100%;
+            }
+            
+            /* Modal Tabs */
+            .modal-tabs {
+                display: flex;
+                gap: 8px;
+                margin-bottom: 20px;
+                border-bottom: 1px solid var(--line);
+                padding-bottom: 0;
+            }
+            
+            .tab-btn {
+                padding: 10px 16px;
+                border: 1px solid var(--line);
+                background: #fff;
+                border-radius: 8px 8px 0 0;
+                cursor: pointer;
+                transition: all 0.2s;
+                font-size: 14px;
+                border-bottom: none;
+                position: relative;
+                top: 1px;
+            }
+            
+            .tab-btn.active {
+                background: var(--card);
+                border-color: var(--line) var(--line) #fff;
+                font-weight: 600;
+            }
+            
+            .tab-btn:hover:not(.active) {
+                background: #f9fafb;
+            }
+            
+            /* Form Styles */
+            .form-container {
+                margin-bottom: 20px;
+            }
+            
+            .form-row {
+                display: flex;
+                gap: 16px;
+                margin-bottom: 16px;
+                flex-wrap: wrap;
+            }
+            
+            .form-group {
+                flex: 1;
+                min-width: 100px;
+            }
+            
+            .form-group.full-width {
+                flex: 1 1 100%;
+            }
+            
+            .form-group label {
+                display: block;
+                margin-bottom: 6px;
+                font-weight: 500;
+                font-size: 13px;
+                color: var(--txt);
+            }
+            
+            /* Requirements Table */
+            .requirements-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 16px;
+                font-size: 13px;
+            }
+            
+            .requirements-table th,
+            .requirements-table td {
+                padding: 8px 12px;
+                text-align: left;
+                border: 1px solid var(--line);
+            }
+            
+            .requirements-table th {
+                background: #f9fafb;
+                font-weight: 600;
+            }
+            
+            /* Checklist Styles */
+            .checklist-container {
+                margin-bottom: 20px;
+            }
+            
+            .checklist-stage {
+                margin-bottom: 20px;
+                padding: 16px;
+                background: #f9fafb;
+                border-radius: 8px;
+            }
+            
+            .checklist-stage h3 {
+                margin-top: 0;
+                margin-bottom: 12px;
+                font-size: 15px;
+                color: var(--primary);
+            }
+            
+            .checklist-items {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .checklist-item {
+                display: flex;
+                align-items: flex-start;
+                gap: 8px;
+                padding: 8px;
+                background: #fff;
+                border-radius: 6px;
+                transition: all 0.2s;
+            }
+            
+            .checklist-item:hover {
+                background: #f0f9ff;
+            }
+            
+            .checklist-item input[type="checkbox"] {
+                margin-top: 2px;
+                transform: scale(1.1);
+            }
+            
+            .checklist-item label {
+                flex: 1;
+                font-size: 13px;
+                line-height: 1.4;
+                cursor: pointer;
+            }
+            
+            /* Pre-Surgery Checklist Specific Styles */
+            .pre-surgery-checklist {
+                background: #f9fafb;
+                padding: 16px;
+                border-radius: 8px;
+                margin-bottom: 20px;
+            }
+            
+            .pre-surgery-checklist h4 {
+                margin-top: 0;
+                margin-bottom: 16px;
+                font-size: 16px;
+                color: var(--primary);
+                border-bottom: 1px solid var(--line);
+                padding-bottom: 8px;
+            }
+            
+            .checklist-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 16px;
+            }
+            
+            .checklist-category {
+                background: #fff;
+                padding: 12px;
+                border-radius: 6px;
+                border: 1px solid var(--line);
+            }
+            
+            .checklist-category h5 {
+                margin-top: 0;
+                margin-bottom: 8px;
+                font-size: 14px;
+                color: var(--secondary);
+                font-weight: 600;
+            }
+            
+            /* Pre-Surgery Form Styles */
+            .pre-surgery-form {
+                background: #f9fafb;
+                padding: 16px;
+                border-radius: 8px;
+            }
+            
+            .pre-surgery-form h4 {
+                margin-top: 0;
+                margin-bottom: 16px;
+                font-size: 16px;
+                color: var(--primary);
+                border-bottom: 1px solid var(--line);
+                padding-bottom: 8px;
+            }
+            
+            /* Checklist Table Section */
+            .checklist-table-section {
+                background: #f9fafb;
+                padding: 16px;
+                border-radius: 8px;
+            }
+            
+            .checklist-table-section h4 {
+                margin-top: 0;
+                margin-bottom: 16px;
+                font-size: 16px;
+                color: var(--primary);
+                border-bottom: 1px solid var(--line);
+                padding-bottom: 8px;
+            }
+            
+            /* Notes Section */
+            .notes-section {
+                margin-top: 24px;
+                padding-top: 16px;
+                border-top: 1px solid var(--line);
+            }
+            
+            .notes-section h3 {
+                margin-top: 0;
+                margin-bottom: 8px;
+                font-size: 14px;
+                color: var(--danger);
+            }
+            
+            .notes-section textarea {
+                width: 100%;
+                min-height: 80px;
+                padding: 10px;
+                border: 1px solid var(--danger);
+                border-radius: 6px;
+                resize: vertical;
+            }
+        `;
+                    document.head.appendChild(style);
+                </script>
 </body>
+
 </html>

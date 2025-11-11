@@ -251,19 +251,19 @@
         .grid-3 {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 12px;
+            gap: 8px;
         }
 
         .grid-4 {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
+            gap: 8px;
         }
 
         .grid-8 {
             display: grid;
             grid-template-columns: repeat(8, 1fr);
-            gap: 12px;
+            gap: 8px;
         }
 
 
@@ -759,70 +759,42 @@
                 <div class="section" style="padding: 15px; font-family: Times New Roman;">
                 <h2 class="section-title" style="margin-top: 5px;">A. THÔNG TIN CHUNG:</h2>
                 <div style="margin-bottom: 10px; font-family: Times New Roman;">
-                    <div style="display: flex; margin-bottom: 8px;">
-                        <div style="width: auto; padding-right: 10px;">1. Họ và tên (In hoa):</div>
-                        <input type="text"
-                            style="flex: 1; border: none; border-bottom: 1px dashed #000; outline: none; text-align: center;">
-                        <div style="width: auto; padding-right: 10px; padding-left: 10px;">2. Ngày sinh:</div>
-                        <input type="text"
-                            style="width: 30px; border: none; border-bottom: 1px dashed #000; outline: none; text-align: center; margin-right: 15px;">
-                        <div style="margin: 0 10px;">/</div>
-                        <input type="text"
-                            style="width: 30px; border: none; border-bottom: 1px dashed #000; outline: none; text-align: center; margin-right: 15px;">
-                        <div style="margin: 0 10px;">/</div>
-                        <input type="text"
-                            style="width: 80px; border: none; border-bottom: 1px dashed #000; outline: none; text-align: center;">
-                        <div style="margin-left: 15px; padding-right: 10px; padding-left: 10px;">Tuổi:</div>
-                        <input type="text"
-                            style="width: 30px; border: none; border-bottom: 1px dashed #000; outline: none; text-align: center; margin-right: 15px;">
-                        <div style="width: 80px; ">3. Giới tính:</div>
-                        <div >
-                            <input type="radio" name="gender"> Nam
-                        </div>
-                        <div>
-                            <input type="radio" name="gender"> Nữ
-                        </div>
+                                <div class="section">
+                <div class="grid-4">
+                    <div class="detail-row">
+                        <span class="detail-label">Họ và tên:</span>
+                        <span class="detail-value">Nguyễn Văn A</span>
                     </div>
-                    <div style="display: flex; margin-bottom: 8px;">
-                        <div style="width: auto; padding-right: 10px;">4. Điện thoại:</div>
-                        <input type="text"
-                            style="flex: 1; border: none; border-bottom: 1px dashed #000; outline: none; text-align: center;">
-                        <div style="width: auto; padding-right: 10px; padding-left: 10px;">5. Nghề nghiệp:</div>
-                        <input type="text"
-                            style="flex: 1; border: none; border-bottom: 1px dashed #000; outline: none; text-align: center;">
-                        <div style="width: auto; padding-right: 10px; padding-left: 10px;">6. Dân tộc:</div>
-                        <input type="text"
-                            style="width: 120px; border: none; border-bottom: 1px dashed #000; outline: none; text-align: center;">
-                        <div style="width: auto; padding-right: 10px; padding-left: 10px;">7. Quốc tịch:</div>
-                        <input type="text"
-                            style="width: 120px; border: none; border-bottom: 1px dashed #000; outline: none; text-align: center;">
+                    <div class="detail-row">
+                        <span class="detail-label">Giới tính / Tuổi:</span>
+                        <span class="detail-value">Nam / 35 tuổi</span>
                     </div>
-                    <div style="display: flex; margin-bottom: 8px;">
-                        <div style="width: auto; padding-right: 10px;">8. Địa chỉ:</div>
-                        <input type="text"
-                            style="flex: 1; border: none; border-bottom: 1px dashed #000; outline: none; text-align: center;">
-                        <div style="width: auto; padding-right: 10px; padding-left: 10px;">9. Đối tượng:</div>
-                        <div style="flex: 1;">
-                            <input type="radio" name="doituong"> BHYT
-                            <input type="radio" name="doituong" style="margin-left: 15px;"> Thu phí
-                            <input type="radio" name="doituong" style="margin-left: 15px;"> Miễn
-                            <input type="radio" name="doituong" style="margin-left: 15px;"> Khác
-                        </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Ngày sinh:</span>
+                        <span class="detail-value">15/03/1988</span>
                     </div>
-                    <div style="display: flex; margin-bottom: 8px;">
-                        <div style="width: auto; padding-right: 10px;">10. Số thẻ BHYT:</div>
-                        <input type="text"
-                            style="width: 120px; border: none; border-bottom: 1px dashed #000; outline: none; text-align: center;">
-                        <div style="width: auto; padding-right: 10px; padding-left: 10px;">11. Số Căn cước:</div>
-                        <input type="text"
-                            style="width: 120px; border: none; border-bottom: 1px dashed #000; outline: none; text-align: center;">
-                        <div style="width: auto; padding-right: 10px; padding-left: 10px;">12. Người liên hệ:</div>
-                        <input type="text"
-                            style="width: 120px; border: none; border-bottom: 1px dashed #000; outline: none; text-align: center;">
-                        <div style="width: auto; padding-right: 10px; padding-left: 10px;">Điện thoại:</div>
-                        <input type="text"
-                            style="flex: 1; border: none; border-bottom: 1px dashed #000; outline: none; text-align: center;">
+                    <div class="detail-row">
+                        <span class="detail-label">Mã bệnh nhân:</span>
+                        <span class="detail-value">00123456</span>
                     </div>
+                    <div class="detail-row">
+                        <span class="detail-label">CCCD:</span>
+                        <span class="detail-value">079212345678</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Điện thoại:</span>
+                        <span class="detail-value">0987654321</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Loại bảo hiểm:</span>
+                        <span class="detail-value">BHYT</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Số BHYT:</span>
+                        <span class="detail-value">123456789</span>
+                    </div>
+                </div>
+            </div>
                 </div>
             </div>
             </div>
@@ -1535,13 +1507,6 @@
                                 priceCell.style.borderBottom = '1px solid #eee';
                                 priceCell.style.textAlign = 'right';
 
-                                // Thành tiền
-                                const totalCell = row.insertCell();
-                                totalCell.style.padding = '10px';
-                                totalCell.style.borderBottom = '1px solid #eee';
-                                totalCell.style.textAlign = 'right';
-                                totalCell.setAttribute('class', 'medicine-total');
-                                totalCell.textContent = formatCurrency(price);
 
                                 // Ghi chú
                                 const noteCell = row.insertCell();
@@ -1860,10 +1825,7 @@
                                                         Đơn vị</th>
                                                     <th
                                                         style="padding: 10px; text-align: right; border-bottom: 1px solid #ddd;">
-                                                        Giá</th>
-                                                    <th
-                                                        style="padding: 10px; text-align: right; border-bottom: 1px solid #ddd;">
-                                                        Thành tiền</th>
+                                                        Giá tham khảo</th>
                                                     <th style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">
                                                         Cách dùng</th>
                                                     <th
