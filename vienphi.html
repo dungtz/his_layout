@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Viện phí - HIS</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+            --muted: #6b7280;
+            --line: #e5e7eb;
+            --background: #f9fafb;
+            --sidebar-width: 280px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #1f2937;
+            background-color: var(--background);
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: white;
+            border-right: 1px solid var(--line);
+            overflow-y: auto;
+        }
+
+        .logo-link {
+            display: block;
+            text-decoration: none;
+            padding: 16px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .nav-section {
+            padding: 12px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .nav-section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .nav-item:hover {
+            background-color: var(--background);
+        }
+
+        .nav-item.active {
+            background-color: #eff6ff;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .nav-item-icon {
+            margin-right: 12px;
+            font-size: 16px;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: white;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .bar {
+      margin: auto;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      padding: 10px 16px;
+    }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #1f2937;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            background-color: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #f9fafb;
+        }
+
+        .btn.primary {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .btn.primary:hover {
+            background-color: #1d4ed8;
+        }
+
+        .btn.success {
+            background-color: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+
+        .btn.warning {
+            background-color: var(--warning);
+            color: white;
+            border-color: var(--warning);
+        }
+
+        .btn.danger {
+            background-color: var(--danger);
+            color: white;
+            border-color: var(--danger);
+        }
+
+        .btn.btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .card-body {
+            padding: 16px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--line);
+        }
+
+        th {
+            background-color: #f9fafb;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .filter-section {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .filter-section input,
+        .filter-section select {
+            padding: 8px 12px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .badge.success {
+            background-color: #dcfce7;
+            color: var(--success);
+        }
+
+        .badge.warning {
+            background-color: #fef3c7;
+            color: var(--warning);
+        }
+
+        .badge.danger {
+            background-color: #fee2e2;
+            color: var(--danger);
+        }
+
+        .badge.info {
+            background-color: #dbeafe;
+            color: var(--info);
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .page-btn {
+            padding: 6px 12px;
+            border: 1px solid var(--line);
+            background-color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .page-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--muted);
+        }
+
+        .modal-body {
+            padding: 16px;
+        }
+
+        .modal-footer {
+            padding: 16px;
+            border-top: 1px solid var(--line);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--muted);
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar: Danh sách các chức năng viện phí -->
+        <div class="sidebar">
+            <header>
+            <div class="bar" style="display: flex; align-items: center; gap: 20px;">
+
+                <a href="home.html" style="display: flex; align-items: center;">
+                    <div style="width: 40px; height: 40px; background-color: #4CAF50; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px;">
+                    HIS
+                    </div>
+                </a>
+            </div>  
+        </header>
+            
+            <div class="nav-section">
+                <div class="nav-section-title">Quản lý viện phí</div>
+                <div class="nav-item active" data-function="hoadon">
+                    <span class="nav-item-icon">🧾</span>
+                    <span>Hóa đơn thanh toán</span>
+                </div>
+                <div class="nav-item" data-function="tamung">
+                    <span class="nav-item-icon">💳</span>
+                    <span>Phiếu tạm ứng</span>
+                </div>
+                <div class="nav-item" data-function="hoanung">
+                    <span class="nav-item-icon">↩️</span>
+                    <span>Phiếu hoàn ứng</span>
+                </div>
+                <div class="nav-item" data-function="baocao">
+                    <span class="nav-item-icon">📊</span>
+                    <span>Báo cáo thu chi</span>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-section-title">Quản lý danh mục</div>
+                <div class="nav-item" data-function="loaithanhtoan">
+                    <span class="nav-item-icon">💵</span>
+                    <span>Loại thanh toán</span>
+                </div>
+                <div class="nav-item" data-function="nganhang">
+                    <span class="nav-item-icon">🏦</span>
+                    <span>Ngân hàng</span>
+                </div>
+                <div class="nav-item" data-function="taikhoan">
+                    <span class="nav-item-icon">💰</span>
+                    <span>Tài khoản thu</span>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-section-title">Quản lý cài đặt</div>
+                <div class="nav-item" data-function="quydinh">
+                    <span class="nav-item-icon">📋</span>
+                    <span>Quy định thu phí</span>
+                </div>
+                <div class="nav-item" data-function="tinhphi">
+                    <span class="nav-item-icon">🧮</span>
+                    <span>Cấu hình tính phí</span>
+                </div>
+                <div class="nav-item" data-function="baomat">
+                    <span class="nav-item-icon">🔒</span>
+                    <span>Bảo mật thanh toán</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main content: Nội dung chức năng được chọn -->
+        <div class="main-content">
+            <div class="header">
+                <h1 id="function-title">Quản lý Hóa đơn thanh toán</h1>
+                <div class="header-actions">
+                    <button class="btn" onclick="refreshFunction()">🔄 Tải lại</button>
+                    <button class="btn primary" onclick="showAddModal()">➕ Thêm mới</button>
+                </div>
+            </div>
+
+            <!-- Bộ lọc và tìm kiếm -->
+            <div class="filter-section">
+                <input type="text" placeholder="Nhập mã hóa đơn, tên bệnh nhân..." id="search-input" class="search-input">
+                <select id="status-filter">
+                    <option value="">Tất cả trạng thái</option>
+                    <option value="active">Chưa thanh toán</option>
+                    <option value="paid">Đã thanh toán</option>
+                    <option value="cancelled">Đã hủy</option>
+                </select>
+                <select id="payment-method-filter">
+                    <option value="">Tất cả phương thức</option>
+                    <option value="cash">Tiền mặt</option>
+                    <option value="card">Thẻ ngân hàng</option>
+                    <option value="insurance">Bảo hiểm</option>
+                    <option value="transfer">Chuyển khoản</option>
+                </select>
+                <input type="date" id="from-date">
+                <input type="date" id="to-date">
+                <button class="btn primary" onclick="filterFunction()">🔍 Tìm kiếm</button>
+            </div>
+
+            <!-- Nội dung chức năng -->
+            <div class="card">
+                <div class="card-header">
+                    <span>Danh sách Hóa đơn thanh toán</span>
+                    <div>
+                        <button class="btn btn-small" onclick="exportToExcel()">📊 Xuất Excel</button>
+                        <button class="btn btn-small" onclick="printDocuments()">🖨️ In danh sách</button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table id="function-table">
+                        <thead>
+                            <tr>
+                                <th>Mã hóa đơn</th>
+                                <th>Mã bệnh nhân</th>
+                                <th>Tên bệnh nhân</th>
+                                <th>Ngày lập</th>
+                                <th>Ngày thanh toán</th>
+                                <th>Tổng tiền</th>
+                                <th>Phương thức</th>
+                                <th>Trạng thái</th>
+                                <th>Nhân viên lập</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dữ liệu hóa đơn -->
+                            <tr>
+                                <td>HD20241116001</td>
+                                <td>BN2024001</td>
+                                <td>Nguyễn Văn A</td>
+                                <td>2024-11-16</td>
+                                <td>2024-11-16</td>
+                                <td>1,500,000 ₫</td>
+                                <td>Thẻ ngân hàng</td>
+                                <td><span class="badge success">Đã thanh toán</span></td>
+                                <td>NV Thu Ngân</td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-small" onclick="viewItem('HD20241116001')">👁️</button>
+                                        <button class="btn btn-small" onclick="printItem('HD20241116001')">🖨️</button>
+                                        <button class="btn btn-small danger" onclick="cancelItem('HD20241116001')">❌</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>HD20241116002</td>
+                                <td>BN2024002</td>
+                                <td>Trần Thị B</td>
+                                <td>2024-11-16</td>
+                                <td>-</td>
+                                <td>2,200,000 ₫</td>
+                                <td>Bảo hiểm</td>
+                                <td><span class="badge warning">Chưa thanh toán</span></td>
+                                <td>NV Thu Ngân</td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-small" onclick="viewItem('HD20241116002')">👁️</button>
+                                        <button class="btn btn-small" onclick="editItem('HD20241116002')">✏️</button>
+                                        <button class="btn btn-small success" onclick="paymentItem('HD20241116002')">💳</button>
+                                        <button class="btn btn-small danger" onclick="cancelItem('HD20241116002')">❌</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>HD20241115001</td>
+                                <td>BN2024003</td>
+                                <td>Phạm Văn C</td>
+                                <td>2024-11-15</td>
+                                <td>2024-11-15</td>
+                                <td>850,000 ₫</td>
+                                <td>Tiền mặt</td>
+                                <td><span class="badge success">Đã thanh toán</span></td>
+                                <td>NV Thu Ngân</td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-small" onclick="viewItem('HD20241115001')">👁️</button>
+                                        <button class="btn btn-small" onclick="printItem('HD20241115001')">🖨️</button>
+                                        <button class="btn btn-small danger" onclick="cancelItem('HD20241115001')">❌</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>HD20241115002</td>
+                                <td>BN2024004</td>
+                                <td>Lê Thị D</td>
+                                <td>2024-11-15</td>
+                                <td>-</td>
+                                <td>3,500,000 ₫</td>
+                                <td>Chuyển khoản</td>
+                                <td><span class="badge warning">Chưa thanh toán</span></td>
+                                <td>NV Thu Ngân</td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-small" onclick="viewItem('HD20241115002')">👁️</button>
+                                        <button class="btn btn-small" onclick="editItem('HD20241115002')">✏️</button>
+                                        <button class="btn btn-small success" onclick="paymentItem('HD20241115002')">💳</button>
+                                        <button class="btn btn-small danger" onclick="cancelItem('HD20241115002')">❌</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>HD20241114001</td>
+                                <td>BN2024005</td>
+                                <td>Hoàng Văn E</td>
+                                <td>2024-11-14</td>
+                                <td>-</td>
+                                <td>450,000 ₫</td>
+                                <td>Tiền mặt</td>
+                                <td><span class="badge danger">Đã hủy</span></td>
+                                <td>NV Thu Ngân</td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-small" onclick="viewItem('HD20241114001')">👁️</button>
+                                        <button class="btn btn-small" onclick="printItem('HD20241114001')">🖨️</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div style="padding: 16px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--line);">
+                    <div>
+                        <strong>Tổng số bản ghi:</strong> 5
+                    </div>
+                    <div class="pagination">
+                        <button class="page-btn">‹</button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">›</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal thêm/sửa chứng từ -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Thêm Hóa đơn thanh toán mới</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="function-form">
+                    <!-- Nội dung form hóa đơn -->
+                    <div id="hoadon-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="invoice-code">Mã hóa đơn</label>
+                                <input type="text" id="invoice-code" required readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="patient-code">Mã bệnh nhân</label>
+                                <input type="text" id="patient-code" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="patient-name">Tên bệnh nhân</label>
+                                <input type="text" id="patient-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="invoice-date">Ngày lập</label>
+                                <input type="date" id="invoice-date" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="payment-method">Phương thức thanh toán</label>
+                                <select id="payment-method" required>
+                                    <option value="cash">Tiền mặt</option>
+                                    <option value="card">Thẻ ngân hàng</option>
+                                    <option value="insurance">Bảo hiểm</option>
+                                    <option value="transfer">Chuyển khoản</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="payment-account">Tài khoản thu</label>
+                                <select id="payment-account">
+                                    <option value="tk001">TK001 - Tiền mặt quầy</option>
+                                    <option value="tk002">TK002 - TMCP Vietcombank</option>
+                                    <option value="tk003">TK003 - TMCP Techcombank</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Chi tiết hóa đơn -->
+                        <div style="margin-top: 20px; border: 1px solid var(--line); border-radius: 6px; padding: 16px;">
+                            <h4 style="margin-top: 0; margin-bottom: 15px; color: #495057;">Chi tiết hóa đơn</h4>
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <thead>
+                                    <tr style="background-color: #f9fafb;">
+                                        <th style="padding: 8px; text-align: left; border-bottom: 1px solid var(--line); width: 10%;">STT</th>
+                                        <th style="padding: 8px; text-align: left; border-bottom: 1px solid var(--line); width: 40%;">Dịch vụ/Thuốc</th>
+                                        <th style="padding: 8px; text-align: right; border-bottom: 1px solid var(--line); width: 15%;">Số lượng</th>
+                                        <th style="padding: 8px; text-align: right; border-bottom: 1px solid var(--line); width: 15%;">Đơn giá</th>
+                                        <th style="padding: 8px; text-align: right; border-bottom: 1px solid var(--line); width: 15%;">Thành tiền</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="invoice-details">
+                                    <tr>
+                                        <td style="padding: 8px; border-bottom: 1px solid var(--line);">1</td>
+                                        <td style="padding: 8px; border-bottom: 1px solid var(--line);">Khám bệnh tổng quát</td>
+                                        <td style="padding: 8px; text-align: right; border-bottom: 1px solid var(--line);">1</td>
+                                        <td style="padding: 8px; text-align: right; border-bottom: 1px solid var(--line);">200,000 ₫</td>
+                                        <td style="padding: 8px; text-align: right; border-bottom: 1px solid var(--line);">200,000 ₫</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 8px; border-bottom: 1px solid var(--line);">2</td>
+                                        <td style="padding: 8px; border-bottom: 1px solid var(--line);">Xét nghiệm máu routine</td>
+                                        <td style="padding: 8px; text-align: right; border-bottom: 1px solid var(--line);">1</td>
+                                        <td style="padding: 8px; text-align: right; border-bottom: 1px solid var(--line);">150,000 ₫</td>
+                                        <td style="padding: 8px; text-align: right; border-bottom: 1px solid var(--line);">150,000 ₫</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 8px; border-bottom: 1px solid var(--line);">3</td>
+                                        <td style="padding: 8px; border-bottom: 1px solid var(--line);">Thuốc cảm XYZ</td>
+                                        <td style="padding: 8px; text-align: right; border-bottom: 1px solid var(--line);">2</td>
+                                        <td style="padding: 8px; text-align: right; border-bottom: 1px solid var(--line);">50,000 ₫</td>
+                                        <td style="padding: 8px; text-align: right; border-bottom: 1px solid var(--line);">100,000 ₫</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button type="button" class="btn btn-small" style="margin-top: 10px;">➕ Thêm chi tiết</button>
+                        </div>
+                        
+                        <!-- Tổng tiền -->
+                        <div style="margin-top: 20px; text-align: right;">
+                            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-bottom: 8px;">
+                                <span style="font-weight: 500;">Tổng tiền:</span>
+                                <span id="subtotal">450,000 ₫</span>
+                            </div>
+                            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-bottom: 8px;">
+                                <span style="font-weight: 500;">Giảm giá:</span>
+                                <span id="discount">0 ₫</span>
+                            </div>
+                            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-bottom: 8px; font-weight: 600; font-size: 16px;">
+                                <span>Thành tiền:</span>
+                                <span id="total">450,000 ₫</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeModal()">Đóng</button>
+                <button class="btn success" onclick="saveInvoice()">Lưu</button>
+                <button class="btn primary" onclick="saveAndPrintInvoice()">Lưu và In</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Chuyển đổi chức năng trong sidebar
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                // Xóa class active khỏi tất cả các nav-item
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                // Thêm class active cho nav-item được click
+                this.classList.add('active');
+                
+                const functionType = this.getAttribute('data-function');
+                updateMainContent(functionType);
+            });
+        });
+        
+        // Cập nhật nội dung chính dựa trên chức năng được chọn
+        function updateMainContent(functionType) {
+            const functionTitle = document.getElementById('function-title');
+            
+            // Cập nhật tiêu đề theo chức năng
+            switch(functionType) {
+                case 'hoadon':
+                    functionTitle.textContent = 'Quản lý Hóa đơn thanh toán';
+                    // Hiển thị danh sách hóa đơn
+                    break;
+                case 'tamung':
+                    functionTitle.textContent = 'Quản lý Phiếu tạm ứng';
+                    // Hiển thị danh sách phiếu tạm ứng
+                    break;
+                case 'hoanung':
+                    functionTitle.textContent = 'Quản lý Phiếu hoàn ứng';
+                    // Hiển thị danh sách phiếu hoàn ứng
+                    break;
+                case 'baocao':
+                    functionTitle.textContent = 'Báo cáo thu chi';
+                    // Hiển thị báo cáo
+                    break;
+                case 'loaithanhtoan':
+                    functionTitle.textContent = 'Quản lý Loại thanh toán';
+                    // Hiển thị danh sách loại thanh toán
+                    break;
+                case 'nganhang':
+                    functionTitle.textContent = 'Quản lý Ngân hàng';
+                    // Hiển thị danh sách ngân hàng
+                    break;
+                case 'taikhoan':
+                    functionTitle.textContent = 'Quản lý Tài khoản thu';
+                    // Hiển thị danh sách tài khoản thu
+                    break;
+                case 'quydinh':
+                    functionTitle.textContent = 'Quy định thu phí';
+                    // Hiển thị quy định thu phí
+                    break;
+                case 'tinhphi':
+                    functionTitle.textContent = 'Cấu hình tính phí';
+                    // Hiển thị cấu hình tính phí
+                    break;
+                case 'baomat':
+                    functionTitle.textContent = 'Bảo mật thanh toán';
+                    // Hiển thị bảo mật thanh toán
+                    break;
+            }
+        }
+        
+        // Tải lại chức năng hiện tại
+        function refreshFunction() {
+            const activeFunction = document.querySelector('.nav-item.active').getAttribute('data-function');
+            updateMainContent(activeFunction);
+            alert('Dữ liệu đã được tải lại!');
+        }
+        
+        // Hiển thị modal thêm mới
+        function showAddModal() {
+            const modal = document.getElementById('modal');
+            const modalTitle = document.getElementById('modal-title');
+            const activeFunction = document.querySelector('.nav-item.active').getAttribute('data-function');
+            
+            // Cập nhật tiêu đề modal theo chức năng
+            switch(activeFunction) {
+                case 'hoadon':
+                    modalTitle.textContent = 'Thêm Hóa đơn thanh toán mới';
+                    break;
+                case 'tamung':
+                    modalTitle.textContent = 'Thêm Phiếu tạm ứng mới';
+                    break;
+                case 'hoanung':
+                    modalTitle.textContent = 'Thêm Phiếu hoàn ứng mới';
+                    break;
+                // Các trường hợp khác tương tự
+            }
+            
+            // Tạo mã tự động cho hóa đơn
+            if (activeFunction === 'hoadon') {
+                const today = new Date();
+                const dateStr = today.getFullYear() + 
+                               String(today.getMonth() + 1).padStart(2, '0') + 
+                               String(today.getDate()).padStart(2, '0');
+                const randomStr = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+                document.getElementById('invoice-code').value = 'HD' + dateStr + randomStr;
+                document.getElementById('invoice-date').value = today.toISOString().split('T')[0];
+            }
+            
+            modal.style.display = 'flex';
+        }
+        
+        // Đóng modal
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+        
+        // Lọc dữ liệu
+        function filterFunction() {
+            // Thực hiện lọc dữ liệu dựa trên các điều kiện
+            alert('Lọc dữ liệu thành công!');
+        }
+        
+        // Xuất Excel
+        function exportToExcel() {
+            alert('Xuất Excel thành công!');
+        }
+        
+        // In danh sách
+        function printDocuments() {
+            alert('In danh sách thành công!');
+        }
+        
+        // Xem chi tiết
+        function viewItem(id) {
+            alert('Xem chi tiết ' + id);
+        }
+        
+        // Sửa
+        function editItem(id) {
+            alert('Sửa ' + id);
+        }
+        
+        // Thanh toán
+        function paymentItem(id) {
+            alert('Thanh toán ' + id);
+        }
+        
+        // Hủy
+        function cancelItem(id) {
+            if (confirm('Bạn có chắc chắn muốn hủy ' + id + '?')) {
+                alert('Hủy ' + id + ' thành công!');
+            }
+        }
+        
+        // In
+        function printItem(id) {
+            alert('In ' + id + ' thành công!');
+        }
+        
+        // Lưu hóa đơn
+        function saveInvoice() {
+            alert('Lưu hóa đơn thành công!');
+            closeModal();
+        }
+        
+        // Lưu và in hóa đơn
+        function saveAndPrintInvoice() {
+            alert('Lưu và in hóa đơn thành công!');
+            closeModal();
+        }
+        
+        // Đóng modal khi click ra ngoài
+        window.onclick = function(event) {
+            const modal = document.getElementById('modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
